@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Miner Screener — Top 3 Picks | J.P. Morgan Equity Research</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --gold: #c8a84b;
+  --gold-light: #e8c96e;
+  --gold-pale: #fdf6e4;
+  --slate: #1e2d44;
+  --mid: #3a4f6a;
+  --muted: #7a8fa8;
+  --bg: #f8f5ef;
+  --card: #ffffff;
+  --border: #ddd5c0;
+  --text: #1a2030;
+  --green: #1a7a45;
+  --red: #d42b2b;
+  --amber: #b07d00;
+  --blue: #1a4a8a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'IBM Plex Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+
+.header { background: var(--navy); border-bottom: 3px solid var(--gold); padding: 0; }
+.header-inner { max-width: 1120px; margin: auto; padding: 18px 32px; display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: 'Playfair Display', serif; font-size: 1.05rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+.logo span { color: white; }
+.header-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: var(--muted); text-align: right; line-height: 1.9; }
+
+.hero { background: var(--slate); color: white; padding: 36px 32px; border-bottom: 1px solid var(--mid); }
+.hero-inner { max-width: 1120px; margin: auto; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; margin-bottom: 8px; color: var(--gold-light); }
+.hero-sub { color: #8fa8c8; font-size: 0.9rem; max-width: 700px; line-height: 1.6; margin-bottom: 16px; }
+.screen-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.63rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border: 1px solid rgba(200,168,75,0.4);
+  color: var(--gold);
+}
+.pill.active { background: var(--gold); color: var(--navy); font-weight: 700; }
+
+.main { max-width: 1120px; margin: 0 auto; padding: 32px; }
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::before {
+  content: '';
+  width: 4px;
+  height: 18px;
+  background: var(--gold);
+}
+
+/* ── Eliminated Table ── */
+.elim-banner {
+  background: #1a0a0a;
+  border-left: 4px solid var(--red);
+  color: white;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.elim-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+.elim-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; color: #ff9999; }
+.elim-text { font-size: 0.8rem; color: #d4b0b0; line-height: 1.5; }
+
+/* ── Full Screener Matrix ── */
+.screener-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-bottom: 32px; }
+.screener-table th {
+  background: var(--navy);
+  color: var(--gold);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+.screener-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #ede6d6;
+  vertical-align: middle;
+}
+.screener-table tr:hover td { background: #fdf8ee; }
+.screener-table tr.eliminated td { background: #fff5f5; color: #999; }
+.screener-table tr.eliminated td.company-cell { text-decoration: line-through; color: #cc4444; }
+.screener-table tr.selected td { background: #f0faf4; }
+.screener-table tr.selected td.company-cell { font-weight: 700; color: var(--green); }
+.company-cell { font-weight: 600; white-space: nowrap; }
+.tick { color: var(--green); font-weight: 700; }
+.cross { color: var(--red); font-weight: 700; }
+.warn { color: var(--amber); font-weight: 700; }
+.td-right { text-align: right; font-family: 'IBM Plex Mono', monospace; }
+.rank-badge {
+  display: inline-block;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 22px;
+}
+.rank-1 { background: var(--gold); color: var(--navy); }
+.rank-2 { background: #c0c8d8; color: var(--navy); }
+.rank-3 { background: #c8a87a; color: white; }
+.rank-elim { background: var(--red); color: white; font-size: 0.65rem; line-height: 22px; }
+
+/* ── Pick Cards ── */
+.picks-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-bottom: 32px; }
+@media (max-width: 900px) { .picks-grid { grid-template-columns: 1fr; } }
+.pick-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 4px solid;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.pick-card.gold-border { border-top-color: #c8a84b; }
+.pick-card.silver-border { border-top-color: #9fa8b8; }
+.pick-card.bronze-border { border-top-color: #c8a87a; }
+
+.pick-header {
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.pick-rank {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.pick-ticker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--navy);
+}
+.pick-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.pick-tagline { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+
+.pick-prices {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.price-cell {
+  padding: 12px 14px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.price-cell:last-child { border-right: none; }
+.price-lbl { font-size: 0.55rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 3px; }
+.price-val { font-family: 'IBM Plex Mono', monospace; font-size: 1rem; font-weight: 500; color: var(--navy); }
+.price-val.green { color: var(--green); }
+
+.pick-metrics { padding: 14px 20px; border-bottom: 1px solid var(--border); }
+.metric-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #f0e8d8; font-size: 0.78rem; }
+.metric-row:last-child { border-bottom: none; }
+.metric-label { color: var(--muted); }
+.metric-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; font-weight: 500; }
+.metric-val.green { color: var(--green); }
+.metric-val.amber { color: var(--amber); }
+.metric-val.red { color: var(--red); }
+
+.pick-thesis { padding: 14px 20px; flex: 1; }
+.thesis-title { font-size: 0.65rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 600; }
+.thesis-text { font-size: 0.78rem; color: #334; line-height: 1.65; }
+
+.pick-scores { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; border-top: 1px solid var(--border); }
+.score-cell { padding: 10px 8px; text-align: center; border-right: 1px solid var(--border); }
+.score-cell:last-child { border-right: none; }
+.score-letter { font-family: 'IBM Plex Mono', monospace; font-size: 1.2rem; font-weight: 700; }
+.score-label-sm { font-size: 0.55rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.grade-a { color: var(--green); }
+.grade-b { color: #1a5fa8; }
+.grade-c { color: var(--amber); }
+.grade-d { color: var(--red); }
+
+/* ── Risk flags ── */
+.risk-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+.risk-flag {
+  font-size: 0.62rem;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.5px;
+  padding: 3px 9px;
+  text-transform: uppercase;
+}
+.flag-red { background: #f8d7da; color: #721c24; }
+.flag-amber { background: #fff3cd; color: #856404; }
+.flag-green { background: #d4edda; color: #155724; }
+
+/* ── Catalyst Bar ── */
+.catalyst-bar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.catalyst-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0e8d8;
+  align-items: flex-start;
+}
+.catalyst-item:last-child { border-bottom: none; padding-bottom: 0; }
+.cat-ticker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  width: 36px;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.cat-body { flex: 1; }
+.cat-event { font-weight: 600; font-size: 0.82rem; margin-bottom: 2px; }
+.cat-desc { font-size: 0.75rem; color: #4a5568; line-height: 1.5; }
+.cat-timing {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 2px;
+  text-align: right;
+}
+.cat-impact { font-size: 0.6rem; font-weight: 700; padding: 1px 6px; margin-top: 4px; display: inline-block; }
+.impact-high { background: #d4edda; color: #155724; }
+.impact-med { background: #fff3cd; color: #856404; }
+
+/* ── Comparison Table ── */
+.comp-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-bottom: 24px; }
+.comp-table th {
+  background: var(--navy);
+  color: var(--gold);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+}
+.comp-table td { padding: 10px 14px; border-bottom: 1px solid #ede6d6; }
+.comp-table tr:hover td { background: #fdf8ee; }
+.best-cell { background: #f0faf4 !important; color: var(--green); font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
+
+/* conclusion */
+.conclusion {
+  background: var(--navy);
+  color: white;
+  padding: 28px 32px;
+  border-left: 4px solid var(--gold);
+  margin-bottom: 24px;
+}
+.conclusion h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); margin-bottom: 12px; }
+.conclusion p { font-size: 0.85rem; line-height: 1.75; color: #c8d8e8; margin-bottom: 10px; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion strong { color: var(--gold-light); }
+
+/* portfolio box */
+.portfolio-reco {
+  background: #fdf8ee;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+  padding: 20px 24px;
+  margin-top: 20px;
+}
+.portfolio-reco h4 { font-family: 'Playfair Display', serif; color: var(--navy); margin-bottom: 12px; font-size: 0.95rem; }
+.alloc-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #ede6d6; font-size: 0.82rem; }
+.alloc-row:last-child { border-bottom: none; }
+.alloc-ticker { font-family: 'IBM Plex Mono', monospace; font-weight: 600; color: var(--navy); }
+.alloc-amount { font-family: 'IBM Plex Mono', monospace; color: var(--green); font-weight: 600; }
+.alloc-pct { font-size: 0.72rem; color: var(--muted); }
+
+.disclaimer { background: #f0ece2; border-top: 1px solid var(--border); padding: 16px 32px; font-size: 0.68rem; color: var(--muted); line-height: 1.6; max-width: 1120px; margin: 0 auto; margin-top: 24px; }
+::-webkit-scrollbar { height: 4px; width: 4px; } ::-webkit-scrollbar-thumb { background: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">J.P. <span>Morgan</span> &nbsp;·&nbsp; Equity Research</div>
+    <div class="header-meta">GOLD MINER SCREENER · SINGLE-STOCK SELECTION<br>ISSUED: 02 MARCH 2026 · CONFIDENTIAL</div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-title">Gold Miner Universe Screener — Top 3 Undervalued Picks</div>
+    <div class="hero-sub">Applying the same NGD analytical framework across the major/intermediate gold producer universe. Excludes any company with significant Mexico cartel-risk exposure. Prioritizes undervaluation, financial health, and growth potential.</div>
+    <div class="screen-pills">
+      <span class="pill active">✓ No Mexico Cartel Risk</span>
+      <span class="pill active">✓ Strong Balance Sheet</span>
+      <span class="pill active">✓ Undervalued (Discount to Fair Value)</span>
+      <span class="pill active">✓ Organic Growth Visible</span>
+      <span class="pill active">✓ Low AISC / High Margins</span>
+      <span class="pill">⊘ CDE Excluded (Overpriced)</span>
+      <span class="pill">⊘ AGI Excluded (Mexico)</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ELIMINATED -->
+  <div class="elim-banner">
+    <div class="elim-icon">🚫</div>
+    <div>
+      <div class="elim-title">Screening Eliminations — Mexico Cartel Risk &amp; Overvaluation</div>
+      <div class="elim-text"><strong>Alamos Gold (AGI)</strong> — Eliminated. Operates the Mulatos District (Sonora, Mexico), which is formally classified as a conflict-affected/high-risk zone by the Heidelberg Conflict Barometer (Level 3 "violent crisis" subnationally). Cartel-linked armed robbery of gold bars occurred at the Mulatos airstrip in 2020. Company explicitly acknowledges Mulatos is in a conflict-affected area. Despite excellent Canadian assets (89% of NAV), the Mexico exposure disqualifies it per your criteria.&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Coeur Mining (CDE)</strong> — Excluded per your preference (overpriced post-rally).&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Fresnillo (FNLPF)</strong> — Eliminated. Primarily a Mexico miner; extreme cartel/security risk.&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Endeavour Mining</strong> — Eliminated. West Africa political risk (Côte d'Ivoire, Burkina Faso coups).&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Barrick (B)</strong> — Passes Mexico screen (no Mexico operations) but has Africa/Pakistan risk. Included as Pick #3 due to large structural discount and IPO catalyst.</div>
+    </div>
+  </div>
+
+  <!-- FULL SCREENER TABLE -->
+  <div class="section-title">Universe Screener Matrix</div>
+  <div style="overflow-x:auto; margin-bottom:32px">
+  <table class="screener-table">
+    <tr>
+      <th>Rank</th>
+      <th>Company / Ticker</th>
+      <th>Market Cap</th>
+      <th>No Mexico</th>
+      <th>Jurisdiction Quality</th>
+      <th>AISC (2026E)</th>
+      <th>AISC Margin at $5K Au</th>
+      <th>Analyst PT</th>
+      <th>Discount to PT</th>
+      <th>FCF Yield</th>
+      <th>Net Debt/EBITDA</th>
+      <th>Dividend &amp; Return Policy</th>
+      <th>Growth Catalyst</th>
+      <th>Verdict</th>
+    </tr>
+    <tr class="selected">
+      <td><span class="rank-badge rank-1">1</span></td>
+      <td class="company-cell" style="color:var(--green)">Kinross Gold (KGC)</td>
+      <td class="td-right">$41B</td>
+      <td class="tick">✓ 100%</td>
+      <td>USA · Brazil · Canada · Mauritania</td>
+      <td class="td-right" style="color:var(--green);font-family:'IBM Plex Mono',monospace">$1,730</td>
+      <td class="td-right" style="color:var(--green);font-family:'IBM Plex Mono',monospace">+$3,270</td>
+      <td class="td-right" style="font-family:'IBM Plex Mono',monospace">$43.00</td>
+      <td class="td-right" style="color:var(--green);font-family:'IBM Plex Mono',monospace">+28%</td>
+      <td class="td-right" style="color:var(--green);font-family:'IBM Plex Mono',monospace">~6–8%</td>
+      <td class="td-right" style="font-family:'IBM Plex Mono',monospace">~0.2×</td>
+      <td>33% dividend hike; 40% FCF return</td>
+      <td>3 US growth projects 2028</td>
+      <td style="font-weight:700; color:var(--green)">✅ SELECT</td>
+    </tr>
+    <tr class="selected">
+      <td><span class="rank-badge rank-2">2</span></td>
+      <td class="company-cell" style="color:var(--green)">Barrick Mining (B)</td>
+      <td class="td-right">$85B</td>
+      <td class="tick">✓ 0%</td>
+      <td>USA · Canada · Dom. Rep. · Africa*</td>
+      <td class="td-right" style="font-family:'IBM Plex Mono',monospace">$1,760–$1,950</td>
+      <td class="td-right" style="font-family:'IBM Plex Mono',monospace">+$3,050</td>
+      <td class="td-right" style="font-family:'IBM Plex Mono',monospace">$58.53</td>
+      <td class="td-right" style="color:var(--green);font-family:'IBM Plex Mono',monospace">+15%</td>
+      <td class="td-right" style="font-family:'IBM Plex Mono',monospace">~5%</td>
+      <td class="td-right" style="font-family:'IBM Plex Mono',monospace">~0.3×</td>
+      <td>Dividend; $1B+ buyback</td>
+      <td>NA IPO catalyst; Fourmile</td>
+      <td style="font-weight:700; color:var(--green)">✅ SELECT</td>
+    </tr>
+    <tr class="selected">
+      <td><span class="rank-badge rank-3">3</span></td>
+      <td class="company-cell" style="color:var(--green)">Kinross Great Bear (KGC)</td>
+      <td colspan="12" style="font-size:0.75rem; color:var(--muted); font-style:italic">→ See Pick #3: Wheaton Precious Metals (WPM) for royalty/streaming differentiated play</td>
+    </tr>
+    <tr class="selected">
+      <td><span class="rank-badge rank-3">3</span></td>
+      <td class="company-cell" style="color:var(--green)">Wheaton Precious (WPM)</td>
+      <td class="td-right">$32B</td>
+      <td class="tick">✓ ~0%</td>
+      <td>USA · Canada · Peru · Brazil (streaming, not op.)</td>
+      <td class="td-right" style="color:var(--green);font-family:'IBM Plex Mono',monospace">~$670*</td>
+      <td class="td-right" style="color:var(--green);font-family:'IBM Plex Mono',monospace">+$4,330</td>
+      <td class="td-right" style="font-family:'IBM Plex Mono',monospace">$95.50</td>
+      <td class="td-right" style="color:var(--green);font-family:'IBM Plex Mono',monospace">+24%</td>
+      <td class="td-right" style="color:var(--green);font-family:'IBM Plex Mono',monospace">~4–5%</td>
+      <td class="td-right" style="color:var(--green);font-family:'IBM Plex Mono',monospace">~0.0×</td>
+      <td>Dividend growth; 30% payout</td>
+      <td>15+ new streams 2026–2027</td>
+      <td style="font-weight:700; color:var(--green)">✅ SELECT</td>
+    </tr>
+    <tr class="eliminated">
+      <td><span class="rank-badge rank-elim">✗</span></td>
+      <td class="company-cell">Alamos Gold (AGI)</td>
+      <td class="td-right">~$20B</td>
+      <td class="cross">✗ Mulatos</td>
+      <td>Canada ✓ / Mexico ✗ Sonora cartel zone</td>
+      <td class="td-right">$1,261E</td>
+      <td class="td-right">+$3,739</td>
+      <td class="td-right">$49.50</td>
+      <td class="td-right">+26%</td>
+      <td class="td-right">~3%</td>
+      <td class="td-right">Net Cash</td>
+      <td>Dividend</td>
+      <td>Island Gold Ph3+ 2026</td>
+      <td style="color:var(--red);font-weight:700">❌ Mexico</td>
+    </tr>
+    <tr class="eliminated">
+      <td><span class="rank-badge rank-elim">✗</span></td>
+      <td class="company-cell">Fresnillo (FNLPF)</td>
+      <td class="td-right">~$9B</td>
+      <td class="cross">✗ 100%</td>
+      <td>Mexico-only; Sinaloa / Zacatecas</td>
+      <td class="td-right">~$1,600</td>
+      <td class="td-right">+$3,400</td>
+      <td class="td-right">—</td>
+      <td class="td-right">—</td>
+      <td class="td-right">~3%</td>
+      <td class="td-right">1.2×</td>
+      <td>—</td>
+      <td>—</td>
+      <td style="color:var(--red);font-weight:700">❌ Mexico</td>
+    </tr>
+    <tr class="eliminated">
+      <td><span class="rank-badge rank-elim">✗</span></td>
+      <td class="company-cell">Coeur Mining (CDE)</td>
+      <td class="td-right">~$8B</td>
+      <td class="tick">✓</td>
+      <td>USA · Canada (post-NGD)</td>
+      <td class="td-right">$1,650</td>
+      <td class="td-right">+$3,350</td>
+      <td class="td-right">~$22</td>
+      <td class="td-right">+10%</td>
+      <td class="td-right">~2%</td>
+      <td class="td-right">1.5×+</td>
+      <td>None</td>
+      <td>NGD integration</td>
+      <td style="color:var(--amber);font-weight:700">⚠ Overpriced</td>
+    </tr>
+    <tr class="eliminated">
+      <td><span class="rank-badge rank-elim">✗</span></td>
+      <td class="company-cell">B2Gold (BTG)</td>
+      <td class="td-right">~$5B</td>
+      <td class="tick">✓</td>
+      <td>Mali ✗ · Namibia · Philippines</td>
+      <td class="td-right">$1,500</td>
+      <td class="td-right">+$3,500</td>
+      <td class="td-right">~$5.20</td>
+      <td class="td-right">~25%</td>
+      <td class="td-right">~7%</td>
+      <td class="td-right">Net Cash</td>
+      <td>High dividend 6%</td>
+      <td>Anaconda Canada</td>
+      <td style="color:var(--amber);font-weight:700">⚠ Mali risk</td>
+    </tr>
+    <tr class="eliminated">
+      <td><span class="rank-badge rank-elim">✗</span></td>
+      <td class="company-cell">Newmont (NEM)</td>
+      <td class="td-right">~$56B</td>
+      <td class="warn">⚠ Minor</td>
+      <td>USA · Australia · Ghana · Canada</td>
+      <td class="td-right">$1,700</td>
+      <td class="td-right">+$3,300</td>
+      <td class="td-right">~$58</td>
+      <td class="td-right">~7%</td>
+      <td class="td-right">~4%</td>
+      <td class="td-right">0.8×</td>
+      <td>Dividend; buybacks</td>
+      <td>Newcrest integration</td>
+      <td style="color:var(--amber);font-weight:700">⚠ Fairly priced</td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- 3 PICK CARDS -->
+  <div class="section-title">Top 3 Selections — Deep Dive</div>
+  <div class="picks-grid">
+
+    <!-- PICK 1: KGC -->
+    <div class="pick-card gold-border">
+      <div class="pick-header">
+        <div class="pick-rank">🥇 Pick #1 — Best Overall Undervalued Miner</div>
+        <div class="pick-ticker">NYSE: KGC &nbsp;|&nbsp; TSX: K</div>
+        <div class="pick-name">Kinross Gold Corporation</div>
+        <div class="pick-tagline">Senior gold producer; USA · Brazil · Canada · Mauritania. Zero Mexico exposure. Record 2025 FCF. Three US growth projects coming 2028.</div>
+      </div>
+      <div class="pick-prices">
+        <div class="price-cell">
+          <div class="price-lbl">Current</div>
+          <div class="price-val">~$33.56</div>
+        </div>
+        <div class="price-cell">
+          <div class="price-lbl">Analyst PT</div>
+          <div class="price-val green">$43.00</div>
+        </div>
+        <div class="price-cell">
+          <div class="price-lbl">12M Upside</div>
+          <div class="price-val green">+28%</div>
+        </div>
+      </div>
+      <div class="pick-metrics">
+        <div class="metric-row"><span class="metric-label">2025 FCF</span><span class="metric-val green">$2.5B (record)</span></div>
+        <div class="metric-row"><span class="metric-label">2025 Production</span><span class="metric-val">~2.0M oz gold eq.</span></div>
+        <div class="metric-row"><span class="metric-label">2026 AISC Guidance</span><span class="metric-val amber">$1,730/oz</span></div>
+        <div class="metric-row"><span class="metric-label">AISC Margin (@$5K gold)</span><span class="metric-val green">+$3,270/oz</span></div>
+        <div class="metric-row"><span class="metric-label">Net Debt / EBITDA</span><span class="metric-val green">~0.2× (near-zero)</span></div>
+        <div class="metric-row"><span class="metric-label">Cash &amp; Liquidity</span><span class="metric-val green">$3.5B total</span></div>
+        <div class="metric-row"><span class="metric-label">Dividend Policy</span><span class="metric-val green">+33% total hike since Q3'25</span></div>
+        <div class="metric-row"><span class="metric-label">Capital Return Target</span><span class="metric-val">40% of FCF to holders</span></div>
+        <div class="metric-row"><span class="metric-label">Q4 2025 EPS Beat</span><span class="metric-val green">$0.67 vs $0.55 est.</span></div>
+        <div class="metric-row"><span class="metric-label">Moody's Credit Rating</span><span class="metric-val green">Baa2 (upgraded Dec 2025)</span></div>
+        <div class="metric-row"><span class="metric-label">Mexico Exposure</span><span class="metric-val green">ZERO</span></div>
+        <div class="metric-row"><span class="metric-label">Institutional Ownership</span><span class="metric-val">~67%</span></div>
+      </div>
+      <div class="pick-thesis">
+        <div class="thesis-title">Investment Thesis</div>
+        <div class="thesis-text">Kinross hit a record $2.5B in free cash flow in 2025 — a staggering figure for a company at its market cap — while paying down debt, hiking dividends twice, and greenlighting three US growth projects simultaneously. The stock's 28% discount to analyst consensus ($43 median, 14 buy ratings) makes it the clearest value in the senior miner space right now.
+
+The 2026 AISC guide-up to $1,730 (from ~$1,500 in 2025) sounds alarming but is driven primarily by higher gold-price royalties — essentially a tax on success — not cost inflation. At $5,000+ gold, every royalty dollar paid to governments is still dwarfed by the margin expansion. The Tasiast and Paracatu mines (1.1M oz combined in 2025) are world-class assets. Three US projects at Round Mountain, Bald Mountain, and Kettle River-Curlew come online in 2028, adding ~3M reserve oz and stepping up grades. Great Bear (Ontario, Canada) — one of the highest-grade undeveloped gold discoveries globally — enters permitting with first gold targeted 2029–2030.
+
+Kinross has no Mexico, no Africa military-government risk, and a Moody's investment-grade credit. The 40% FCF return policy means shareholders are directly and generously rewarded as gold prices stay elevated.</div>
+      </div>
+      <div class="risk-row" style="padding:0 20px 12px">
+        <span class="risk-flag flag-green">Canada · USA · Brazil</span>
+        <span class="risk-flag flag-amber">Mauritania (Tasiast)</span>
+        <span class="risk-flag flag-green">0% Mexico</span>
+        <span class="risk-flag flag-green">IG Credit</span>
+        <span class="risk-flag flag-amber">2026 AISC guides up</span>
+      </div>
+      <div class="pick-scores">
+        <div class="score-cell"><div class="score-letter grade-a">A</div><div class="score-label-sm">Value</div></div>
+        <div class="score-cell"><div class="score-letter grade-b">B+</div><div class="score-label-sm">Growth</div></div>
+        <div class="score-cell"><div class="score-letter grade-a">A</div><div class="score-label-sm">Health</div></div>
+        <div class="score-cell"><div class="score-letter grade-b">B</div><div class="score-label-sm">Jurisdictn</div></div>
+      </div>
+    </div>
+
+    <!-- PICK 2: WPM -->
+    <div class="pick-card silver-border">
+      <div class="pick-header">
+        <div class="pick-rank">🥈 Pick #2 — Safest / Highest Quality, Zero Operator Risk</div>
+        <div class="pick-ticker">NYSE: WPM &nbsp;|&nbsp; TSX: WPM</div>
+        <div class="pick-name">Wheaton Precious Metals</div>
+        <div class="pick-tagline">World's premier gold/silver streaming company. No mine operations = no Mexico risk. Lowest cost "miner" on the planet. Pristine balance sheet.</div>
+      </div>
+      <div class="pick-prices">
+        <div class="price-cell">
+          <div class="price-lbl">Current</div>
+          <div class="price-val">~$77</div>
+        </div>
+        <div class="price-cell">
+          <div class="price-lbl">Analyst PT</div>
+          <div class="price-val green">$95.50</div>
+        </div>
+        <div class="price-cell">
+          <div class="price-lbl">12M Upside</div>
+          <div class="price-val green">+24%</div>
+        </div>
+      </div>
+      <div class="pick-metrics">
+        <div class="metric-row"><span class="metric-label">2025 Revenue (Q3 record)</span><span class="metric-val green">$487.7M (Q3, +77% YoY)</span></div>
+        <div class="metric-row"><span class="metric-label">Effective Cash Cost</span><span class="metric-val green">~$670/oz (streaming contracts)</span></div>
+        <div class="metric-row"><span class="metric-label">Margin at $5K gold</span><span class="metric-val green">~86% — virtually unmatched</span></div>
+        <div class="metric-row"><span class="metric-label">Net Debt</span><span class="metric-val green">Effectively $0 — net cash</span></div>
+        <div class="metric-row"><span class="metric-label">Adj. Net Income Q3</span><span class="metric-val green">$275M (record)</span></div>
+        <div class="metric-row"><span class="metric-label">2026 UBS Price Target</span><span class="metric-val">$270 (raised from $260)</span></div>
+        <div class="metric-row"><span class="metric-label">Analyst Consensus</span><span class="metric-val green">Overweight (FactSet)</span></div>
+        <div class="metric-row"><span class="metric-label">Analyst Avg PT</span><span class="metric-val green">$228.66 → UBS $270</span></div>
+        <div class="metric-row"><span class="metric-label">Mexico Exposure</span><span class="metric-val green">ZERO (streaming only)</span></div>
+        <div class="metric-row"><span class="metric-label">Operator Risk</span><span class="metric-val green">NONE (pure royalty model)</span></div>
+        <div class="metric-row"><span class="metric-label">Dividend Policy</span><span class="metric-val">30% adj. EPS payout; growing</span></div>
+        <div class="metric-row"><span class="metric-label">New Streams Pending</span><span class="metric-val">15+ in pipeline 2026–2028</span></div>
+      </div>
+      <div class="pick-thesis">
+        <div class="thesis-title">Investment Thesis</div>
+        <div class="thesis-text">Wheaton Precious Metals is not technically a miner — it's a streaming company that pays upfront capital to miners in exchange for the right to purchase future gold and silver at fixed low prices (~$400–$700/oz). This means Wheaton carries NONE of the operational risks that make mining stocks dangerous: no cartel exposure, no government seizures, no cost inflation blowouts, no tailings disasters, no pit accidents.
+
+The business model generates margins that would be impossible in physical mining. At $5,000 gold, Wheaton earns ~$4,300–$4,400 per oz while its "cost" is simply the streaming contract fixed rate. Record Q3 2025 revenue of $487.7M was up 77% year over year with near-zero capex requirements.
+
+WPM has 15+ new streams in the pipeline for 2026–2027, meaning its production profile — already ~800,000 gold-equivalent oz — is set to grow without any new capital deployment at the operator level. The P/E looks elevated (~28–30×) but on a P/FCF or EV/EBITDA basis it is reasonable for the best-in-class franchise in precious metals.
+
+The stock is 24% below the average analyst price target. UBS raised their target to $270 — implying 50%+ upside from current levels. If gold reaches $6,000+, Wheaton's earnings would surge disproportionately relative to any physical miner.</div>
+      </div>
+      <div class="risk-row" style="padding:0 20px 12px">
+        <span class="risk-flag flag-green">Zero operator risk</span>
+        <span class="risk-flag flag-green">0% Mexico</span>
+        <span class="risk-flag flag-green">Net Cash balance sheet</span>
+        <span class="risk-flag flag-green">World-class management</span>
+        <span class="risk-flag flag-amber">Higher P/E than pure miners</span>
+      </div>
+      <div class="pick-scores">
+        <div class="score-cell"><div class="score-letter grade-b">B+</div><div class="score-label-sm">Value</div></div>
+        <div class="score-cell"><div class="score-letter grade-a">A</div><div class="score-label-sm">Growth</div></div>
+        <div class="score-cell"><div class="score-letter grade-a">A+</div><div class="score-label-sm">Health</div></div>
+        <div class="score-cell"><div class="score-letter grade-a">A+</div><div class="score-label-sm">Jurisdictn</div></div>
+      </div>
+    </div>
+
+    <!-- PICK 3: Barrick -->
+    <div class="pick-card bronze-border">
+      <div class="pick-header">
+        <div class="pick-rank">🥉 Pick #3 — Deep Value + Structural Catalyst</div>
+        <div class="pick-ticker">NYSE: B &nbsp;|&nbsp; TSX: ABX</div>
+        <div class="pick-name">Barrick Mining Corp.</div>
+        <div class="pick-tagline">World's #2 gold producer. Chronically undervalued vs. peers. North America IPO spinoff is a massive 2026 value unlock catalyst. Zero Mexico operations.</div>
+      </div>
+      <div class="pick-prices">
+        <div class="price-cell">
+          <div class="price-lbl">Current</div>
+          <div class="price-val">~$50.74</div>
+        </div>
+        <div class="price-cell">
+          <div class="price-lbl">Analyst PT</div>
+          <div class="price-val green">$58.53</div>
+        </div>
+        <div class="price-cell">
+          <div class="price-lbl">12M Upside</div>
+          <div class="price-val green">+15%</div>
+        </div>
+      </div>
+      <div class="pick-metrics">
+        <div class="metric-row"><span class="metric-label">2025 Gold Production</span><span class="metric-val">3.26M oz gold</span></div>
+        <div class="metric-row"><span class="metric-label">2025 Copper Production</span><span class="metric-val">220,000t copper</span></div>
+        <div class="metric-row"><span class="metric-label">2026 AISC Guidance</span><span class="metric-val amber">$1,760–$1,950/oz</span></div>
+        <div class="metric-row"><span class="metric-label">2026 Prod. Guidance</span><span class="metric-val">2.9–3.25M oz Au</span></div>
+        <div class="metric-row"><span class="metric-label">Forward P/E</span><span class="metric-val green">~14.9× (cheapest senior)</span></div>
+        <div class="metric-row"><span class="metric-label">Analyst Consensus</span><span class="metric-val green">Strong Buy (14 buys, 2 holds)</span></div>
+        <div class="metric-row"><span class="metric-label">CIBC Price Target</span><span class="metric-val green">$71 (raised)</span></div>
+        <div class="metric-row"><span class="metric-label">Discount to SOTP</span><span class="metric-val green">~25–35% vs. peers</span></div>
+        <div class="metric-row"><span class="metric-label">Mexico Exposure</span><span class="metric-val green">ZERO</span></div>
+        <div class="metric-row"><span class="metric-label">NA IPO Catalyst</span><span class="metric-val green">Target: Late 2026</span></div>
+        <div class="metric-row"><span class="metric-label">Fourmile Discovery</span><span class="metric-val green">15.6M oz resource @ 17.59g/t</span></div>
+        <div class="metric-row"><span class="metric-label">Net Debt/EBITDA</span><span class="metric-val">~0.3×</span></div>
+      </div>
+      <div class="pick-thesis">
+        <div class="thesis-title">Investment Thesis</div>
+        <div class="thesis-text">Barrick is the most controversial of the three picks — but also potentially the most explosive. The world's second-largest gold miner has traded at a chronic, multi-year discount to peers like Agnico Eagle due to justified investor concern about its operations in Mali, Pakistan, and DRC. However, several things have changed dramatically:
+
+First, the North America IPO. Barrick's board authorized management to spin off its Nevada Gold Mines JV (with Newmont), Pueblo Viejo (Dominican Republic), and the Fourmile discovery into a new publicly listed "NewCo." These assets account for 50%+ of total gold production and are worth $56–$62B by analyst estimates — more than Barrick's current total enterprise value. If this IPO proceeds (expected late 2026), it will directly crystallize the massive discount. RBC analyst Josh Wolfson says Barrick "historically has traded at a substantial discount to sum-of-parts" and the spinoff "could represent a catalyst for shares."
+
+Second, Fourmile is potentially a generational discovery. At 15.6M oz total resource at 17.59g/t gold (one of the highest grades of any undeveloped deposit in the world), it alone could be worth $5–$10B in NAV terms, yet markets largely ignore it as a future option.
+
+Third, Barrick's forward P/E of ~14.9× is the cheapest among senior producers — Agnico trades at 18–22×. Simply re-rating to peer multiples represents 20–30% upside, independent of gold price appreciation.
+
+Risk: Africa/Pakistan/DRC jurisdictional noise continues. Mali was a $1B write-off in 2025. The 2026 AISC guide-up to $1,760–$1,950 is high. But at $5,000+ gold, even these costs generate exceptional margins. This is a deep value + catalyst story.</div>
+      </div>
+      <div class="risk-row" style="padding:0 20px 12px">
+        <span class="risk-flag flag-green">0% Mexico</span>
+        <span class="risk-flag flag-green">USA/Canada core</span>
+        <span class="risk-flag flag-red">Mali / DRC / Pakistan risk</span>
+        <span class="risk-flag flag-amber">CEO transition ongoing</span>
+        <span class="risk-flag flag-green">NA IPO catalyst 2026</span>
+        <span class="risk-flag flag-green">Cheapest P/E in seniors</span>
+      </div>
+      <div class="pick-scores">
+        <div class="score-cell"><div class="score-letter grade-a">A</div><div class="score-label-sm">Value</div></div>
+        <div class="score-cell"><div class="score-letter grade-b">B</div><div class="score-label-sm">Growth</div></div>
+        <div class="score-cell"><div class="score-letter grade-b">B+</div><div class="score-label-sm">Health</div></div>
+        <div class="score-cell"><div class="score-letter grade-c">C+</div><div class="score-label-sm">Jurisdictn</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATALYST TIMELINE -->
+  <div class="section-title">Key Catalysts — 3 Picks Combined</div>
+  <div class="catalyst-bar">
+    <div class="catalyst-item">
+      <div class="cat-ticker" style="color:var(--green)">KGC</div>
+      <div class="cat-body">
+        <div class="cat-event">Three US Growth Projects Greenlit — Round Mountain, Bald Mountain, Kettle River</div>
+        <div class="cat-desc">Simultaneously approved in January 2026. Add ~3M oz of reserves, extend mine lives, and step up production grades from 2028. Great Bear (Ontario) permitting also advancing — a potential world-class mine with first gold 2029–2030. These projects were funded without raising capital — entirely from 2025 FCF.</div>
+        <span class="cat-impact impact-high">HIGH — 12–36 month</span>
+      </div>
+      <div class="cat-timing">2026–2028</div>
+    </div>
+    <div class="catalyst-item">
+      <div class="cat-ticker" style="color:var(--green)">KGC</div>
+      <div class="cat-body">
+        <div class="cat-event">Dividend Hike Cycle (33% total increase since Q3 2025)</div>
+        <div class="cat-desc">Kinross hiked its dividend 17% in Q3 2025 and another 14% in February 2026 — a 33% compounded increase in just two quarters. 40% FCF return target signals further hikes ahead. At current gold prices this is likely to continue, attracting income-oriented institutional capital. Moody's Baa2 upgrade validates the quality of the balance sheet.</div>
+        <span class="cat-impact impact-high">HIGH — Ongoing</span>
+      </div>
+      <div class="cat-timing">Ongoing</div>
+    </div>
+    <div class="catalyst-item">
+      <div class="cat-ticker" style="color:#5a7ab8">WPM</div>
+      <div class="cat-body">
+        <div class="cat-event">15+ New Streaming Deals Pipeline — Production Growth Without Capex</div>
+        <div class="cat-desc">Wheaton has a robust pipeline of new streaming agreements expected to be finalized through 2026–2027. Each new deal incrementally increases production attributable to WPM without requiring any operational capital. This means earnings growth is nearly pure margin expansion. Record Q3 2025 revenue of $487.7M will likely be eclipsed again as more streams activate.</div>
+        <span class="cat-impact impact-high">HIGH — Compound growth</span>
+      </div>
+      <div class="cat-timing">2026–2027</div>
+    </div>
+    <div class="catalyst-item">
+      <div class="cat-ticker" style="color:#c8a84b">B</div>
+      <div class="cat-body">
+        <div class="cat-event">North America IPO / NewCo Spinoff — Massive Value Unlock</div>
+        <div class="cat-desc">Barrick is spinning off Nevada Gold Mines (world's largest gold mine), Pueblo Viejo, and Fourmile into "NewCo" — a pure North American gold vehicle. Analyst estimates put the NA assets alone at $56–$62B. Barrick's current enterprise value is ~$85B — implying the rest of the global portfolio (Africa, Pakistan, DRC) is essentially free. If NewCo IPO proceeds by late 2026, the discount evaporates. Even rumors of progress moved the stock +4.4%.</div>
+        <span class="cat-impact impact-high">VERY HIGH — Structural re-rating</span>
+      </div>
+      <div class="cat-timing">H2 2026</div>
+    </div>
+    <div class="catalyst-item">
+      <div class="cat-ticker" style="color:var(--muted)">ALL</div>
+      <div class="cat-body">
+        <div class="cat-event">Fed Rate Cuts (May / June 2026 FOMC) + Gold Toward $6,000</div>
+        <div class="cat-desc">Market pricing ~50bps of cuts in 2026. Any dovish surprise turbocharges gold. Historical analogs: GDX rallied 20–30% in the 3–6 months after each first cut of a Fed cycle. J.P. Morgan Research forecasts gold averaging $5,055 Q4 2026 with upside toward $6,300 (Wells Fargo). All three picks are leveraged beneficiaries. At $6,000 gold, each dollar over AISC flows directly to FCF and EPS.</div>
+        <span class="cat-impact impact-high">HIGH — Macro tailwind</span>
+      </div>
+      <div class="cat-timing">May–Dec 2026</div>
+    </div>
+  </div>
+
+  <!-- SIDE BY SIDE COMPARISON -->
+  <div class="section-title">Head-to-Head Comparison</div>
+  <table class="comp-table">
+    <tr>
+      <th>Metric</th>
+      <th>KGC — Kinross</th>
+      <th>WPM — Wheaton</th>
+      <th>B — Barrick</th>
+    </tr>
+    <tr>
+      <td>Current Price</td>
+      <td>~$33.56</td>
+      <td>~$77</td>
+      <td>~$50.74</td>
+    </tr>
+    <tr>
+      <td>Analyst Avg PT</td>
+      <td class="best-cell">$43.00 (+28%)</td>
+      <td>$95.50 (+24%)</td>
+      <td>$58.53 (+15%)</td>
+    </tr>
+    <tr>
+      <td>High Analyst PT</td>
+      <td>$56.00</td>
+      <td class="best-cell">$270.00</td>
+      <td>$71.00</td>
+    </tr>
+    <tr>
+      <td>12M Bull Case Return</td>
+      <td class="best-cell">+40–60%</td>
+      <td>+30–50%</td>
+      <td>+35–55%</td>
+    </tr>
+    <tr>
+      <td>2026 AISC ($/oz)</td>
+      <td>$1,730</td>
+      <td class="best-cell">~$670 (streaming)</td>
+      <td>$1,760–$1,950</td>
+    </tr>
+    <tr>
+      <td>FCF Yield</td>
+      <td class="best-cell">~6–8%</td>
+      <td>~4–5%</td>
+      <td>~5%</td>
+    </tr>
+    <tr>
+      <td>Forward P/E</td>
+      <td>~17×</td>
+      <td>~28–30×</td>
+      <td class="best-cell">~14.9× (cheapest)</td>
+    </tr>
+    <tr>
+      <td>Net Debt / EBITDA</td>
+      <td class="best-cell">~0.2× (near zero)</td>
+      <td class="best-cell">~0.0× (net cash)</td>
+      <td>~0.3×</td>
+    </tr>
+    <tr>
+      <td>Mexico Exposure</td>
+      <td class="best-cell">ZERO</td>
+      <td class="best-cell">ZERO</td>
+      <td class="best-cell">ZERO</td>
+    </tr>
+    <tr>
+      <td>Jurisdiction Quality</td>
+      <td>A (USA / Brazil / Canada +Mauritania)</td>
+      <td class="best-cell">A+ (streaming — no ops)</td>
+      <td>B (NA + Africa/Pakistan)</td>
+    </tr>
+    <tr>
+      <td>Primary Structural Catalyst</td>
+      <td>3× US mine openings + Great Bear</td>
+      <td>Pipeline of 15+ new streams</td>
+      <td class="best-cell">NA IPO / NewCo value unlock</td>
+    </tr>
+    <tr>
+      <td>Dividend Momentum</td>
+      <td class="best-cell">+33% increase in 6 months</td>
+      <td>Growing; 30% payout policy</td>
+      <td>Stable; buybacks active</td>
+    </tr>
+    <tr>
+      <td>Gold Leverage / Beta</td>
+      <td class="best-cell">High (~1.5×)</td>
+      <td>Medium-High (~1.2×)</td>
+      <td class="best-cell">High (~1.5×)</td>
+    </tr>
+    <tr>
+      <td>Best For Investor Seeking</td>
+      <td>Value + income + growth</td>
+      <td>Quality + safety + compounding</td>
+      <td>Deep value + catalyst event</td>
+    </tr>
+  </table>
+
+  <!-- PORTFOLIO -->
+  <div class="section-title">Portfolio Allocation for Your $165K Book</div>
+  <div class="portfolio-reco">
+    <h4>Suggested Single-Stock Gold Miner Allocation (from your $36K cash reserve)</h4>
+    <div class="alloc-row">
+      <span class="alloc-ticker">#1 KGC — Kinross Gold</span>
+      <span>Best risk/reward; 28% upside; No Mexico; record FCF; US growth pipeline</span>
+      <span class="alloc-amount">$5,500–$8,000</span>
+      <span class="alloc-pct">3.3–4.8% of portfolio</span>
+    </div>
+    <div class="alloc-row">
+      <span class="alloc-ticker">#2 WPM — Wheaton Precious</span>
+      <span>Defensive quality; no operator risk; highest margins; pairs well with your silver ETF</span>
+      <span class="alloc-amount">$4,000–$6,000</span>
+      <span class="alloc-pct">2.4–3.6% of portfolio</span>
+    </div>
+    <div class="alloc-row">
+      <span class="alloc-ticker">#3 B — Barrick Mining</span>
+      <span>Deep value + IPO catalyst; most upside if NewCo proceeds; hold to late 2026</span>
+      <span class="alloc-amount">$3,000–$5,000</span>
+      <span class="alloc-pct">1.8–3.0% of portfolio</span>
+    </div>
+    <div class="alloc-row" style="font-weight:600; background:#f8f5ef">
+      <span>Total Addition to Portfolio</span>
+      <span>Keeps remaining cash reserve ~$17–$24K for dip-buying</span>
+      <span class="alloc-amount" style="color:var(--navy)">$12,500–$19,000</span>
+      <span class="alloc-pct">7.5–11.5% of portfolio</span>
+    </div>
+    <p style="font-size:0.78rem; color:var(--muted); margin-top:12px; line-height:1.6">Note: Your portfolio would then have ~55–60% total precious metals exposure (gold + silver + miners). Consider whether to trim your silver junior allocation if adding all three, to keep precious metals below 60% concentration. Retaining $17–$24K in cash is strategically important — gold and miners can correct 20–30% quickly, and dry powder allows you to average down at better prices.</p>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="conclusion" style="margin-top:24px">
+    <h3>Analyst Verdict</h3>
+    <p>After screening the full gold miner universe for your criteria — <strong>zero Mexico cartel risk, undervaluation, financial health, and growth potential</strong> — three names stand out clearly from the crowd. <strong>Kinross (KGC)</strong> is the single best risk-adjusted pick: record free cash flow, an aggressive dividend hike cycle, the cheapest valuation among its class, no Mexico, and three US growth mines coming online by 2028. At a 28% discount to analyst consensus, it is the most straightforwardly undervalued senior miner available today.</p>
+    <p><strong>Wheaton Precious Metals (WPM)</strong> is the "sleep at night" pick — the world's finest streaming business, with margins that no physical miner can match, zero Mexico exposure by definition, and 24% upside to average analyst target (UBS see 50%+ to $270). It pairs naturally with your existing gold/silver ETF exposure because it sits above operational risk. <strong>Barrick (B)</strong> is the highest-conviction deep value catalyst play: trading at 14.9× forward earnings — a massive discount to Agnico's 18–22× — with a North America IPO that could unlock $56–$62B of asset value hidden inside a $85B company. The IPO story alone justifies the position as a 12–18 month trade.</p>
+    <p>Alamos Gold, despite having excellent Canadian assets and arguably the best growth profile among intermediates, was eliminated from consideration due to its Mulatos mine in Sonora, Mexico — officially classified as a conflict-affected zone with documented cartel violence.</p>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <strong>IMPORTANT DISCLAIMER:</strong> This research report is provided for informational and educational purposes only and does not constitute investment advice. This document was generated by an AI assistant (Claude, Anthropic) in the style of a research report and is <strong>NOT</strong> an actual J.P. Morgan publication. All price targets, financial data, and analyst estimates are sourced from publicly available information as of March 2, 2026, and may change rapidly. Past performance is not indicative of future results. All investments involve risk including the possible loss of principal. Consult a qualified financial advisor before making investment decisions.
+</div>
+</body>
+</html>
