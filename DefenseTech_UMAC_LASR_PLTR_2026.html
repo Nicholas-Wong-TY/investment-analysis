@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defense Tech Report — UMAC · LASR · PLTR | J.P. Morgan Equity Research</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --olive: #2d3a1e;
+  --khaki: #8a7d50;
+  --khaki-light: #c8b870;
+  --steel: #3a4f6a;
+  --red: #cc2222;
+  --green: #1a6e3a;
+  --amber: #b07800;
+  --bg: #f5f2ea;
+  --card: #ffffff;
+  --border: #d8d0bb;
+  --text: #1a1f10;
+  --muted: #6a7060;
+  --warning: #7a1a00;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'IBM Plex Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+
+/* ── HEADER ── */
+.header {
+  background: var(--olive);
+  border-bottom: 3px solid var(--khaki-light);
+  padding: 0;
+}
+.header-inner { max-width: 1140px; margin: auto; padding: 18px 32px; display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: 'Playfair Display', serif; font-size: 1.05rem; letter-spacing: 2px; color: var(--khaki-light); text-transform: uppercase; }
+.logo span { color: #fff; }
+.header-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: #a0b08a; text-align: right; line-height: 1.9; }
+
+/* ── BREAKING BANNER ── */
+.breaking {
+  background: var(--warning);
+  color: white;
+  padding: 10px 32px;
+  border-bottom: 2px solid #ff6633;
+}
+.breaking-inner {
+  max-width: 1140px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.78rem;
+}
+.breaking-label {
+  background: #ff4400;
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  padding: 3px 8px;
+  text-transform: uppercase;
+  font-weight: 700;
+  white-space: nowrap;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+.breaking-text { line-height: 1.5; color: #ffddcc; }
+.breaking-text strong { color: #ffaa77; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, var(--olive) 0%, var(--navy) 60%);
+  color: white;
+  padding: 40px 32px;
+  border-bottom: 1px solid #2a3a2a;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '⚔';
+  position: absolute;
+  right: 60px; top: 20px;
+  font-size: 8rem;
+  opacity: 0.05;
+}
+.hero-inner { max-width: 1140px; margin: auto; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: start; }
+.ticker-badge { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 2px; color: var(--khaki-light); text-transform: uppercase; margin-bottom: 8px; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin-bottom: 8px; line-height: 1.15; }
+.hero-sub { color: #8fa890; font-size: 0.88rem; max-width: 580px; line-height: 1.65; margin-bottom: 20px; }
+.conflict-box {
+  background: rgba(255,80,0,0.12);
+  border: 1px solid rgba(255,100,0,0.35);
+  padding: 14px 18px;
+  max-width: 540px;
+  margin-bottom: 16px;
+}
+.conflict-title { font-size: 0.65rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1.5px; text-transform: uppercase; color: #ff8866; margin-bottom: 6px; font-weight: 700; }
+.conflict-text { font-size: 0.8rem; color: #d8c8a8; line-height: 1.6; }
+.rating-cluster { display: flex; flex-direction: column; gap: 10px; min-width: 220px; }
+.rating-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(200,184,112,0.3); padding: 14px 18px; }
+.rc-ticker { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--khaki-light); font-weight: 600; margin-bottom: 2px; }
+.rc-name { font-size: 0.72rem; color: #8fa890; margin-bottom: 8px; }
+.rc-row { display: flex; justify-content: space-between; font-size: 0.75rem; }
+.rc-price { font-family: 'IBM Plex Mono', monospace; color: white; }
+.rc-rating { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; font-weight: 700; padding: 2px 7px; }
+.rating-buy { background: #1a6e3a; color: #a8f0c0; }
+.rating-hold { background: #705000; color: #ffd090; }
+.rating-caution { background: #6a1a00; color: #ffaa80; }
+
+/* ── TABS ── */
+.tabs { background: var(--navy); border-bottom: 1px solid #1a2a1a; }
+.tabs-inner { max-width: 1140px; margin: auto; padding: 0 32px; display: flex; overflow-x: auto; }
+.tab { padding: 14px 18px; font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase; font-family: 'IBM Plex Mono', monospace; color: #6a8070; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.tab:hover { color: var(--khaki-light); }
+.tab.active { color: var(--khaki-light); border-bottom-color: var(--khaki-light); }
+
+/* ── MAIN ── */
+.main { max-width: 1140px; margin: 0 auto; padding: 32px; }
+
+/* ── SECTION ── */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── CARDS ── */
+.card { background: var(--card); border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; }
+.card-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.card-title::before { content: ''; width: 3px; height: 16px; background: var(--khaki-light); display: inline-block; flex-shrink: 0; }
+
+/* ── KPI GRID ── */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.kpi { background: var(--card); border: 1px solid var(--border); padding: 14px 16px; border-top: 3px solid var(--khaki-light); }
+.kpi-label { font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-bottom: 5px; }
+.kpi-value { font-family: 'IBM Plex Mono', monospace; font-size: 1.25rem; font-weight: 500; color: var(--navy); }
+.kpi-sub { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+.kpi-value.green { color: var(--green); }
+.kpi-value.red { color: var(--red); }
+.kpi-value.amber { color: var(--amber); }
+
+/* ── TABLES ── */
+table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+th { background: var(--olive); color: var(--khaki-light); font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; padding: 10px 12px; text-align: left; }
+td { padding: 10px 12px; border-bottom: 1px solid #eee8d8; vertical-align: top; }
+tr:hover td { background: #faf7ee; }
+tr:last-child td { border-bottom: none; }
+.td-r { text-align: right; font-family: 'IBM Plex Mono', monospace; }
+.td-b { font-weight: 600; }
+.green-t { color: var(--green); font-weight: 600; }
+.red-t { color: var(--red); font-weight: 600; }
+.amber-t { color: var(--amber); font-weight: 600; }
+
+/* ── STOCK PANELS ── */
+.stock-panels { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-bottom: 24px; }
+@media(max-width:900px){.stock-panels{grid-template-columns:1fr;}}
+.spanel { background: var(--card); border: 1px solid var(--border); border-top: 4px solid; display: flex; flex-direction: column; }
+.spanel-umac { border-top-color: #2a7a4a; }
+.spanel-lasr { border-top-color: #1a4a9a; }
+.spanel-pltr { border-top-color: #8a2a00; }
+
+.spanel-head { padding: 18px 20px 12px; border-bottom: 1px solid var(--border); }
+.sp-ticker { font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem; font-weight: 700; }
+.sp-name { font-size: 0.78rem; color: var(--muted); margin-bottom: 4px; }
+.sp-tag { font-size: 0.7rem; color: #4a5040; font-style: italic; }
+.sp-prices { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border); }
+.sp-price-cell { padding: 10px 12px; text-align: center; border-right: 1px solid var(--border); }
+.sp-price-cell:last-child { border-right: none; }
+.sp-lbl { font-size: 0.55rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 3px; }
+.sp-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; font-weight: 500; }
+.sp-val.green { color: var(--green); }
+.sp-val.red { color: var(--red); }
+.sp-val.amber { color: var(--amber); }
+.sp-metrics { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.sp-mrow { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #f0e8d0; font-size: 0.76rem; }
+.sp-mrow:last-child { border-bottom: none; }
+.sp-mlabel { color: var(--muted); }
+.sp-mval { font-family: 'IBM Plex Mono', monospace; font-size: 0.74rem; font-weight: 500; }
+.sp-thesis { padding: 14px 16px; flex: 1; }
+.sp-thesis-title { font-size: 0.6rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1.5px; text-transform: uppercase; color: var(--khaki); margin-bottom: 8px; font-weight: 600; }
+.sp-thesis-text { font-size: 0.77rem; color: #333a28; line-height: 1.65; }
+.sp-grades { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid var(--border); }
+.sp-grade-cell { padding: 10px 6px; text-align: center; border-right: 1px solid var(--border); }
+.sp-grade-cell:last-child { border-right: none; }
+.grade-letter { font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem; font-weight: 700; }
+.grade-lbl { font-size: 0.5rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.g-a { color: var(--green); }
+.g-b { color: #1a4a9a; }
+.g-c { color: var(--amber); }
+.g-d { color: var(--red); }
+.sp-verdict { padding: 10px 16px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+.verdict-buy { background: #d4edda; color: #155724; }
+.verdict-hold { background: #fff3cd; color: #856404; }
+.verdict-caution { background: #f8d7da; color: #721c24; }
+
+/* ── RISK FLAGS ── */
+.flag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0; padding: 0 16px 12px; }
+.flag { font-size: 0.58rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.5px; padding: 2px 8px; text-transform: uppercase; }
+.f-green { background: #d4edda; color: #155724; }
+.f-red { background: #f8d7da; color: #721c24; }
+.f-amber { background: #fff3cd; color: #856404; }
+.f-blue { background: #d1ecf1; color: #0c5460; }
+
+/* ── WARFARE SECTION ── */
+.warfare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:700px){.warfare-grid{grid-template-columns:1fr;}}
+.w-domain { border-left: 4px solid var(--khaki-light); padding: 14px 18px; background: var(--card); border: 1px solid var(--border); border-left-width: 4px; }
+.w-domain-title { font-weight: 700; font-size: 0.88rem; margin-bottom: 6px; }
+.w-domain-desc { font-size: 0.78rem; color: #4a5040; line-height: 1.6; }
+.w-ticker { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; font-weight: 700; padding: 1px 6px; margin-left: 4px; }
+.wt-umac { background: #d4edda; color: #155724; }
+.wt-lasr { background: #d1ecf1; color: #0c5460; }
+.wt-pltr { background: #fff3cd; color: #856404; }
+
+/* ── IRAN CONTEXT ── */
+.iran-timeline { position: relative; padding-left: 24px; }
+.iran-timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.iran-item { position: relative; padding: 0 0 18px 20px; }
+.iran-dot { position: absolute; left: -20px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--khaki-light); border: 2px solid white; }
+.iran-dot.live { background: #ff4400; width: 13px; height: 13px; left: -22px; }
+.iran-date { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 1px; margin-bottom: 2px; }
+.iran-event { font-weight: 600; font-size: 0.84rem; margin-bottom: 4px; }
+.iran-impact { display: inline-block; font-size: 0.58rem; font-family: 'IBM Plex Mono', monospace; padding: 2px 7px; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.impact-def { background: #d4edda; color: #155724; }
+.impact-risk { background: #f8d7da; color: #721c24; }
+.impact-watch { background: #fff3cd; color: #856404; }
+.iran-detail { font-size: 0.77rem; color: #4a5040; line-height: 1.5; }
+
+/* ── PORTFOLIO ── */
+.port-box { background: #f5f2ea; border: 1px solid var(--border); border-left: 4px solid var(--khaki-light); padding: 20px 24px; }
+.port-box h4 { font-family: 'Playfair Display', serif; color: var(--navy); margin-bottom: 14px; font-size: 1rem; }
+.alloc-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #e0d8c0; font-size: 0.82rem; }
+.alloc-row:last-child { border-bottom: none; }
+.alloc-ticker { font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--navy); }
+.alloc-amt { font-family: 'IBM Plex Mono', monospace; color: var(--green); font-weight: 600; }
+.alloc-pct { font-size: 0.7rem; color: var(--muted); }
+
+/* ── CONCLUSION ── */
+.conclusion { background: var(--olive); color: white; padding: 28px 32px; border-left: 4px solid var(--khaki-light); margin-top: 4px; }
+.conclusion h3 { font-family: 'Playfair Display', serif; color: var(--khaki-light); font-size: 1.1rem; margin-bottom: 12px; }
+.conclusion p { font-size: 0.84rem; line-height: 1.75; color: #c0d0b0; margin-bottom: 10px; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion strong { color: var(--khaki-light); }
+
+/* body text */
+p.bt { font-size: 0.83rem; line-height: 1.72; color: #333; margin-bottom: 12px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+
+/* ── BAR CHART ── */
+.bar-group { display: flex; flex-direction: column; gap: 10px; }
+.bar-row { display: grid; grid-template-columns: 180px 1fr 70px; align-items: center; gap: 10px; font-size: 0.76rem; }
+.bar-track { height: 8px; background: #e8e0c8; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--khaki-light); transition: width 0.8s ease; }
+.bar-fill.g { background: var(--green); }
+.bar-fill.r { background: var(--red); }
+.bar-fill.b { background: #1a4a9a; }
+.bar-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; text-align: right; }
+
+.disclaimer { background: #eeeae0; border-top: 1px solid var(--border); padding: 16px 32px; font-size: 0.67rem; color: var(--muted); line-height: 1.6; max-width: 1140px; margin: 0 auto; margin-top: 24px; }
+::-webkit-scrollbar { height: 4px; width: 4px; } ::-webkit-scrollbar-thumb { background: var(--khaki-light); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">J.P. <span>Morgan</span> &nbsp;·&nbsp; Equity Research</div>
+    <div class="header-meta">DEFENSE TECHNOLOGY SECTOR · CONFLICT-DRIVEN ANALYSIS<br>ISSUED: 03 MARCH 2026 · RESTRICTED DISTRIBUTION</div>
+  </div>
+</div>
+
+<!-- BREAKING BANNER -->
+<div class="breaking">
+  <div class="breaking-inner">
+    <div class="breaking-label">⚡ Live Conflict</div>
+    <div class="breaking-text"><strong>DAY 3 — Operation Epic Fury / Operation Roaring Lion:</strong> US-Israel strikes on Iran continue. Trump: "4–5 weeks, capability for far longer." 6 US KIA. Iranian IRGC closes Strait of Hormuz. US Embassy Riyadh hit by drones. Saudi oil infrastructure targeted. Death toll surpasses 600. NATO on heightened missile defense alert. This report was finalized as events unfold.</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="ticker-badge">Defense Technology · Next-Generation Warfare · Portfolio Addition Analysis</div>
+      <div class="hero-title">UMAC · LASR · PLTR<br><span style="color:#8fa890; font-size:1.5rem">Future Warfare — Three Plays for Three Paradigm Shifts</span></div>
+      <div class="conflict-box">
+        <div class="conflict-title">⚔ Geopolitical Context — Active Conflict Backdrop</div>
+        <div class="conflict-text">On Feb 28, 2026, US-Israel launched coordinated strikes on Iran (Ops Epic Fury / Roaring Lion) targeting leadership, nuclear sites, and missile infrastructure. Supreme Leader Khamenei confirmed killed March 1. Iran retaliating against 27 US bases across the Middle East, closing the Strait of Hormuz, and striking Gulf energy infrastructure. This is the most significant US military engagement since Iraq 2003 — and the most consequential defense-technology investment environment in a generation.</div>
+      </div>
+      <div style="font-size:0.78rem; color:#8fa890; line-height:1.7; max-width:520px">This report evaluates UMAC, LASR, and PLTR through the lens of the emerging Iran conflict, the structural future of warfare (drone swarms, directed energy, AI command), and portfolio construction for your $165K multi-asset book.</div>
+    </div>
+    <div class="rating-cluster">
+      <div class="rating-card">
+        <div class="rc-ticker">UMAC — NYSE American</div>
+        <div class="rc-name">Unusual Machines Inc.</div>
+        <div class="rc-row"><span class="rc-price">$14.84</span><span class="rc-rating rating-buy">SPECULATIVE BUY</span></div>
+      </div>
+      <div class="rating-card">
+        <div class="rc-ticker">LASR — NASDAQ</div>
+        <div class="rc-name">nLIGHT Inc.</div>
+        <div class="rc-row"><span class="rc-price">$56.19</span><span class="rc-rating rating-buy">BUY — TACTICAL</span></div>
+      </div>
+      <div class="rating-card">
+        <div class="rc-ticker">PLTR — NASDAQ</div>
+        <div class="rc-name">Palantir Technologies</div>
+        <div class="rc-row"><span class="rc-price">$142–$146</span><span class="rc-rating rating-hold">HOLD / TRIM ON RIPS</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tabs-inner">
+    <div class="tab active" onclick="showTab('war-context')">War Context</div>
+    <div class="tab" onclick="showTab('warfare-future')">Future of Warfare</div>
+    <div class="tab" onclick="showTab('stock-analysis')">Stock Analysis</div>
+    <div class="tab" onclick="showTab('comparison')">Comparison</div>
+    <div class="tab" onclick="showTab('portfolio')">Portfolio</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ═══════════ WAR CONTEXT ═══════════ -->
+<div id="section-war-context" class="section active">
+
+  <div class="card">
+    <div class="card-title">Operation Epic Fury — The Investment Context (Day 3, March 3, 2026)</div>
+    <div class="iran-timeline">
+      <div class="iran-item">
+        <div class="iran-dot"></div>
+        <div class="iran-date">JAN 13, 2026</div>
+        <div class="iran-event">Iran warns it is "ready for war"; US begins largest Middle East buildup since 2003 Iraq invasion</div>
+        <div class="iran-detail">US naval, air, and submarine assets flood the Gulf. Iran massacres protesters. Trump calls regime change "the best thing that could happen."</div>
+        <span class="iran-impact impact-watch">BUILDUP</span>
+      </div>
+      <div class="iran-item">
+        <div class="iran-dot"></div>
+        <div class="iran-date">FEB 28, 2026</div>
+        <div class="iran-event">D-Day: US-Israel launch coordinated strikes — Ops Epic Fury & Roaring Lion</div>
+        <div class="iran-detail">Strikes target Iran's leadership, security forces, nuclear program, and missile sites. 1,200+ munitions dropped across 24 of Iran's 31 provinces. Khamenei's compound targeted.</div>
+        <span class="iran-impact impact-def">ONSET OF CONFLICT</span>
+      </div>
+      <div class="iran-item">
+        <div class="iran-dot"></div>
+        <div class="iran-date">MAR 1, 2026</div>
+        <div class="iran-event">Khamenei confirmed killed by Iranian state media — 40 days mourning declared</div>
+        <div class="iran-detail">Iran's IRGC launches counter-strikes on 27 US military bases across the Gulf. 3 US soldiers KIA in Kuwait. Drone attacks on Manama, Doha's Al Udeid base, Kuwait airport. 49 drones intercepted by Jordan alone.</div>
+        <span class="iran-impact impact-risk">ESCALATION</span>
+      </div>
+      <div class="iran-item">
+        <div class="iran-dot live"></div>
+        <div class="iran-date">MAR 3, 2026 — TODAY</div>
+        <div class="iran-event">Strait of Hormuz closed by IRGC. US Embassy Riyadh hit. Saudi oil infra attacked. 6 US KIA total. Death toll 600+.</div>
+        <div class="iran-detail">Trump projects 4–5 weeks but "capability to go far longer." US pledges additional troops. Hezbollah joins conflict attacking Israel from Lebanon. Israel counterstrikes Beirut. NATO on heightened alert. Amazon Gulf data centers down from power outages. Qatar Airways grounded all flights.</div>
+        <span class="iran-impact impact-risk">ACTIVE CONFLICT — EXPANDING</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Defense Budget Acceleration — What War Means for Spending</div>
+      <p class="bt">Active conflict is the strongest possible catalyst for defense technology spending. The mechanisms are rapid and well-established:</p>
+      <table>
+        <tr><th>Spending Driver</th><th>Magnitude</th><th>Primary Beneficiary</th></tr>
+        <tr><td class="td-b">Emergency War Supplemental Appropriations</td><td>$50–150B typical</td><td>PLTR (AI), LASR (directed energy)</td></tr>
+        <tr><td class="td-b">Drone/Counter-Drone Surge</td><td>$3B+ FY2026 budget allocated</td><td>UMAC (components), PLTR (targeting)</td></tr>
+        <tr><td class="td-b">Directed Energy vs. Iran drones/missiles</td><td>Immediate operational need</td><td class="green-t">LASR — direct beneficiary</td></tr>
+        <tr><td class="td-b">AI Targeting / Intelligence</td><td>Already in use — scaling fast</td><td class="green-t">PLTR — Gotham/Maven in active use</td></tr>
+        <tr><td class="td-b">NDAA-Compliant Supply Chains</td><td>Non-China components mandate</td><td class="green-t">UMAC — primary domestic supplier</td></tr>
+        <tr><td class="td-b">Cyber Defense (JP Morgan CEO warning)</td><td>"Expect cyberattacks" — Dimon</td><td>PLTR — cyber platform</td></tr>
+        <tr><td class="td-b">Strait of Hormuz closure impact</td><td>Oil +$15–30/bbl spike risk</td><td>Macro risk — watch tech sector</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Historical Defense Stock Performance During Conflicts</div>
+      <p class="bt">History is an imperfect guide but provides useful analogs for defense tech stocks during active US combat operations:</p>
+      <div class="bar-group">
+        <div style="font-size:0.65rem; color:var(--muted); margin-bottom:6px; font-family:'IBM Plex Mono',monospace; letter-spacing:1px; text-transform:uppercase">Typical Defense Sector Outperformance in First 30 Days of Conflict</div>
+        <div class="bar-row"><div>Gulf War 1991 (defense avg)</div><div class="bar-track"><div class="bar-fill" style="width:22%"></div></div><div class="bar-val">+18%</div></div>
+        <div class="bar-row"><div>Iraq 2003 (defense avg)</div><div class="bar-track"><div class="bar-fill" style="width:15%"></div></div><div class="bar-val">+12%</div></div>
+        <div class="bar-row"><div>Sept 11 → 90 days (defense)</div><div class="bar-track"><div class="bar-fill g" style="width:38%"></div></div><div class="bar-val green-t">+31%</div></div>
+        <div class="bar-row"><div>Ukraine 2022 (EU defense)</div><div class="bar-track"><div class="bar-fill g" style="width:45%"></div></div><div class="bar-val green-t">+37%</div></div>
+        <div class="bar-row"><div>Oct 7 Gaza (US defense)</div><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><div class="bar-val">+10%</div></div>
+        <div class="bar-row"><div>Iran 2026 Day 1 (LASR)</div><div class="bar-track"><div class="bar-fill g" style="width:23%"></div></div><div class="bar-val green-t">+19%</div></div>
+        <div class="bar-row"><div>Iran 2026 Day 1 (UMAC)</div><div class="bar-track"><div class="bar-fill g" style="width:13%"></div></div><div class="bar-val green-t">+10.7%</div></div>
+        <div class="bar-row"><div>Iran 2026 Day 1 (PLTR)</div><div class="bar-track"><div class="bar-fill" style="width:5%"></div></div><div class="bar-val">+4%</div></div>
+      </div>
+      <p class="bt" style="margin-top:14px; font-size:0.75rem; color:var(--muted)">LASR's first-day +19% move and UMAC's +10.7% spike are consistent with the pattern seen in prior conflict-onset rallies for technologies directly relevant to the combat environment. The key question is whether these moves are sustained (as with Ukraine 2022) or fade (as in Oct 7). Given the scale and duration signals from Trump ("4–5 weeks"), sustained demand is our base case.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ FUTURE OF WARFARE ═══════════ -->
+<div id="section-warfare-future" class="section">
+  <div class="card">
+    <div class="card-title">The Three Paradigm Shifts Defining Modern Combat — and How UMAC, LASR, PLTR Map to Them</div>
+    <p class="bt">The Iran conflict is not just a geopolitical event — it is a live validation exercise for the three most important structural shifts in modern warfare. Each of our three stocks represents a critical node in this new combat architecture.</p>
+    <div class="warfare-grid">
+      <div class="w-domain">
+        <div class="w-domain-title">🚁 Shift 1: Drones as the Primary Weapon of Mass Attrition <span class="w-ticker wt-umac">UMAC</span></div>
+        <div class="w-domain-desc">In Ukraine, drones now account for 70–80% of battlefield casualties. AI has lifted FPV drone strike accuracy from 30–50% to ~80%. Iran has deployed Shahed-class drones at scale against US assets across the Gulf — exactly what Unusual Machines' components are designed to enable and counter. The US DoD FY2026 budget allocated $3 billion+ for counter-drone capabilities alone. UMAC as the primary NDAA-compliant US drone component supplier sits at the absolute center of this paradigm.</div>
+      </div>
+      <div class="w-domain">
+        <div class="w-domain-title">⚡ Shift 2: Directed Energy as the Only Cost-Effective Missile Defense <span class="w-ticker wt-lasr">LASR</span></div>
+        <div class="w-domain-desc">Jordan intercepted 49 drones/missiles in a single day using kinetic interceptors — costing $500K–$3M per missile intercepted vs. $500 per Iranian drone. This is financially unsustainable at scale. Directed energy (laser) weapons like nLIGHT's 70kW systems can engage a drone for ~$1 in electricity cost. The Iran conflict has made this cost asymmetry immediately obvious to every military planner on Earth. LASR's Q4 revenue surged +71% YoY as this realization hits procurement budgets.</div>
+      </div>
+      <div class="w-domain">
+        <div class="w-domain-title">🧠 Shift 3: AI as the Central Nervous System of Military Decision-Making <span class="w-ticker wt-pltr">PLTR</span></div>
+        <div class="w-domain-desc">Operation Epic Fury is being coordinated using AI-driven intelligence fusion, target selection, and battle damage assessment. Palantir's Gotham platform and Project Maven (the AI targeting system DoD has used since 2017) are active in this theater. As conflicts compress decision timelines from hours to minutes, AI command-and-control platforms become the irreplaceable foundation of modern warfare. Palantir's $448M ShipOS contract, $10B Army contract, and UK £1.5B MoD deal demonstrate this institutionalization.</div>
+      </div>
+      <div class="w-domain">
+        <div class="w-domain-title">🔗 Convergence: The Kill Chain is Now AI → Sensor → Drone → Laser</div>
+        <div class="w-domain-desc">The future battlefield operates on a single integrated loop: Palantir AI identifies and prioritizes the threat → UMAC-powered autonomous drone either engages or provides targeting data → nLIGHT directed energy system defeats incoming swarm. All three companies occupy non-overlapping, mutually reinforcing positions in this architecture. Owning all three gives a portfolio genuine structural diversity within defense tech.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Why the Strait of Hormuz Closure Matters for Defense Tech (Not Just Energy)</div>
+    <p class="bt">Iran's announced closure of the Strait of Hormuz — through which ~21% of global oil passes — will force the US military to potentially conduct naval escort and mine-clearing operations in the Gulf, dramatically escalating demand for:</p>
+    <table>
+      <tr><th>Capability Required</th><th>Technology Type</th><th>Relevant Stock</th><th>Estimated Urgency</th></tr>
+      <tr><td>Mine-detection / ISR drones over Gulf shipping lanes</td><td>Maritime UAS (drones)</td><td class="green-t">UMAC components</td><td class="amber-t">IMMEDIATE</td></tr>
+      <tr><td>Anti-drone defense for Navy ships in Gulf</td><td>Directed energy systems</td><td class="green-t">LASR 70kW shipborne</td><td class="amber-t">IMMEDIATE</td></tr>
+      <tr><td>Real-time threat intel / maritime domain awareness</td><td>AI / data fusion</td><td class="green-t">PLTR Gotham/Titan</td><td class="amber-t">IMMEDIATE</td></tr>
+      <tr><td>Oil price surge → Gold & commodity rally</td><td>Macro</td><td>Your gold/silver book ✓</td><td>Days–weeks</td></tr>
+      <tr><td>Cyber attacks on Gulf energy infrastructure</td><td>Cybersecurity AI</td><td>PLTR (ancillary)</td><td>Ongoing</td></tr>
+    </table>
+    <p class="bt" style="margin-top:12px; font-size:0.78rem; color:var(--muted)">Notably for your portfolio: the Strait closure and oil price spike (~$15–30/bbl upside in a prolonged closure) is directly bullish for your gold and silver holdings, as oil shocks historically drive inflation expectations higher, boosting precious metals. This conflict is thus a tailwind for both your existing metals positions AND potential new defense additions.</p>
+  </div>
+</div>
+
+<!-- ═══════════ STOCK ANALYSIS ═══════════ -->
+<div id="section-stock-analysis" class="section">
+  <div class="stock-panels">
+
+    <!-- UMAC -->
+    <div class="spanel spanel-umac">
+      <div class="spanel-head">
+        <div class="sp-ticker" style="color:#2a7a4a">UMAC</div>
+        <div class="sp-name">Unusual Machines Inc. · NYSE American</div>
+        <div class="sp-tag">NDAA-compliant US drone components · "The Intel Inside" of American drones</div>
+      </div>
+      <div class="sp-prices">
+        <div class="sp-price-cell"><div class="sp-lbl">Current</div><div class="sp-val">$14.84</div></div>
+        <div class="sp-price-cell"><div class="sp-lbl">Analyst PT</div><div class="sp-val green">$19.20</div></div>
+        <div class="sp-price-cell"><div class="sp-lbl">Upside</div><div class="sp-val green">+29%</div></div>
+      </div>
+      <div class="sp-metrics">
+        <div class="sp-mrow"><span class="sp-mlabel">Market Cap</span><span class="sp-mval">~$503M</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Q3 2025 Revenue</span><span class="sp-mval green">$2.1M (+39% YoY)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Q3 Net Income</span><span class="sp-mval green">$1.6M (FIRST EVER PROFIT)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">YTD Revenue 2025</span><span class="sp-mval">$6.3M (+55% YoY)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Cash / Liquidity</span><span class="sp-mval green">$64–130M war chest</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Largest Contract</span><span class="sp-mval">$12.8M US Army (record)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Analyst Rating</span><span class="sp-mval">Strong Buy (5 analysts)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">High PT</span><span class="sp-mval">$25.00</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Beta</span><span class="sp-mval red">3.15 — extremely volatile</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Profitability</span><span class="sp-mval amber">Pre-profitability; targeting 2026</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">2026 Revenue Target</span><span class="sp-mval">$30M run-rate</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Q4 / FY2025 Results Due</span><span class="sp-mval amber">March 9, 2026 — 6 days</span></div>
+      </div>
+      <div class="sp-thesis">
+        <div class="sp-thesis-title">Investment Thesis</div>
+        <div class="sp-thesis-text">UMAC is the purest expression of the US drone manufacturing renaissance. The NDAA prohibits Chinese-made drone components in US military applications — and DJI/Chinese suppliers dominate 70%+ of the global market. UMAC was built specifically to fill this void: NDAA-compliant motors, ESCs, goggles (Fat Shark), and FPV components manufactured in Orlando, Florida.
+
+The company just hit its first-ever profitable quarter ($1.6M net income in Q3 2025) after 39% revenue growth. It has $64–130M in cash, giving it 3–5 years of runway to scale. The $12.8M US Army PBAS contract (160,000 components for the 101st Airborne), followed by a $3.75M Performance Drone Works order and $2.1M follow-on in January 2026, marks a clear inflection from consumer/hobbyist to serious defense supplier.
+
+The Iran conflict is an immediate catalyst: every drone the US military deploys in the Gulf theater uses precisely the kinds of components UMAC makes. The counter-drone budget of $3B+ in FY2026 will require additional NDAA-compliant US-made components — a market UMAC is positioned to dominate.
+
+The bear case is real: this is a $503M micro-cap with only 18 employees, revenue of $6.3M YTD vs. a $503M market cap (implying massive future growth must materialize), and a Beta of 3.15 meaning it moves 3× the market. Dilution risk is significant (>320% share count growth historically). This is a high-conviction speculative position, not a value investment.</div>
+      </div>
+      <div class="flag-row">
+        <span class="flag f-green">NDAA Compliant</span>
+        <span class="flag f-green">US Army Contracts</span>
+        <span class="flag f-green">First profit Q3</span>
+        <span class="flag f-red">Beta 3.15</span>
+        <span class="flag f-red">Micro-cap risk</span>
+        <span class="flag f-amber">Dilution history</span>
+        <span class="flag f-amber">Earnings Mar 9</span>
+      </div>
+      <div class="sp-grades">
+        <div class="sp-grade-cell"><div class="grade-letter g-c">C+</div><div class="grade-lbl">Value</div></div>
+        <div class="sp-grade-cell"><div class="grade-letter g-a">A</div><div class="grade-lbl">Growth</div></div>
+        <div class="sp-grade-cell"><div class="grade-letter g-c">C</div><div class="grade-lbl">Health</div></div>
+        <div class="sp-grade-cell"><div class="grade-letter g-a">A+</div><div class="grade-lbl">Thematic</div></div>
+      </div>
+      <div class="sp-verdict verdict-buy">⚡ Speculative Buy — Small Position Only</div>
+    </div>
+
+    <!-- LASR -->
+    <div class="spanel spanel-lasr">
+      <div class="spanel-head">
+        <div class="sp-ticker" style="color:#1a4a9a">LASR</div>
+        <div class="sp-name">nLIGHT Inc. · NASDAQ</div>
+        <div class="sp-tag">Directed energy lasers — the cost-effective answer to drone swarm warfare</div>
+      </div>
+      <div class="sp-prices">
+        <div class="sp-price-cell"><div class="sp-lbl">Current</div><div class="sp-val">~$56–68</div></div>
+        <div class="sp-price-cell"><div class="sp-lbl">Needham PT</div><div class="sp-val green">$70.00</div></div>
+        <div class="sp-price-cell"><div class="sp-lbl">Upside</div><div class="sp-val green">+3–25%</div></div>
+      </div>
+      <div class="sp-metrics">
+        <div class="sp-mrow"><span class="sp-mlabel">Market Cap</span><span class="sp-mval">~$2.85B</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">FY2025 Revenue</span><span class="sp-mval green">$261.3M (+31.6% YoY)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Q4 2025 Revenue</span><span class="sp-mval green">$81.2M (+71.3% YoY) — beat</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Q4 Adj EPS</span><span class="sp-mval green">$0.14 vs $0.11 est (beat)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Adj EBITDA (Q4)</span><span class="sp-mval">$23.5M</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Gross Margin</span><span class="sp-mval">29.8% (improving)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Debt/Equity</span><span class="sp-mval green">0.09× — minimal debt</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Current Ratio</span><span class="sp-mval green">5.63× — very strong</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">A&D Revenue Mix</span><span class="sp-mval green">&gt;80% post industrial exit</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">70kW LWS</span><span class="sp-mval">NEW — deployed at World Defense Show</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Feb 2026 Stock Offering</span><span class="sp-mval amber">$201M raised @$44 (dilutive but funded)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Q1 2026 Guide</span><span class="sp-mval green">$70–76M (above $67M est)</span></div>
+      </div>
+      <div class="sp-thesis">
+        <div class="sp-thesis-title">Investment Thesis</div>
+        <div class="sp-thesis-text">nLIGHT is the most operationally relevant stock in this report given what is happening RIGHT NOW in the Gulf. Every time Iran launches a drone or missile that must be intercepted, the world witnesses the catastrophic cost asymmetry of kinetic defense: $500K–$3M per missile interceptor vs. $500 per Iranian Shahed drone. Jordan alone intercepted 49 projectiles in one day — at an estimated cost of $25–$150M, for a single day of defense against assets that cost Iran perhaps $25,000 total.
+
+Directed energy is the only economically sustainable answer. nLIGHT's 70kW-class Laser Weapon System — unveiled at the World Defense Show in Riyadh just weeks before the conflict began — can engage and destroy a drone for approximately $1 in electricity cost. At scale, this math makes laser weapons the inevitable procurement priority for every Gulf-based US military installation.
+
+The business has already proven this: Q4 revenue surged +71.3% YoY to $81.2M, beating estimates, with A&D now comprising over 80% of total revenue after nLIGHT exited its cutting/welding industrial business to concentrate exclusively on defense. Needham raised its target to $70 (buy), Cantor Fitzgerald to $62.50 (overweight), Stifel at $60 (buy). The stock surged +19% on Day 1 of the Iran conflict — this is an immediate market validation of the thesis.
+
+The recent $201M equity raise at $44 (stock now ~$56–68) was dilutive but gives nLIGHT the capital to scale manufacturing to meet what will be a multi-year surge in directed energy procurement. The concern is the stock has already moved significantly — the most attractive entry was pre-war. At $56–68, you are buying into a validated but partially priced thesis.</div>
+      </div>
+      <div class="flag-row">
+        <span class="flag f-green">71% Q4 revenue growth</span>
+        <span class="flag f-green">80%+ defense revenue</span>
+        <span class="flag f-green">Minimal debt (0.09×)</span>
+        <span class="flag f-green">70kW LWS proven</span>
+        <span class="flag f-amber">Not yet profitable (net losses since 2000)</span>
+        <span class="flag f-amber">Recent dilutive offering</span>
+        <span class="flag f-amber">Customer concentration risk</span>
+      </div>
+      <div class="sp-grades">
+        <div class="sp-grade-cell"><div class="grade-letter g-b">B</div><div class="grade-lbl">Value</div></div>
+        <div class="sp-grade-cell"><div class="grade-letter g-a">A</div><div class="grade-lbl">Growth</div></div>
+        <div class="sp-grade-cell"><div class="grade-letter g-b">B+</div><div class="grade-lbl">Health</div></div>
+        <div class="sp-grade-cell"><div class="grade-letter g-a">A+</div><div class="grade-lbl">Thematic</div></div>
+      </div>
+      <div class="sp-verdict verdict-buy">✅ Tactical Buy — Core Defense Position</div>
+    </div>
+
+    <!-- PLTR -->
+    <div class="spanel spanel-pltr">
+      <div class="spanel-head">
+        <div class="sp-ticker" style="color:#8a2a00">PLTR</div>
+        <div class="sp-name">Palantir Technologies · NASDAQ</div>
+        <div class="sp-tag">AI command & intelligence — essential, but already expensively priced</div>
+      </div>
+      <div class="sp-prices">
+        <div class="sp-price-cell"><div class="sp-lbl">Current</div><div class="sp-val">~$142–146</div></div>
+        <div class="sp-price-cell"><div class="sp-lbl">Median PT</div><div class="sp-val">$185–$190</div></div>
+        <div class="sp-price-cell"><div class="sp-lbl">Upside</div><div class="sp-val amber">+30–35%</div></div>
+      </div>
+      <div class="sp-metrics">
+        <div class="sp-mrow"><span class="sp-mlabel">Market Cap</span><span class="sp-mval red">~$349B — one of largest software cos</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Q4 2025 Revenue</span><span class="sp-mval green">$1.41B (+70% YoY)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">US Commercial Rev</span><span class="sp-mval green">+137% YoY; $507M</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">US Gov Revenue</span><span class="sp-mval green">+66% YoY; $570M</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Adj Operating Margin</span><span class="sp-mval green">57% (record)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">FCF 2025</span><span class="sp-mval green">$2.3B at 51% margin</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">2026 Revenue Guide</span><span class="sp-mval green">$7.18–7.20B (+61%)</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Trailing P/E</span><span class="sp-mval red">~200× — extreme</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Forward P/E (2026E)</span><span class="sp-mval red">~75–80× — still very high</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Rule of 40 Score</span><span class="sp-mval green">127% — historically rare</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">Cash on Hand</span><span class="sp-mval green">$7.2B — fortress balance sheet</span></div>
+        <div class="sp-mrow"><span class="sp-mlabel">52W Range</span><span class="sp-mval">$66.12 – $207.52</span></div>
+      </div>
+      <div class="sp-thesis">
+        <div class="sp-thesis-title">Investment Thesis — The Honest Case</div>
+        <div class="sp-thesis-text">Palantir is extraordinary at what it does. The Gotham intelligence platform and AIP (AI Platform) are genuinely irreplaceable in US government and military operations. Project Maven — which feeds AI targeting data to commanders — is active in the Iran theater right now. The $448M ShipOS Navy contract, $10B Army deal, and £1.5B UK MoD agreement demonstrate that Palantir is not a vendor — it is embedded infrastructure for the Western military.
+
+The business fundamentals are outstanding: 70% revenue growth, 137% US commercial surge, 57% adjusted operating margin, $2.3B FCF, and 2026 guidance of $7.2B (+61%) that crushed analyst consensus by $900M. By the Rule of 40 — the gold standard for software quality — PLTR scores 127%, a figure almost no company at this scale achieves.
+
+BUT — and this is a significant but for your portfolio: the stock trades at ~200× trailing P/E and ~75–80× forward P/E. The median software multiple is 25–40× forward earnings. Even giving PLTR a generous 50× forward multiple on $7.2B revenue at 57% margin yields a price of roughly $115–125 — BELOW the current price. The stock is pricing in not just stellar 2026 execution but sustained hyper-growth for 5–7 more years.
+
+The Iran "war trade" pop of +4–7% on Day 1 vs. LASR's +19% and UMAC's +10.7% tells the story: markets already know Palantir is a defense AI play. Much of the upside is priced in. Peter Burry's bearish head-and-shoulders chart post is concerning from a technical standpoint. Co-founder Peter Thiel sold $74M of stock recently — a meaningful signal. For new money, LASR and UMAC offer better risk/reward. PLTR is a hold if you own it; a trim on war-bounce rips if you need to fund LASR/UMAC positions.</div>
+      </div>
+      <div class="flag-row">
+        <span class="flag f-green">70% Q4 revenue growth</span>
+        <span class="flag f-green">57% adj operating margin</span>
+        <span class="flag f-green">$7.2B cash</span>
+        <span class="flag f-green">Active in Iran theater</span>
+        <span class="flag f-red">200× trailing P/E</span>
+        <span class="flag f-red">Thiel sold $74M</span>
+        <span class="flag f-red">Death Cross on chart</span>
+        <span class="flag f-amber">Gov contract concentration</span>
+      </div>
+      <div class="sp-grades">
+        <div class="sp-grade-cell"><div class="grade-letter g-d">D+</div><div class="grade-lbl">Value</div></div>
+        <div class="sp-grade-cell"><div class="grade-letter g-a">A+</div><div class="grade-lbl">Growth</div></div>
+        <div class="sp-grade-cell"><div class="grade-letter g-a">A</div><div class="grade-lbl">Health</div></div>
+        <div class="sp-grade-cell"><div class="grade-letter g-a">A+</div><div class="grade-lbl">Thematic</div></div>
+      </div>
+      <div class="sp-verdict verdict-hold">⚠ Hold / Trim on Rips — Already Expensive</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ COMPARISON ═══════════ -->
+<div id="section-comparison" class="section">
+  <div class="card">
+    <div class="card-title">Head-to-Head: UMAC vs. LASR vs. PLTR</div>
+    <table>
+      <tr><th>Metric</th><th>UMAC</th><th>LASR</th><th>PLTR</th></tr>
+      <tr><td class="td-b">Current Price</td><td>~$14.84</td><td>~$56–68</td><td>~$142–146</td></tr>
+      <tr><td class="td-b">Market Cap</td><td>$503M (micro)</td><td>$2.85B (small)</td><td class="red-t">~$349B (mega)</td></tr>
+      <tr><td class="td-b">Analyst Avg PT</td><td class="green-t">$19.20 (+29%)</td><td class="green-t">$53–$70 (+3–25%)</td><td>$185–$190 (+30%)</td></tr>
+      <tr><td class="td-b">Revenue Growth (latest)</td><td>+39% (Q3 YoY)</td><td class="green-t">+71.3% (Q4 YoY)</td><td class="green-t">+70% (Q4 YoY)</td></tr>
+      <tr><td class="td-b">Profitability</td><td class="amber-t">First ever profit Q3 '25</td><td class="amber-t">Net losses since 2000; EBITDA positive</td><td class="green-t">57% adj op. margin; $2.3B FCF</td></tr>
+      <tr><td class="td-b">Valuation Multiple</td><td class="amber-t">Revenue-based; pre-earnings</td><td class="amber-t">High (growth premium)</td><td class="red-t">~200× trailing P/E; 75–80× forward</td></tr>
+      <tr><td class="td-b">Balance Sheet</td><td class="green-t">$64–130M cash; minimal debt</td><td class="green-t">0.09× D/E; 5.6× current ratio</td><td class="green-t">$7.2B cash; zero net debt</td></tr>
+      <tr><td class="td-b">Conflict Relevance (Iran)</td><td class="green-t">Drone components for military</td><td class="green-t">Laser defense vs. Iran drones/missiles</td><td class="green-t">AI targeting / intelligence fusion</td></tr>
+      <tr><td class="td-b">Day 1 Iran War Move</td><td class="green-t">+10.7%</td><td class="green-t">+18.99%</td><td>+4–7%</td></tr>
+      <tr><td class="td-b">Beta / Volatility</td><td class="red-t">3.15 (extreme)</td><td>2.33 (high)</td><td>1.8–2.0 (high)</td></tr>
+      <tr><td class="td-b">Structural Warfare Role</td><td>Drone manufacturing layer</td><td>Cost-effective missile/drone defense</td><td>AI C2 / intelligence backbone</td></tr>
+      <tr><td class="td-b">Best Entry Timing</td><td class="green-t">NOW or on dips</td><td class="amber-t">Partially priced; layer in on dips</td><td class="amber-t">Already expensive; trim on bounces</td></tr>
+      <tr><td class="td-b">12M Bull Case Return</td><td class="green-t">+50–100% (high risk)</td><td class="green-t">+25–40%</td><td>+30–45%</td></tr>
+      <tr><td class="td-b">12M Bear Case</td><td class="red-t">-40 to -60% (micro-cap risk)</td><td class="red-t">-20 to -30%</td><td class="red-t">-30 to -50% (multiple compression)</td></tr>
+      <tr><td class="td-b">JPM Analyst Rating</td><td class="green-t">Speculative Buy</td><td class="green-t">Tactical Buy</td><td class="amber-t">Hold / Trim on Rips</td></tr>
+    </table>
+  </div>
+  <div class="card" style="margin-top:0">
+    <div class="card-title">Risk Matrix — What Could Go Wrong</div>
+    <table>
+      <tr><th>Risk</th><th>UMAC</th><th>LASR</th><th>PLTR</th></tr>
+      <tr><td class="td-b">Conflict ends quickly / ceasefire</td><td class="amber-t">Medium — war trade fades</td><td class="amber-t">Medium — structural demand persists</td><td class="green-t">Low — contracts are long-term</td></tr>
+      <tr><td class="td-b">Earnings disappointment</td><td class="red-t">HIGH — Mar 9 earnings; guidance key</td><td class="green-t">Low — Q4 already beat; Q1 guide strong</td><td class="green-t">Low — 2026 guide crushed estimates</td></tr>
+      <tr><td class="td-b">Multiple compression (tech selloff)</td><td class="amber-t">Medium — micro-cap follows sentiment</td><td class="amber-t">Medium — beta 2.33</td><td class="red-t">HIGH — 200× P/E most vulnerable</td></tr>
+      <tr><td class="td-b">Dilution risk</td><td class="red-t">HIGH — 320% historical share growth</td><td class="amber-t">Medium — recent $201M raise</td><td class="green-t">Low — buyback program in place</td></tr>
+      <tr><td class="td-b">Government budget cuts (DOGE)</td><td class="amber-t">Medium — drone budget is bipartisan</td><td class="amber-t">Medium — directed energy is a DoD priority</td><td class="red-t">HIGH — major gov contract reliance</td></tr>
+      <tr><td class="td-b">Chinese competition</td><td class="green-t">Low — NDAA excludes Chinese suppliers</td><td class="green-t">Low — no Chinese laser weapon equiv</td><td class="green-t">Low — classified systems have no Chinese entry</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════ PORTFOLIO ═══════════ -->
+<div id="section-portfolio" class="section">
+  <div class="card">
+    <div class="card-title">Portfolio Context — Adding Defense to Your $165K Multi-Asset Book</div>
+    <p class="bt">Your existing portfolio of gold miners (~$25K), silver/junior miners (~$54K), tech (~$50K), and cash (~$36K) has meaningful existing defense-adjacent exposure through your tech holdings and via the gold/silver safe-haven trade that is ALREADY being turbo-charged by the Iran conflict. Here is how defense stocks fit:</p>
+    <table style="margin-bottom:14px">
+      <tr><th>Portfolio Segment</th><th>Current Value</th><th>Iran Conflict Impact</th><th>Defense Add Needed?</th></tr>
+      <tr><td class="td-b">Gold + Gold Miners (KGC, WPM, B)</td><td class="td-r">$25,000</td><td class="green-t">Very bullish — safe haven + oil/inflation</td><td>No — already long</td></tr>
+      <tr><td class="td-b">Silver + Junior Miners</td><td class="td-r">$54,000</td><td class="green-t">Bullish — dual safe haven + industrial</td><td>No — already long</td></tr>
+      <tr><td class="td-b">Technology (existing)</td><td class="td-r">$50,000</td><td class="amber-t">Mixed — tech broadly weak; defense tech strong</td><td>Rotate within tech to LASR/UMAC</td></tr>
+      <tr><td class="td-b">Cash</td><td class="td-r">$36,000</td><td>Opportunity fund</td><td class="green-t">Deploy partial into defense tech</td></tr>
+      <tr><td class="td-b">Total</td><td class="td-r td-b">$165,000</td><td>—</td><td>—</td></tr>
+    </table>
+    <p class="bt" style="font-size:0.8rem; color:#555">Note: After gold miner picks (KGC, WPM, B), your recommended cash deployment was $12.5–$19K, leaving $17–$24K in reserve. This reserve is the natural source for defense tech positions.</p>
+  </div>
+
+  <div class="port-box">
+    <h4>Recommended Defense Tech Allocation — From Remaining Cash Reserve (~$17–$24K available)</h4>
+    <div class="alloc-row">
+      <span class="alloc-ticker">#1 LASR — nLIGHT</span>
+      <span>Core position: most direct Iran beneficiary; 71% revenue growth; strong balance sheet; proven technology</span>
+      <span class="alloc-amt">$5,000–$7,000</span>
+      <span class="alloc-pct">3.0–4.2% of portfolio</span>
+    </div>
+    <div class="alloc-row">
+      <span class="alloc-ticker">#2 UMAC — Unusual Machines</span>
+      <span>Speculative position: pure US drone play; high risk/high reward; size carefully due to beta 3.15</span>
+      <span class="alloc-amt">$2,000–$3,500</span>
+      <span class="alloc-pct">1.2–2.1% of portfolio</span>
+    </div>
+    <div class="alloc-row">
+      <span class="alloc-ticker">PLTR — Palantir</span>
+      <span>Only if you have existing tech holdings to rotate from. Do NOT initiate at current 200× P/E; wait for -15–20% pullback to $120 or lower for better entry</span>
+      <span class="alloc-amt">$0 now / $3,000–$5,000 on dip to $120</span>
+      <span class="alloc-pct">0% now / 1.8–3% on pullback</span>
+    </div>
+    <div class="alloc-row" style="font-weight:600; background:#f5f2ea">
+      <span>Total Defense Tech Addition (LASR + UMAC now)</span>
+      <span>Leaves ~$6–15K remaining in reserve for dip-buying or PLTR entry</span>
+      <span class="alloc-amt" style="color:var(--navy)">$7,000–$10,500</span>
+      <span class="alloc-pct">4.2–6.4% of portfolio</span>
+    </div>
+    <p style="font-size:0.77rem; color:var(--muted); margin-top:14px; line-height:1.6">Important timing note: Both LASR and UMAC have already moved significantly since February 28 (LASR +19%, UMAC +10.7%). Ideal entry would have been before the strikes. Consider scaling in — buy 50% of your intended position now and keep 50% in reserve for a post-bounce consolidation entry. War rallies in individual defense names often give back 30–40% before resuming the structural uptrend.</p>
+  </div>
+
+  <div class="conclusion" style="margin-top:20px">
+    <h3>Analyst Verdict — Defense Tech in the Iran Conflict Context</h3>
+    <p>The US-Iran conflict that began February 28, 2026 is not just a geopolitical event — it is a live-fire validation of the three most important structural trends in modern warfare: <strong>drone proliferation (UMAC), directed energy defense (LASR), and AI-driven command intelligence (PLTR)</strong>. Each company occupies a distinct, non-overlapping role in the emerging kill chain of 21st-century combat.</p>
+    <p><strong>LASR (nLIGHT) is our top pick of the three.</strong> The directed energy thesis has never been more urgently validated. Every kinetic interceptor fired at an Iranian drone costs hundreds of thousands of dollars; a laser kills it for $1. The arithmetic is inexorable. LASR's 71% Q4 revenue growth, clean balance sheet, and newly developed 70kW LWS represent a rare combination of proven technology with early-stage adoption. The stock has moved, but the procurement cycle is multi-year and the current price still implies meaningful upside to analyst targets.</p>
+    <p><strong>UMAC is the highest-risk, highest-reward play</strong> — suitable for a small, conviction-sized position. It is the only pure-play NDAA-compliant US drone component supplier, and the Iran conflict will accelerate every procurement dollar toward domestic suppliers. The March 9 earnings call is a near-term catalyst that could move the stock ±20–30%.</p>
+    <p><strong>PLTR is the hardest to recommend at current prices</strong> despite extraordinary fundamentals. A 200× P/E in a market where risk sentiment is volatile, AI multiples are compressing, and co-founders are selling stock is a dangerous entry point for new money. The business is extraordinary; the price is not. <strong>Wait for a pullback toward $115–$125 before initiating. Use war-bounce rips above $150 to trim if you hold it.</strong></p>
+    <p>Your gold and silver holdings, meanwhile, are direct beneficiaries of the same conflict — higher oil prices, inflation fears, safe-haven demand, and potential Fed policy uncertainty all push metals higher. The Iran war is therefore simultaneously validating your existing precious metals book AND creating a new defense technology opportunity. The portfolio is well-positioned.</p>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<div class="disclaimer">
+  <strong>IMPORTANT DISCLAIMER:</strong> This research report is provided for informational and educational purposes only. This document was generated by an AI assistant (Claude, Anthropic) in the style of a J.P. Morgan research report and is <strong>NOT</strong> an actual J.P. Morgan publication. War and conflict reporting is based on publicly available sources as of March 3, 2026 — a fast-moving situation subject to rapid change. All price data, analyst targets, and financial figures are sourced from publicly available information and may be outdated by the time of reading. Defense-sector investments carry heightened geopolitical, regulatory, and volatility risks. All investments involve the risk of total loss. This is not financial advice. Consult a qualified investment advisor before making any decisions.
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
