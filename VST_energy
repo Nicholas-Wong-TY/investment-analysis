@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VST · Energy Sector Screener | J.P. Morgan Equity Research</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #10140a;
+  --paper: #f6f3ec;
+  --card: #ffffff;
+  --border: #d8d2c0;
+  --nuke: #1a6e3a;
+  --nuke-light: #e8f8ee;
+  --oil: #8a4a00;
+  --oil-light: #fff3e0;
+  --gas: #005a8e;
+  --gas-light: #e3f0fb;
+  --gold: #c8a84b;
+  --red: #c0392b;
+  --green: #1a7a45;
+  --amber: #b07800;
+  --steel: #1e2a3a;
+  --muted: #7a7870;
+  --border-h: #b8b0a0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); font-size: 14px; line-height: 1.65; }
+
+/* HEADER */
+.header { background: var(--steel); border-bottom: 3px solid var(--gold); }
+.header-inner { max-width: 1140px; margin: auto; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: 'Libre Baskerville', serif; font-size: 1rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+.logo span { color: #fff; }
+.header-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: #7a8a9a; text-align: right; line-height: 1.9; }
+
+/* IRAN STRIP */
+.iran-strip { background: #1a0800; border-bottom: 2px solid #cc4400; padding: 10px 32px; }
+.iran-inner { max-width: 1140px; margin: auto; display: flex; gap: 12px; align-items: center; font-size: 0.78rem; color: #ffccaa; }
+.iran-badge { background: #cc4400; color: white; font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 2px; padding: 3px 8px; white-space: nowrap; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:0.65} }
+
+/* HERO */
+.hero { background: linear-gradient(120deg, #101e10 0%, var(--steel) 100%); color: white; padding: 36px 32px; border-bottom: 1px solid #202830; }
+.hero-inner { max-width: 1140px; margin: auto; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: start; }
+.hero-super { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+.hero-title { font-family: 'Libre Baskerville', serif; font-size: 2rem; font-weight: 700; margin-bottom: 8px; line-height: 1.15; }
+.hero-sub { color: #8fa890; font-size: 0.85rem; max-width: 540px; line-height: 1.65; }
+.position-box { background: rgba(255,255,255,0.05); border: 1px solid rgba(200,168,75,0.3); padding: 20px 24px; min-width: 280px; }
+.pb-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 1.5px; text-transform: uppercase; color: #7a9a80; margin-bottom: 10px; }
+.pb-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.8rem; }
+.pb-row:last-child { border-bottom: none; }
+.pb-key { color: #7a9a80; }
+.pb-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; font-weight: 500; }
+.pb-val.win { color: #60e890; }
+.pb-val.gold { color: var(--gold); }
+.pb-val.amber { color: #ffd060; }
+
+/* VERDICT STRIP */
+.verdict-strip { background: #0a1e0a; border-bottom: 2px solid var(--nuke); padding: 14px 32px; }
+.vs-inner { max-width: 1140px; margin: auto; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.vs-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--nuke); }
+.vs-text { font-size: 0.82rem; color: #a0d0a8; }
+.vs-text strong { color: #60f090; }
+
+/* TABS */
+.tabs { background: var(--steel); border-bottom: 1px solid #283848; }
+.tabs-inner { max-width: 1140px; margin: auto; padding: 0 32px; display: flex; overflow-x: auto; }
+.tab { padding: 13px 18px; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; font-family: 'IBM Plex Mono', monospace; color: #5a7080; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.tab:hover { color: var(--gold); }
+.tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* MAIN */
+.main { max-width: 1140px; margin: 0 auto; padding: 32px; }
+.section { display: none; }
+.section.active { display: block; }
+
+/* CARDS */
+.card { background: var(--card); border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; }
+.card-title { font-family: 'Libre Baskerville', serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.ct-nuke::before { content:''; width:3px; height:16px; background:var(--nuke); display:inline-block; flex-shrink:0; }
+.ct-oil::before { content:''; width:3px; height:16px; background:var(--oil); display:inline-block; flex-shrink:0; }
+.ct-gold::before { content:''; width:3px; height:16px; background:var(--gold); display:inline-block; flex-shrink:0; }
+.ct-red::before { content:''; width:3px; height:16px; background:var(--red); display:inline-block; flex-shrink:0; }
+
+/* KPI */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 14px; margin-bottom: 20px; }
+.kpi { background: var(--card); border: 1px solid var(--border); padding: 14px 16px; border-top: 3px solid; }
+.kpi-l { font-size: 0.58rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-bottom: 5px; }
+.kpi-v { font-family: 'IBM Plex Mono', monospace; font-size: 1.2rem; font-weight: 500; }
+.kpi-s { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+.kv-g { color: var(--green); }
+.kv-r { color: var(--red); }
+.kv-a { color: var(--amber); }
+
+/* TABLES */
+table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+th { background: var(--steel); color: var(--gold); font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 1px; text-transform: uppercase; padding: 10px 12px; text-align: left; }
+td { padding: 10px 12px; border-bottom: 1px solid #ede6d6; vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #faf7f0; }
+.td-r { text-align: right; font-family: 'IBM Plex Mono', monospace; }
+.td-b { font-weight: 600; }
+.gt { color: var(--green); font-weight: 600; }
+.rt { color: var(--red); font-weight: 600; }
+.at { color: var(--amber); font-weight: 600; }
+.nt { color: var(--nuke); font-weight: 600; }
+
+/* LAYOUT */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+@media(max-width:800px){ .two-col,.three-col { grid-template-columns: 1fr; } }
+
+/* BODY TEXT */
+p.bt { font-size: 0.83rem; line-height: 1.72; color: #2a2f1a; margin-bottom: 12px; }
+p.bt:last-child { margin-bottom: 0; }
+
+/* SCENARIOS */
+.sc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+@media(max-width:700px){ .sc-grid { grid-template-columns: 1fr; } }
+.sc { background: var(--card); border: 1px solid var(--border); padding: 16px 18px; border-top: 3px solid; }
+.sc-bear { border-top-color: var(--red); }
+.sc-base { border-top-color: var(--amber); }
+.sc-bull { border-top-color: var(--green); }
+.sc-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; font-weight: 700; }
+.sc-bear .sc-lbl { color: var(--red); }
+.sc-base .sc-lbl { color: var(--amber); }
+.sc-bull .sc-lbl { color: var(--green); }
+.sc-title { font-weight: 600; font-size: 0.84rem; margin-bottom: 6px; }
+.sc-price { font-family: 'IBM Plex Mono', monospace; font-size: 1.2rem; font-weight: 600; margin-bottom: 3px; }
+.sc-pct { font-size: 0.74rem; margin-bottom: 8px; }
+.sc-desc { font-size: 0.75rem; color: #4a5040; line-height: 1.55; }
+
+/* ENERGY PICK CARDS */
+.pick-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-bottom: 24px; }
+@media(max-width:900px){ .pick-grid { grid-template-columns: 1fr; } }
+.pick { background: var(--card); border: 1px solid var(--border); border-top: 4px solid; display: flex; flex-direction: column; }
+.pick-nuke { border-top-color: var(--nuke); }
+.pick-oil { border-top-color: var(--oil); }
+.pick-gas { border-top-color: var(--gas); }
+.pick-head { padding: 16px 18px 10px; border-bottom: 1px solid var(--border); }
+.pick-rank { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.pick-ticker { font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem; font-weight: 700; }
+.pick-name { font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; }
+.pick-tag { font-size: 0.72rem; color: #4a5040; font-style: italic; }
+.pick-prices { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border); }
+.pp-cell { padding: 10px 12px; text-align: center; border-right: 1px solid var(--border); }
+.pp-cell:last-child { border-right: none; }
+.pp-lbl { font-size: 0.54rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-bottom: 3px; }
+.pp-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; font-weight: 600; }
+.pp-val.g { color: var(--green); }
+.pp-val.r { color: var(--red); }
+.pp-val.a { color: var(--amber); }
+.pick-metrics { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.pm-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f0e8d4; font-size: 0.76rem; }
+.pm-row:last-child { border-bottom: none; }
+.pm-lbl { color: var(--muted); }
+.pm-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.74rem; font-weight: 500; }
+.pm-val.g { color: var(--green); }
+.pm-val.r { color: var(--red); }
+.pm-val.a { color: var(--amber); }
+.pick-thesis { padding: 14px 16px; flex: 1; }
+.pt-title { font-size: 0.58rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-weight: 600; }
+.pt-text { font-size: 0.76rem; color: #333; line-height: 1.65; }
+.pick-grades { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid var(--border); }
+.pg-cell { padding: 10px 6px; text-align: center; border-right: 1px solid var(--border); }
+.pg-cell:last-child { border-right: none; }
+.pg-letter { font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem; font-weight: 700; }
+.pg-lbl { font-size: 0.5rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.ga { color: var(--green); }
+.gb { color: var(--gas); }
+.gc { color: var(--amber); }
+.gd { color: var(--red); }
+.pick-verdict { padding: 10px 16px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+.pv-buy { background: #d4edda; color: #155724; }
+.pv-hold { background: #fff3cd; color: #856404; }
+.pv-trim { background: #f8d7da; color: #721c24; }
+.pv-watch { background: #d1ecf1; color: #0c5460; }
+
+/* FLAGS */
+.flag-row { display: flex; flex-wrap: wrap; gap: 5px; padding: 0 16px 12px; }
+.flag { font-size: 0.57rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.5px; padding: 2px 7px; text-transform: uppercase; }
+.f-g { background: #d4edda; color: #155724; }
+.f-r { background: #f8d7da; color: #721c24; }
+.f-a { background: #fff3cd; color: #856404; }
+.f-b { background: #d1ecf1; color: #0c5460; }
+
+/* PIPELINE TIMELINE */
+.pipeline { position: relative; padding-left: 24px; }
+.pipeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:var(--border); }
+.pl-item { position: relative; padding: 0 0 18px 20px; }
+.pl-dot { position:absolute; left:-20px; top:5px; width:10px; height:10px; border-radius:50%; border:2px solid white; }
+.pl-date { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--muted); letter-spacing: 1px; margin-bottom: 2px; }
+.pl-title { font-weight: 600; font-size: 0.84rem; margin-bottom: 4px; }
+.pl-desc { font-size: 0.77rem; color: #4a5040; line-height: 1.5; }
+.pl-impact { display: inline-block; font-size: 0.58rem; font-family: 'IBM Plex Mono', monospace; padding: 2px 7px; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.imp-hi { background: #d4edda; color: #155724; }
+.imp-med { background: #fff3cd; color: #856404; }
+
+/* INSIGHT */
+.insight { background: #f0faf0; border: 1px solid #b8d8b8; border-left: 3px solid var(--green); padding: 16px 20px; margin-bottom: 20px; }
+.insight-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); margin-bottom: 8px; font-weight: 700; }
+.insight-text { font-size: 0.82rem; color: #2a4a2a; line-height: 1.7; }
+.insight-text strong { color: #1a5a2a; }
+
+/* PORTFOLIO */
+.port-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 20px; }
+.port-table th { background: var(--steel); color: var(--gold); font-family: 'IBM Plex Mono', monospace; font-size: 0.57rem; letter-spacing: 1px; text-transform: uppercase; padding: 10px 12px; text-align: left; }
+.port-table td { padding: 10px 12px; border-bottom: 1px solid #ede6d6; }
+.port-table tr:last-child td { border-bottom: none; }
+.port-table tr.energy-row td { background: #f0faf2; }
+.port-total td { background: #f5f0e0 !important; font-weight: 700; }
+
+/* CONCLUSION */
+.conclusion { background: linear-gradient(120deg, #101e10, var(--steel)); color: white; padding: 28px 32px; border-left: 4px solid var(--gold); margin-top: 4px; }
+.conclusion h3 { font-family: 'Libre Baskerville', serif; color: var(--gold); font-size: 1.1rem; margin-bottom: 12px; }
+.conclusion p { font-size: 0.84rem; line-height: 1.75; color: #b0c8a8; margin-bottom: 10px; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion strong { color: #d0e890; }
+
+.disclaimer { background: #eeeae0; border-top: 1px solid var(--border); padding: 14px 32px; font-size: 0.66rem; color: var(--muted); line-height: 1.6; max-width: 1140px; margin: 0 auto; margin-top: 24px; }
+::-webkit-scrollbar { height: 3px; width: 3px; } ::-webkit-scrollbar-thumb { background: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">J.P. <span>Morgan</span> &nbsp;·&nbsp; Equity Research</div>
+    <div class="header-meta">ENERGY SECTOR REVIEW · VST + SCREENER · MARCH 03 2026</div>
+  </div>
+</div>
+
+<!-- IRAN STRIP -->
+<div class="iran-strip">
+  <div class="iran-inner">
+    <span class="iran-badge">⚡ War Context</span>
+    <span>Strait of Hormuz closed · Brent $79+ · WTI +7% · XLE hits 52-week high · Energy is the top-performing sector in S&P 500 since Feb 28 · <strong>VST -30% from ATH but FCF machine intact · Analyst consensus: Strong Buy $237</strong></span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-super">Energy Portfolio Review — Holdings + Sector Screener</div>
+      <div class="hero-title">Vistra Corp (VST)<br><span style="font-size:1.2rem; font-style:italic; color:#8fa890">Nuclear + Gas + AI Power · The "NVIDIA of Utilities"</span></div>
+      <div class="hero-sub">50 shares held at cost basis of $8,261 (~$165.22/share average). Current price ~$154–158. Down ~6% from cost. Down 30% from all-time high of ~$220. This report evaluates the hold/add/sell decision across three lenses: your specific position economics, VST's fundamental pipeline, and the energy sector in the context of the Iran war and structural macro shifts.</div>
+    </div>
+    <div class="position-box">
+      <div class="pb-label">Your VST Position</div>
+      <div class="pb-row"><span class="pb-key">Shares</span><span class="pb-val">50</span></div>
+      <div class="pb-row"><span class="pb-key">Total Cost</span><span class="pb-val">$8,261</span></div>
+      <div class="pb-row"><span class="pb-key">Avg Cost/Share</span><span class="pb-val">$165.22</span></div>
+      <div class="pb-row"><span class="pb-key">Current Price</span><span class="pb-val amber">~$154–158</span></div>
+      <div class="pb-row"><span class="pb-key">Current Value</span><span class="pb-val amber">~$7,700–$7,900</span></div>
+      <div class="pb-row"><span class="pb-key">Unrealized P&L</span><span class="pb-val" style="color:#ff9060">~–$360 to –$560</span></div>
+      <div class="pb-row"><span class="pb-key">Loss %</span><span class="pb-val" style="color:#ff9060">~–4.4% to –6.8%</span></div>
+      <div class="pb-row"><span class="pb-key">Analyst Avg PT</span><span class="pb-val win">$237.60 (+50–54%)</span></div>
+      <div class="pb-row"><span class="pb-key">BMO PT (Mar 2)</span><span class="pb-val win">$241 (just raised)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- VERDICT STRIP -->
+<div class="verdict-strip">
+  <div class="vs-inner">
+    <span class="vs-label">⚡ Analyst Verdict:</span>
+    <span class="vs-text"><strong>STRONG HOLD + ADD on further dips.</strong> VST is a small loss that is a timing issue, not a thesis failure. The $237 analyst consensus represents 50%+ upside from today. The FCF machine ($3.59B in 2025; $4.3B guided 2026) is intact. The 30% pullback from ATH is your entry opportunity, not your exit signal.</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tabs-inner">
+    <div class="tab active" onclick="showTab('vst')">VST Deep Dive</div>
+    <div class="tab" onclick="showTab('pipeline')">Pipeline & Catalysts</div>
+    <div class="tab" onclick="showTab('screener')">Energy Screener</div>
+    <div class="tab" onclick="showTab('picks')">Top 3 Picks</div>
+    <div class="tab" onclick="showTab('portfolio')">Full Portfolio</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════ VST ══════════ -->
+<div id="section-vst" class="section active">
+
+  <div class="kpi-grid">
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">Current Price</div><div class="kpi-v kv-a">~$154–158</div><div class="kpi-s">Down 30% from ATH $220</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">Your Cost Basis</div><div class="kpi-v">$165.22/sh</div><div class="kpi-s">50 shares · $8,261 total</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">FY2025 Adj. EBITDA</div><div class="kpi-v kv-g">$5.912B</div><div class="kpi-s">Beat expectations; record</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">2025 Free Cash Flow</div><div class="kpi-v kv-g">$3.592B</div><div class="kpi-s">FCF machine; ~7% FCF yield</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">2026 EBITDA Guide</div><div class="kpi-v kv-g">$6.8–$7.6B</div><div class="kpi-s">+19–29% growth YoY</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">2026 FCF Guide</div><div class="kpi-v kv-g">$3.93–$4.73B</div><div class="kpi-s">Midpoint $4.3B; +20%</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">Analyst Avg PT</div><div class="kpi-v kv-g">$237.60</div><div class="kpi-s">54% upside; Strong Buy</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">Analyst Range</div><div class="kpi-v">$203–$293</div><div class="kpi-s">BMO raised to $241 Mar 2</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">Generation Capacity</div><div class="kpi-v">~41,000 MW</div><div class="kpi-s">Nuclear + gas + coal + solar</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">Nuclear Fleet</div><div class="kpi-v kv-g">6,400+ MW</div><div class="kpi-s">Comanche Peak + Energy Harbor</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">Retail Customers</div><div class="kpi-v">~5 million</div><div class="kpi-s">TXU Energy + brands; cash buffer</div></div>
+    <div class="kpi" style="border-top-color:var(--nuke)"><div class="kpi-l">Credit Rating</div><div class="kpi-v kv-g">BBB–</div><div class="kpi-s">Investment grade; S&P</div></div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title ct-nuke">Why VST Is Down 30% — And Why That's Opportunity, Not Crisis</div>
+      <p class="bt">VST's pull from ~$220 ATH to ~$154–158 is driven by three compressors — none of which challenge the fundamental thesis:</p>
+      <table style="margin-bottom:14px">
+        <tr><th>Pullback Driver</th><th>Reality Check</th><th>Thesis Impact</th></tr>
+        <tr><td class="td-b">MAG7/AI-adjacent rotation</td><td>VST was bid up as an "AI Power Play" beyond utility fundamentals. Rotation back to its utility base valuation</td><td class="at">Price correction, not thesis break</td></tr>
+        <tr><td class="td-b">FERC co-location investigation</td><td>FERC investigating direct data-center-to-plant deals. Risk of cost-shifting restrictions</td><td class="at">Regulatory overhang; manageable</td></tr>
+        <tr><td class="td-b">White House pressure on power prices</td><td>Trump admin pushing tech to build own plants; VST/CEG fell on reports. But Comanche Peak 20-yr PPA signed</td><td class="gt">Already mitigated; PPA secured</td></tr>
+        <tr><td class="td-b">Iran war / broad market risk-off</td><td>Paradox: Iran war is actually BULLISH for power producers (higher energy prices, more grid demand)</td><td class="gt">Iran is a net positive for VST</td></tr>
+      </table>
+      <p class="bt"><strong>The critical insight:</strong> VST is trading at ~7.5× EV/EBITDA on 2026 guidance — cheap for a company with nuclear baseload, $4.3B FCF, and locked-in AI data center contracts. Vistra still trades at a slight discount to its closest peer Constellation Energy (CEG) despite similar growth profiles — Constellation trades at ~9–11× EV/EBITDA. Simply re-rating to CEG's multiple produces a price of $210–$230, consistent with analyst targets.</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-nuke">VST's Three Business Pillars — Crisis Resilience Analysis</div>
+      <table>
+        <tr><th>Segment</th><th>Revenue Driver</th><th>Iran War Impact</th><th>AI Power Impact</th></tr>
+        <tr>
+          <td class="td-b" style="color:var(--nuke)">Nuclear Fleet (6,400 MW)</td>
+          <td>Carbon-free baseload; capacity payments; PPAs</td>
+          <td class="gt">Very Bullish — grid reliability premium surges in crises; nuclear can't be "disrupted" by Hormuz</td>
+          <td class="gt">Very Bullish — Microsoft, Google, Amazon paying premium 24/7 firm power prices</td>
+        </tr>
+        <tr>
+          <td class="td-b" style="color:var(--gas)">Gas Fleet (post-Lotus + Cogentrix acquisitions)</td>
+          <td>Spot power prices; gas input costs; capacity auctions</td>
+          <td class="at">Mixed — gas prices spike with Hormuz closure, raising input costs; but power prices also spike</td>
+          <td class="gt">Bullish — dispatchable "firming" power for AI data centers valued highly</td>
+        </tr>
+        <tr>
+          <td class="td-b" style="color:var(--oil)">Retail (TXU Energy, ~5M customers)</td>
+          <td>Retail electricity margin; hedging programs</td>
+          <td class="gt">Defensive — fixed-price retail contracts insulate from wholesale volatility; provides cash floor</td>
+          <td>Neutral — residential growth steady; commercial growth from AI tenants</td>
+        </tr>
+        <tr>
+          <td class="td-b">PJM Capacity Auctions (Northeast)</td>
+          <td>Capacity market payments; regulatory</td>
+          <td class="gt">Very Bullish — capacity prices HIT CAPS in recent auctions; Iran = more grid stress = higher capacity value</td>
+          <td class="gt">Structural multi-year tailwind</td>
+        </tr>
+      </table>
+      <p class="bt" style="margin-top:12px; font-size:0.78rem; color:var(--muted)">Conclusion: The Iran conflict is an asymmetric positive for Vistra. Higher oil/gas prices raise its retail electricity margins (since VST hedges gas input costs but prices retail electricity at a spread to wholesale). The grid reliability premium — the thing that makes nuclear uniquely valuable — only increases in crisis environments. VST's business is more resilient to the Iran shock than almost any other sector.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title ct-nuke">VST vs. Peers — Valuation Scorecard</div>
+    <table>
+      <tr><th>Metric</th><th>VST (Vistra)</th><th>CEG (Constellation)</th><th>NRG Energy</th><th>NextEra (NEE)</th></tr>
+      <tr><td class="td-b">Current Price</td><td class="nt">~$154–158</td><td>~$315</td><td>~$120</td><td>~$65</td></tr>
+      <tr><td class="td-b">Market Cap</td><td>~$53B</td><td>~$97B</td><td>~$17B</td><td>~$130B</td></tr>
+      <tr><td class="td-b">2026E EBITDA</td><td class="nt">$7.2B midpoint</td><td>~$5B+</td><td>~$4B</td><td>~$9B</td></tr>
+      <tr><td class="td-b">EV/EBITDA (fwd)</td><td class="gt">~7.5–8× (cheap)</td><td>~11–13×</td><td>~9×</td><td>~15–17×</td></tr>
+      <tr><td class="td-b">FCF Yield</td><td class="gt">~7–8%</td><td>~5%</td><td>~8%</td><td>~3%</td></tr>
+      <tr><td class="td-b">Analyst Avg PT</td><td class="gt">$237 (+54%)</td><td>$406 (+29%)</td><td>~$175</td><td>~$85</td></tr>
+      <tr><td class="td-b">Nuclear MW</td><td class="gt">6,400+</td><td>~21,000 (largest US)</td><td>None</td><td>None</td></tr>
+      <tr><td class="td-b">Iran War Sensitivity</td><td class="gt">Very Bullish</td><td class="gt">Very Bullish</td><td>Positive</td><td>Neutral</td></tr>
+      <tr><td class="td-b">Dividend / Buyback</td><td>$1B+ annual buyback; dividend growing</td><td>Growing dividend; large buyback</td><td>High dividend</td><td>High dividend; sector leader</td></tr>
+      <tr><td class="td-b">Share Buyback</td><td class="gt">30% of float retired since 2021</td><td>Moderate</td><td>Active</td><td>None</td></tr>
+    </table>
+    <div style="margin-top:14px; padding:14px 18px; background:#f0f9f2; border:1px solid #a8d8b0; font-size:0.82rem">
+      <strong style="color:var(--nuke)">Valuation Conclusion:</strong> <span style="color:#1a3a2a">VST is the cheapest large-cap power producer in the US on EV/EBITDA at ~7.5×, while delivering the highest analyst-consensus upside (+54%). The discount to Constellation is structurally unjustified — both have similar nuclear footprints, AI data center contract exposure, and FCF profiles. VST has the added advantage of a more aggressive capital return program (30% float retired). At current prices, VST is objectively undervalued relative to peers.</span>
+    </div>
+  </div>
+
+  <!-- SCENARIOS -->
+  <div class="card">
+    <div class="card-title ct-nuke">VST 12-Month Scenarios — Your 50-Share Position</div>
+    <div class="sc-grid">
+      <div class="sc sc-bear">
+        <div class="sc-lbl">Bear (20% prob)</div>
+        <div class="sc-title">FERC restricts co-location + gas cost spike</div>
+        <div class="sc-price rt">$120–$135</div>
+        <div class="sc-pct rt">–15% to –24% from $158</div>
+        <div class="sc-desc">FERC rules unfavorably on co-location deals (data centers can't connect directly to plants). Iran spikes gas prices, hurting margins on gas fleet. Multiple compresses to 6×. Your 50 shares: $6,000–$6,750 vs. $8,261 cost. Still a manageable drawdown — not catastrophic. <strong>Action: Hold. Do NOT sell at these levels.</strong></div>
+      </div>
+      <div class="sc sc-base">
+        <div class="sc-lbl">Base (55% prob)</div>
+        <div class="sc-title">AI power demand + Cogentrix integration + rate cut</div>
+        <div class="sc-price at">$215–$245</div>
+        <div class="sc-pct gt">+36–55% from $158</div>
+        <div class="sc-desc">VST executes on 2026 EBITDA $7.2B guidance. Hyperscaler power contracts flow through. FERC overhang resolves. One Fed rate cut in H2. Multiple re-rates from 7.5× to 9× EV/EBITDA, consistent with analyst consensus of $237. Your 50 shares: $10,750–$12,250. Profit vs. cost: +$2,490–$3,990.</div>
+      </div>
+      <div class="sc sc-bull">
+        <div class="sc-lbl">Bull (25% prob)</div>
+        <div class="sc-title">Iran prolonged → oil $100+ → power price surge</div>
+        <div class="sc-price" style="color:var(--green)">$265–$293</div>
+        <div class="sc-pct gt">+68–85% from $158</div>
+        <div class="sc-desc">Hormuz closure forces US power grid into emergency mode. Power prices spike. PJM capacity at all-time records. VST's nuclear baseload is the hero of the grid. New data center PPA signed at premium above Comanche Peak deal. Multiple expands to 11–12×. Your 50 shares: $13,250–$14,650. Profit vs. cost: +$5,000–$6,400.</div>
+      </div>
+    </div>
+    <div style="margin-top:4px; padding:14px 18px; background:#f0faf2; border:1px solid #b0d8b0; font-size:0.82rem">
+      <strong style="color:var(--nuke)">Position Recommendation:</strong> <span style="color:#1a3a1a">Hold all 50 shares — do not sell a paper loss on one of America's most cash-generative power producers with 54% upside to analyst consensus. Consider adding 15–20 shares if VST pulls back toward $140–$145 (7× EV/EBITDA on 2026 guidance — extreme value zone). Set a mental review trigger at $120 (6× EBITDA) — if it reaches there, evaluate whether FERC ruling has fundamentally changed the thesis.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PIPELINE ══════════ -->
+<div id="section-pipeline" class="section">
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title ct-nuke">VST Growth Pipeline — The Multi-Year Catalyst Stack</div>
+      <div class="pipeline">
+        <div class="pl-item">
+          <div class="pl-dot" style="background:var(--green)"></div>
+          <div class="pl-date">COMPLETED — 2025</div>
+          <div class="pl-title">Cogentrix Acquisition (5.5 GW gas) + Lotus Infrastructure ($1.9B)</div>
+          <div class="pl-desc">Added 5.5 GW of natural gas generation in 11 strategic US markets, plus Lotus's flexible gas assets. First full integration year is 2026, generating incremental EBITDA uplift of ~$500–700M vs. standalone. This explains the big 2026 guidance step-up to $7.2B midpoint.</div>
+          <span class="pl-impact imp-hi">Already contributing</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot" style="background:var(--nuke)"></div>
+          <div class="pl-date">ACTIVE — 2026</div>
+          <div class="pl-title">Comanche Peak 20-Year PPA (1,200 MW nuclear) with Investment-Grade Counterparty</div>
+          <div class="pl-desc">A 20-year power purchase agreement for 1,200 MW from Comanche Peak Nuclear Plant locks in high-margin, long-duration revenue. Similar to Microsoft-Constellation Three Mile Island deal. This single contract underpins $200–400M/year in EBITDA for two decades — essentially zero execution risk once operational.</div>
+          <span class="pl-impact imp-hi">Structural moat locked in</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot" style="background:var(--nuke)"></div>
+          <div class="pl-date">2026 — ONGOING</div>
+          <div class="pl-title">New West Texas Gas Units (860 MW) — ERCOT Grid Firming</div>
+          <div class="pl-desc">Two new natural gas units totaling 860 MW under construction in West Texas. ERCOT (Texas grid) has had catastrophic cold-weather failures (Feb 2021 crisis). Political and regulatory pressure is intensifying to build firming capacity. These units will attract premium capacity payments.</div>
+          <span class="pl-impact imp-hi">2027 completion; high ERCOT value</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot" style="background:var(--gold)"></div>
+          <div class="pl-date">2026–2027</div>
+          <div class="pl-title">NRC License Extensions — Nuclear Plants to 2040s–2050s</div>
+          <div class="pl-desc">The NRC recently granted Vistra rights to operate its key nuclear plants into the 2040s and 2050s. This is extraordinary long-term value: nuclear plants with 20+ year lifespans generate near-zero marginal cost power against ever-rising wholesale electricity prices. NAV of nuclear fleet increases substantially with every license extension.</div>
+          <span class="pl-impact imp-hi">Structural value unlock</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot" style="background:var(--gas)"></div>
+          <div class="pl-date">2026–2028</div>
+          <div class="pl-title">Additional AI Data Center PPAs — Hyperscaler Pipeline</div>
+          <div class="pl-desc">Following the Comanche Peak deal, Vistra is actively marketing additional long-term PPA capacity to hyperscalers (Microsoft, Google, Amazon, Meta). Each 1 GW PPA signed likely adds $150–250M in locked-in annual EBITDA. Multiple deals in advanced negotiation per investor calls.</div>
+          <span class="pl-impact imp-med">2–5 deals expected 2026–2028</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot" style="background:var(--gold)"></div>
+          <div class="pl-date">2026–2027</div>
+          <div class="pl-title">$1B+ Additional Share Buyback Authorized (Board, Q3 2025)</div>
+          <div class="pl-desc">Board authorized additional $1B buyback in November 2025, expected to be utilized by year-end 2027. Combined with prior buybacks, VST will have retired ~35% of its float since 2021. Each share retired at $154 effectively "buys" $1.10+ of 2026 FCF per share — an excellent use of capital at current depressed prices.</div>
+          <span class="pl-impact imp-hi">EPS accretive; price floor support</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title ct-nuke">Structural Macro Drivers — Why the Next 5 Years Are VST's Best</div>
+      <table>
+        <tr><th>Driver</th><th>VST Exposure</th><th>Magnitude</th></tr>
+        <tr><td class="td-b">AI Data Center Power Demand</td><td>Direct — Comanche Peak PPA signed; more coming</td><td class="gt">+$5–10B incremental US power demand by 2030</td></tr>
+        <tr><td class="td-b">Electricity Demand from Onshoring</td><td>ERCOT + PJM; US manufacturing AI semiconductor fabs</td><td class="gt">+100–150 GW new US demand by 2030</td></tr>
+        <tr><td class="td-b">EV Charging Grid Demand</td><td>Retail + wholesale electricity supply in TX/East</td><td class="gt">+50–80 GW demand by 2030</td></tr>
+        <tr><td class="td-b">Coal Plant Retirements</td><td>VST replacing retired coal with gas/nuclear</td><td class="gt">Supply shortage = pricing power</td></tr>
+        <tr><td class="td-b">IRA Nuclear Production Tax Credits</td><td>Existing nuclear fleet receives ~$15/MWh credit</td><td class="gt">~$500M/yr direct subsidy to VST</td></tr>
+        <tr><td class="td-b">PJM Capacity Price Surge</td><td>VST's Eastern fleet benefits directly</td><td class="gt">Prices hit federal caps — structural multi-year</td></tr>
+        <tr><td class="td-b">Iran War / Oil Shock</td><td>Higher wholesale power prices; grid reliability premium</td><td class="gt">Near-term tailwind; nuclear baseload immune</td></tr>
+        <tr><td class="td-b">Trump Energy Dominance Policy</td><td>Domestic generation preferred; nuclear backed</td><td class="gt">Regulatory tailwind vs. prior admin</td></tr>
+      </table>
+      <div class="insight" style="margin-top:14px">
+        <div class="insight-title">The "Nuclear Scarcity Premium" Is the Key Insight</div>
+        <div class="insight-text">As older coal plants retire, the baseload provided by nuclear has become a scarce and valuable commodity. Data centers require 24/7 power, which wind and solar cannot provide alone — this has placed a scarcity premium on nuclear and natural gas. Vistra's 6,400 MW nuclear fleet is literally irreplaceable — no new nuclear plants can be built fast enough to matter before 2035. <strong>Owning VST is owning a physical monopoly on irreplaceable baseload power in the AI era.</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SCREENER ══════════ -->
+<div id="section-screener" class="section">
+  <div class="card">
+    <div class="card-title ct-oil">Energy Universe Screener — Criteria Applied</div>
+    <p class="bt">Screening the energy sector universe using the same framework applied to gold miners: financial health, undervaluation vs. fair value, growth pipeline, geopolitical positioning (Iran war beneficiaries), and structural macro alignment. Priority: genuinely cheap stocks with asymmetric upside.</p>
+    <table>
+      <tr>
+        <th>Company / Ticker</th>
+        <th>Segment</th>
+        <th>Current Price</th>
+        <th>Analyst PT</th>
+        <th>Discount</th>
+        <th>FCF Yield</th>
+        <th>Iran War Exposure</th>
+        <th>Balance Sheet</th>
+        <th>Verdict</th>
+      </tr>
+      <tr style="background:#f0faf2">
+        <td class="td-b" style="color:var(--nuke)">VST — Vistra Corp ✓ HELD</td>
+        <td>Nuclear + Gas + Retail</td>
+        <td class="td-r">~$156</td>
+        <td class="td-r gt">$237 (+54%)</td>
+        <td class="td-r gt">–35% to PT</td>
+        <td class="td-r gt">~7–8%</td>
+        <td class="gt">Very Bullish</td>
+        <td class="gt">BBB– IG; $4.3B FCF</td>
+        <td style="color:var(--nuke); font-weight:700">✅ HOLD + ADD</td>
+      </tr>
+      <tr style="background:#f0faf2">
+        <td class="td-b" style="color:var(--nuke)">CEG — Constellation Energy ⭐</td>
+        <td>Nuclear (largest US fleet)</td>
+        <td class="td-r">~$315</td>
+        <td class="td-r gt">$406 (+29%)</td>
+        <td class="td-r gt">–22% to PT</td>
+        <td class="td-r">~5%</td>
+        <td class="gt">Very Bullish</td>
+        <td class="gt">Investment Grade</td>
+        <td style="color:var(--nuke); font-weight:700">✅ SELECT</td>
+      </tr>
+      <tr style="background:#f0faf2">
+        <td class="td-b" style="color:var(--oil)">DVN — Devon Energy ⭐</td>
+        <td>Oil & Gas E&P (Permian)</td>
+        <td class="td-r">~$33</td>
+        <td class="td-r gt">~$47 (+42%)</td>
+        <td class="td-r gt">–30% to PT</td>
+        <td class="td-r gt">~10%</td>
+        <td class="gt">Direct beneficiary</td>
+        <td class="gt">Net Cash; low debt</td>
+        <td style="color:var(--oil); font-weight:700">✅ SELECT</td>
+      </tr>
+      <tr style="background:#f0faf2">
+        <td class="td-b" style="color:var(--gas)">LNG — Cheniere Energy ⭐</td>
+        <td>LNG export (gas)</td>
+        <td class="td-r">~$220</td>
+        <td class="td-r gt">~$295 (+34%)</td>
+        <td class="td-r gt">–25% to PT</td>
+        <td class="td-r gt">~8%</td>
+        <td class="gt">Hormuz closure → LNG surge</td>
+        <td class="gt">Strong; long-term contracts</td>
+        <td style="color:var(--gas); font-weight:700">✅ SELECT</td>
+      </tr>
+      <tr>
+        <td class="td-b">XOM — Exxon Mobil</td>
+        <td>Integrated oil major</td>
+        <td class="td-r">~$115–$155</td>
+        <td class="td-r">~$125–$165</td>
+        <td class="td-r">~+7%</td>
+        <td class="td-r">~5%</td>
+        <td class="gt">Bullish</td>
+        <td class="gt">AAA balance sheet</td>
+        <td class="at">Fairly valued; too large</td>
+      </tr>
+      <tr>
+        <td class="td-b">FANG — Diamondback Energy</td>
+        <td>Permian oil E&P</td>
+        <td class="td-r">~$150</td>
+        <td class="td-r">PT under review ↑</td>
+        <td class="td-r gt">+25–30%</td>
+        <td class="td-r gt">~9%</td>
+        <td class="gt">Very Bullish</td>
+        <td class="gt">Strong; hedged</td>
+        <td class="at">Excellent but large-cap premium</td>
+      </tr>
+      <tr>
+        <td class="td-b">MGY — Magnolia Oil</td>
+        <td>Oil E&P (Eagle Ford)</td>
+        <td class="td-r">~$21</td>
+        <td class="td-r">~$32 (+52%)</td>
+        <td class="td-r gt">Fully unhedged 2026</td>
+        <td class="td-r gt">~11%</td>
+        <td class="gt">Maximum oil beta</td>
+        <td class="gt">Low debt</td>
+        <td class="at">High conviction; very speculative</td>
+      </tr>
+      <tr>
+        <td class="td-b">NRG — NRG Energy</td>
+        <td>Gas + retail power</td>
+        <td class="td-r">~$120</td>
+        <td class="td-r">~$155</td>
+        <td class="td-r">+29%</td>
+        <td class="td-r">~8%</td>
+        <td class="gt">Positive</td>
+        <td class="at">Higher leverage than VST</td>
+        <td class="at">Good but VST superior</td>
+      </tr>
+      <tr>
+        <td class="td-b">NEE — NextEra Energy</td>
+        <td>Renewable utility</td>
+        <td class="td-r">~$65</td>
+        <td class="td-r">~$85</td>
+        <td class="td-r">+31%</td>
+        <td class="td-r">~3%</td>
+        <td>Neutral</td>
+        <td>High debt load</td>
+        <td class="at">Low FCF yield; low Iran benefit</td>
+      </tr>
+      <tr>
+        <td class="td-b">OXY — Occidental</td>
+        <td>Oil + gas + carbon capture</td>
+        <td class="td-r">~$45</td>
+        <td class="td-r">~$62</td>
+        <td class="td-r">+38%</td>
+        <td class="td-r">~7%</td>
+        <td class="gt">Bullish; Buffett-backed</td>
+        <td class="at">Higher debt; Buffett floor</td>
+        <td class="at">Good; not top 3 for your criteria</td>
+      </tr>
+      <tr>
+        <td class="td-b">OKLO — Oklo Inc.</td>
+        <td>SMR nuclear (future)</td>
+        <td class="td-r">~$40</td>
+        <td class="td-r">~$70</td>
+        <td class="td-r gt">+75%</td>
+        <td class="td-r rt">No revenue; pre-revenue</td>
+        <td class="gt">Structural long-term</td>
+        <td class="rt">No revenue; speculative</td>
+        <td class="rt">Too early; no FCF</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════ TOP 3 PICKS ══════════ -->
+<div id="section-picks" class="section">
+  <div class="pick-grid">
+
+    <!-- CEG -->
+    <div class="pick pick-nuke">
+      <div class="pick-head">
+        <div class="pick-rank">🥇 Pick #1 — Nuclear Complement to VST</div>
+        <div class="pick-ticker" style="color:var(--nuke)">CEG &nbsp;<span style="font-size:0.7rem; font-family:'DM Sans',sans-serif; color:var(--muted); font-weight:400">NASDAQ</span></div>
+        <div class="pick-name">Constellation Energy Corporation</div>
+        <div class="pick-tag">World's largest carbon-free energy producer · 10% of US clean energy · Calpine acquisition complete</div>
+      </div>
+      <div class="pick-prices">
+        <div class="pp-cell"><div class="pp-lbl">Current</div><div class="pp-val">~$315</div></div>
+        <div class="pp-cell"><div class="pp-lbl">Analyst PT</div><div class="pp-val g">$406</div></div>
+        <div class="pp-cell"><div class="pp-lbl">Upside</div><div class="pp-val g">+29%</div></div>
+      </div>
+      <div class="pick-metrics">
+        <div class="pm-row"><span class="pm-lbl">Market Cap</span><span class="pm-val">~$97B</span></div>
+        <div class="pm-row"><span class="pm-lbl">Nuclear Fleet</span><span class="pm-val g">~21,000 MW (largest US)</span></div>
+        <div class="pm-row"><span class="pm-lbl">Analyst Consensus</span><span class="pm-val g">Strong Buy (14 Buy, 0 Sell)</span></div>
+        <div class="pm-row"><span class="pm-lbl">High Analyst PT</span><span class="pm-val g">$481 (+53%)</span></div>
+        <div class="pm-row"><span class="pm-lbl">Calpine Integration</span><span class="pm-val g">Complete — now largest US power co</span></div>
+        <div class="pm-row"><span class="pm-lbl">CyrusOne Data Ctr Deal</span><span class="pm-val g">380 MW new PPA signed Feb 2026</span></div>
+        <div class="pm-row"><span class="pm-lbl">2026 Earnings Growth</span><span class="pm-val g">+22% forecast YoY</span></div>
+        <div class="pm-row"><span class="pm-lbl">52-Week Range</span><span class="pm-val">$161 – $412</span></div>
+        <div class="pm-row"><span class="pm-lbl">Iran War Benefit</span><span class="pm-val g">Very High — nuclear baseload</span></div>
+        <div class="pm-row"><span class="pm-lbl">Current P/E vs VST</span><span class="pm-val a">Premium; ~11–13× EV/EBITDA</span></div>
+      </div>
+      <div class="pick-thesis">
+        <div class="pt-title">Investment Thesis</div>
+        <div class="pt-text">Constellation is the purest nuclear-AI play in the US stock market — 10% of America's clean electricity, the largest fleet of nuclear plants, and the company that signed the landmark Microsoft Three Mile Island restart deal that defined the sector. The recent Calpine acquisition creates the largest power producer in North America, adding gas "firming" capacity adjacent to its nuclear baseload.
+
+CEG trades at a premium to VST (~11–13× vs. VST's 7.5× EV/EBITDA) — but the premium is justified by CEG's 3× larger nuclear fleet and first-mover status in hyperscaler deals. The median 12-month analyst consensus target is $406, representing 41% upside, with the highest target at $481 — 67% above current levels. CEG is the "safe" version of the nuclear AI power trade.
+
+The Iran war is a structural tailwind: nuclear power literally cannot be disrupted by geopolitical events in the Gulf. Saudi oil fields can be struck; Iranian drones can threaten Gulf shipping — but Constellation's Pennsylvania and Illinois nuclear plants simply keep running. This is the definition of energy security.</div>
+      </div>
+      <div class="flag-row">
+        <span class="flag f-g">Largest US nuclear fleet</span>
+        <span class="flag f-g">Microsoft TMI deal model</span>
+        <span class="flag f-g">Iran war immune</span>
+        <span class="flag f-g">2026 guidance coming soon</span>
+        <span class="flag f-a">Premium valuation vs VST</span>
+        <span class="flag f-a">Held off on 2026 guide — watch</span>
+      </div>
+      <div class="pick-grades">
+        <div class="pg-cell"><div class="pg-letter ga">B+</div><div class="pg-lbl">Value</div></div>
+        <div class="pg-cell"><div class="pg-letter ga">A</div><div class="pg-lbl">Growth</div></div>
+        <div class="pg-cell"><div class="pg-letter ga">A</div><div class="pg-lbl">Health</div></div>
+        <div class="pg-cell"><div class="pg-letter ga">A+</div><div class="pg-lbl">Geopolit.</div></div>
+      </div>
+      <div class="pick-verdict pv-buy">✅ Buy — Premium Nuclear AI Play</div>
+    </div>
+
+    <!-- DVN -->
+    <div class="pick pick-oil">
+      <div class="pick-head">
+        <div class="pick-rank">🥈 Pick #2 — Most Undervalued; Maximum Iran Upside</div>
+        <div class="pick-ticker" style="color:var(--oil)">DVN &nbsp;<span style="font-size:0.7rem; font-family:'DM Sans',sans-serif; color:var(--muted); font-weight:400">NYSE</span></div>
+        <div class="pick-name">Devon Energy Corporation</div>
+        <div class="pick-tag">Morningstar #1 most undervalued energy stock · Permian Basin dominant · Net cash balance sheet</div>
+      </div>
+      <div class="pick-prices">
+        <div class="pp-cell"><div class="pp-lbl">Current</div><div class="pp-val">~$33</div></div>
+        <div class="pp-cell"><div class="pp-lbl">Morningstar FV</div><div class="pp-val g">~$50</div></div>
+        <div class="pp-cell"><div class="pp-lbl">Upside</div><div class="pp-val g">+42–52%</div></div>
+      </div>
+      <div class="pick-metrics">
+        <div class="pm-row"><span class="pm-lbl">Morningstar Rating</span><span class="pm-val g">5-Star (most undervalued energy)</span></div>
+        <div class="pm-row"><span class="pm-lbl">Analyst Avg PT</span><span class="pm-val g">~$45–50 (+37–52%)</span></div>
+        <div class="pm-row"><span class="pm-lbl">FCF Yield</span><span class="pm-val g">~10% at current oil prices</span></div>
+        <div class="pm-row"><span class="pm-lbl">Balance Sheet</span><span class="pm-val g">Net Cash; minimal debt</span></div>
+        <div class="pm-row"><span class="pm-lbl">Variable Dividend</span><span class="pm-val g">~5–7% yield (oil-linked)</span></div>
+        <div class="pm-row"><span class="pm-lbl">Oil Sensitivity</span><span class="pm-val g">$1/bbl WTI = ~$35M FCF</span></div>
+        <div class="pm-row"><span class="pm-lbl">2026 Production Growth</span><span class="pm-val">~5–8% guided</span></div>
+        <div class="pm-row"><span class="pm-lbl">Permian Acreage</span><span class="pm-val g">Delaware Basin; 25yr+ inventory</span></div>
+        <div class="pm-row"><span class="pm-lbl">WTI Break-Even</span><span class="pm-val g">~$40/bbl (fully-loaded)</span></div>
+        <div class="pm-row"><span class="pm-lbl">Iran War Impact</span><span class="pm-val g">Every $10/bbl = +$350M FCF/yr</span></div>
+      </div>
+      <div class="pick-thesis">
+        <div class="pt-title">Investment Thesis</div>
+        <div class="pt-text">Devon Energy Corp is the most affordable stock on Morningstar's list of best energy stocks to buy, with shares looking approximately 30% undervalued relative to its fair value estimate. This is the clearest value proposition in the energy sector: a Permian Basin dominant, net-cash, 10% FCF yield oil producer that trades at a deep discount to intrinsic value — and which is directly, immediately levered to the Iran war oil spike.
+
+The arithmetic is simple: Brent was at $67 before Iran strikes, jumped to $79–82 on Day 1, and could reach $90–100+ if the Hormuz closure extends beyond 4–6 weeks. Every $10/barrel increase in oil prices translates to approximately $350M in additional annual FCF for Devon. At $90 Brent, Devon's FCF yield approaches 13–15% at current price — extraordinary value.
+
+Devon's variable dividend policy means shareholders directly receive the oil price upside: as prices rise, dividends automatically increase. This is the most direct, mechanical exposure to the Iran war energy trade available to an unleveraged investor.
+
+Unlike leveraged oil plays, Devon's net cash balance sheet means it can survive a prolonged oil price cycle without distress. The Delaware Basin acreage is among the lowest-cost production in the US (sub-$40/bbl breakeven) — meaning even at $50 oil, the company generates positive FCF.</div>
+      </div>
+      <div class="flag-row">
+        <span class="flag f-g">Morningstar #1 undervalued</span>
+        <span class="flag f-g">Net cash balance sheet</span>
+        <span class="flag f-g">10%+ FCF yield</span>
+        <span class="flag f-g">Variable dividend (oil-linked)</span>
+        <span class="flag f-g">25yr+ Permian inventory</span>
+        <span class="flag f-a">Oil price risk if peace deal</span>
+        <span class="flag f-a">No nuclear / AI angle</span>
+      </div>
+      <div class="pick-grades">
+        <div class="pg-cell"><div class="pg-letter ga">A+</div><div class="pg-lbl">Value</div></div>
+        <div class="pg-cell"><div class="pg-letter gb">B+</div><div class="pg-lbl">Growth</div></div>
+        <div class="pg-cell"><div class="pg-letter ga">A</div><div class="pg-lbl">Health</div></div>
+        <div class="pg-cell"><div class="pg-letter ga">A+</div><div class="pg-lbl">Geopolit.</div></div>
+      </div>
+      <div class="pick-verdict pv-buy">✅ Buy — Best Value + Iran Leverage</div>
+    </div>
+
+    <!-- LNG -->
+    <div class="pick pick-gas">
+      <div class="pick-head">
+        <div class="pick-rank">🥉 Pick #3 — Hormuz Closure Direct Beneficiary</div>
+        <div class="pick-ticker" style="color:var(--gas)">LNG &nbsp;<span style="font-size:0.7rem; font-family:'DM Sans',sans-serif; color:var(--muted); font-weight:400">NYSE</span></div>
+        <div class="pick-name">Cheniere Energy Inc.</div>
+        <div class="pick-tag">America's #1 LNG exporter · If Hormuz closes, LNG fills the gap · Long-term contract cash flows</div>
+      </div>
+      <div class="pick-prices">
+        <div class="pp-cell"><div class="pp-lbl">Current</div><div class="pp-val">~$220</div></div>
+        <div class="pp-cell"><div class="pp-lbl">Morningstar FV</div><div class="pp-val g">~$295</div></div>
+        <div class="pp-cell"><div class="pp-lbl">Upside</div><div class="pp-val g">+25–34%</div></div>
+      </div>
+      <div class="pick-metrics">
+        <div class="pm-row"><span class="pm-lbl">Business Model</span><span class="pm-val g">Long-term contracts; fee-based</span></div>
+        <div class="pm-row"><span class="pm-lbl">2026 FCF</span><span class="pm-val g">~$4B+ guided</span></div>
+        <div class="pm-row"><span class="pm-lbl">FCF Yield</span><span class="pm-val g">~8% at current price</span></div>
+        <div class="pm-row"><span class="pm-lbl">Corpus Christi Exp.</span><span class="pm-val g">Coming online 2026 (in service)</span></div>
+        <div class="pm-row"><span class="pm-lbl">Midscale 8 & 9</span><span class="pm-val">2028–2029 completion</span></div>
+        <div class="pm-row"><span class="pm-lbl">Morningstar Rating</span><span class="pm-val g">Narrow moat; undervalued</span></div>
+        <div class="pm-row"><span class="pm-lbl">Dividend Growth</span><span class="pm-val g">Growing; ~1% yield + buybacks</span></div>
+        <div class="pm-row"><span class="pm-lbl">Iran War Impact</span><span class="pm-val g">Direct: Gulf LNG rerouted to LNG</span></div>
+        <div class="pm-row"><span class="pm-lbl">Contract Security</span><span class="pm-val g">"First-choice supplier" per Morningstar</span></div>
+        <div class="pm-row"><span class="pm-lbl">Analyst Consensus</span><span class="pm-val g">Buy; ~$295 avg PT</span></div>
+      </div>
+      <div class="pick-thesis">
+        <div class="pt-title">Investment Thesis — The Hormuz Angle</div>
+        <div class="pt-text">Cheniere is the most direct play on the Iran Strait of Hormuz closure you can make in the stock market. Here's the logic: Qatar — which exports ~77 million tonnes of LNG per year through the Gulf — has grounded flights and faces massive disruption. European nations who switched from Russian gas to Middle Eastern LNG now desperately need alternative supply. Cheniere, as America's largest LNG exporter, is the alternative. US LNG spot cargo prices are already surging.
+
+Looking forward, Cheniere has three expansion plans — projects at Corpus Christi currently under construction and expected to be fully in service in 2026, and Midscale 8 and 9 expansions in 2028 and 2029, all secured by long-term contracts. This visibility means Cheniere's cash flows for the next decade are largely locked in regardless of short-term volatility.
+
+The fee-based business model is the key differentiator: unlike E&P companies that live and die by commodity prices, Cheniere earns fixed fees for liquefying and shipping gas. The embedded oil-price upside comes through spot LNG cargo sales above contracted volumes — and those spot prices are spiking right now.
+
+Morningstar considers Cheniere the "first-choice supplier for quality buyers" — a designation earned through a decade of operational reliability that competitors cannot replicate without years of permitting and construction.</div>
+      </div>
+      <div class="flag-row">
+        <span class="flag f-g">Hormuz closure direct beneficiary</span>
+        <span class="flag f-g">Corpus Christi online 2026</span>
+        <span class="flag f-g">Fee-based model</span>
+        <span class="flag f-g">Morningstar "first-choice supplier"</span>
+        <span class="flag f-a">Peace deal = LNG price correction</span>
+        <span class="flag f-a">No nuclear/AI angle</span>
+      </div>
+      <div class="pick-grades">
+        <div class="pg-cell"><div class="pg-letter gb">B+</div><div class="pg-lbl">Value</div></div>
+        <div class="pg-cell"><div class="pg-letter ga">A</div><div class="pg-lbl">Growth</div></div>
+        <div class="pg-cell"><div class="pg-letter ga">A</div><div class="pg-lbl">Health</div></div>
+        <div class="pg-cell"><div class="pg-letter ga">A+</div><div class="pg-lbl">Geopolit.</div></div>
+      </div>
+      <div class="pick-verdict pv-buy">✅ Buy — Hormuz Closure Pure Play</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PORTFOLIO ══════════ -->
+<div id="section-portfolio" class="section">
+  <div class="card">
+    <div class="card-title ct-gold">Full Portfolio — Including Energy Segment</div>
+    <table class="port-table">
+      <tr>
+        <th>Holding</th><th>Current Value</th><th>% Portfolio</th><th>Your P&L</th><th>12M Base Case</th><th>Action</th>
+      </tr>
+      <!-- ENERGY -->
+      <tr class="energy-row">
+        <td class="td-b" style="color:var(--nuke)">VST (50 shares)</td>
+        <td class="td-r">~$7,800</td><td class="td-r">4.4%</td>
+        <td class="td-r at">~–$460 (–5.6%)</td>
+        <td class="td-r gt">~$11,250 (+44%)</td>
+        <td>Hold + Add $140–150</td>
+      </tr>
+      <tr class="energy-row">
+        <td class="td-b" style="color:var(--nuke)">CEG (new pick)</td>
+        <td class="td-r">$3,000–$5,000</td><td class="td-r">1.7–2.9%</td>
+        <td class="td-r">New position</td>
+        <td class="td-r gt">+29–53% to $406–$481</td>
+        <td>Buy 10–16 shares</td>
+      </tr>
+      <tr class="energy-row">
+        <td class="td-b" style="color:var(--oil)">DVN (new pick)</td>
+        <td class="td-r">$2,500–$4,000</td><td class="td-r">1.4–2.3%</td>
+        <td class="td-r">New position</td>
+        <td class="td-r gt">+42–52% upside</td>
+        <td>Buy 75–120 shares</td>
+      </tr>
+      <tr class="energy-row">
+        <td class="td-b" style="color:var(--gas)">LNG (new pick)</td>
+        <td class="td-r">$2,200–$3,300</td><td class="td-r">1.3–1.9%</td>
+        <td class="td-r">New position</td>
+        <td class="td-r gt">+25–34% upside</td>
+        <td>Buy 10–15 shares</td>
+      </tr>
+      <!-- TECH -->
+      <tr><td class="td-b" style="color:#76b900">NVDA (40 shares)</td><td class="td-r">~$7,200</td><td class="td-r">4.1%</td><td class="td-r gt">+$960 (+16%)</td><td class="td-r gt">~$9,600</td><td>Hold</td></tr>
+      <tr><td class="td-b" style="color:#00a2ed">MSFT (110 shares)</td><td class="td-r">~$44,000</td><td class="td-r">25.0%</td><td class="td-r at">~Flat</td><td class="td-r gt">~$58,000</td><td>Hold + Add dips</td></tr>
+      <!-- DEFENSE -->
+      <tr><td class="td-b">LASR + UMAC (new)</td><td class="td-r">~$9,000</td><td class="td-r">5.1%</td><td class="td-r">New</td><td class="td-r gt">~$12,000–$14,000</td><td>Hold</td></tr>
+      <!-- GOLD/SILVER -->
+      <tr><td class="td-b" style="color:#c8a84b">KGC + WPM + Barrick</td><td class="td-r">~$16,000</td><td class="td-r">9.1%</td><td class="td-r">New</td><td class="td-r gt">~$19,000</td><td>Hold</td></tr>
+      <tr><td class="td-b" style="color:#c8a84b">Gold + Miner Index</td><td class="td-r">$25,000</td><td class="td-r">14.2%</td><td class="td-r">Existing</td><td class="td-r gt">~$28,000</td><td>Hold</td></tr>
+      <tr><td class="td-b">Silver + Jr. Miners (PSLV+SILJ)</td><td class="td-r">~$46,000*</td><td class="td-r">26.1%</td><td class="td-r at">*After crash</td><td class="td-r gt">~$54,000–$60,000</td><td>Hold + Add on dips</td></tr>
+      <!-- CASH -->
+      <tr><td class="td-b" style="color:var(--green)">Cash Reserve</td><td class="td-r">~$12,000</td><td class="td-r">6.8%</td><td class="td-r">Dry powder</td><td class="td-r">Deploy on dips</td><td>Keep for dips</td></tr>
+      <tr class="port-total">
+        <td class="td-b">TOTAL</td>
+        <td class="td-r">~$175,000</td>
+        <td class="td-r">100%</td>
+        <td class="td-r">Mixed</td>
+        <td class="td-r gt">~$200,000–$215,000</td>
+        <td>+14–23% base case</td>
+      </tr>
+    </table>
+    <p style="font-size:0.75rem; color:var(--muted); margin-bottom:0">*Silver position has experienced recent crash toward $80 from $90; value estimated at current levels pending recovery. Portfolio structure remains well-diversified across precious metals (safe-haven), defense tech (war premium), power/energy (Iran beneficiary), and tech (structural AI growth).</p>
+  </div>
+
+  <div class="conclusion">
+    <h3>Final Analyst Verdict — VST and Energy Sector</h3>
+    <p><strong>On your VST position:</strong> You hold 50 shares at a small paper loss of ~$460–560. This is not a mistake — it is a timing issue. Vistra reported full-year 2025 Adjusted EBITDA of $5.912 billion and issued 2026 guidance of $6.8–$7.6 billion, with $3.592 billion in adjusted free cash flow for 2025 alone. The company bought back nearly 30% of its outstanding shares since 2021 using that cash flow. The analyst consensus of $237 (+54% from today) has been raised, not lowered, since the stock dropped 30%. <strong>Do not sell. Add 15–20 shares at $140–$150 if the market pulls back further.</strong></p>
+    <p><strong>On the energy sector broadly:</strong> The Iran war has created one of the most compelling energy sector entry environments of the last decade. Energy companies have been the clear outperformers since February 28, riding the oil and gas wave as Iranian retaliation included strikes on energy sites in Saudi Arabia and Qatar, with threats to close the Strait of Hormuz choking off 20% of global oil supply. For your portfolio, three additional energy names complement VST without overlapping: <strong>CEG</strong> (the nuclear AI companion to VST's position), <strong>DVN</strong> (Morningstar's #1 most undervalued energy stock with 10%+ FCF yield and net cash — the cleanest Iran oil trade), and <strong>LNG Cheniere</strong> (the most direct Hormuz-closure beneficiary with locked-in long-term contracts).</p>
+    <p>Your portfolio is now shaping into a coherent, multi-theme structure: <strong>precious metals</strong> (safe-haven + inflation hedge), <strong>energy</strong> (war premium + structural power demand), <strong>defense tech</strong> (new-era warfare), and <strong>technology</strong> (AI infrastructure and secular growth). The Iran conflict is simultaneously a tailwind for gold, silver, oil, LNG, nuclear power, and defense — and only a short-term headwind for high-multiple tech. This is portfolio construction working exactly as intended.</p>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<div class="disclaimer">
+  IMPORTANT DISCLAIMER: This research report is provided for informational and educational purposes only. Generated by an AI assistant (Claude, Anthropic) styled as J.P. Morgan equity research — NOT an actual J.P. Morgan publication. All data, prices, analyst targets and financial figures sourced from publicly available information as of March 3, 2026. This is not financial advice. Past performance is not indicative of future results. Consult a qualified financial advisor before making investment decisions.
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
