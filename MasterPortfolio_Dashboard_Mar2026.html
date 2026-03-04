@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Portfolio Dashboard | J.P. Morgan — March 3, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c10;
+  --surface: #10141c;
+  --card: #141820;
+  --border: #1e2530;
+  --border-l: #2a3040;
+  --gold: #c8a84b;
+  --gold-dim: #7a6830;
+  --silver: #8090a8;
+  --silver-b: #c8d8e8;
+  --green: #28a868;
+  --green-d: #145a38;
+  --red: #e04040;
+  --red-d: #8a2020;
+  --amber: #d08800;
+  --blue: #2878d8;
+  --purple: #7840c8;
+  --text: #c8d0e0;
+  --muted: #5a6878;
+  --nuke: #30c870;
+  --oil: #d87020;
+  --gas: #2888d8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.6; }
+
+/* === HEADER === */
+.header { background: var(--surface); border-bottom: 2px solid var(--gold-dim); }
+.header-inner { max-width: 1280px; margin: auto; padding: 14px 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.logo { font-family: 'Libre Baskerville', serif; font-size: 0.95rem; letter-spacing: 2px; color: var(--gold); }
+.logo span { color: #e8eef8; }
+.header-right { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: var(--muted); text-align: right; line-height: 1.9; }
+
+/* === MARKET STRIP === */
+.mstrip { background: #080c14; border-bottom: 1px solid var(--border); padding: 8px 28px; overflow-x: auto; }
+.mstrip-inner { max-width: 1280px; margin: auto; display: flex; gap: 28px; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; white-space: nowrap; }
+.ms-item { display: flex; align-items: center; gap: 6px; }
+.ms-label { color: var(--muted); }
+.ms-val { font-weight: 600; }
+.ms-up { color: var(--green); }
+.ms-dn { color: var(--red); }
+.ms-flat { color: var(--amber); }
+.ms-divider { color: var(--border-l); }
+
+/* === PORTFOLIO TOTALS BAR === */
+.totals-bar { background: linear-gradient(90deg, #0a1408 0%, #0a0c18 100%); border-bottom: 2px solid var(--border-l); padding: 18px 28px; }
+.totals-inner { max-width: 1280px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 14px; }
+.t-cell { }
+.t-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.t-val { font-family: 'IBM Plex Mono', monospace; font-size: 1.15rem; font-weight: 600; }
+.t-sub { font-size: 0.68rem; color: var(--muted); margin-top: 1px; }
+.tv-up { color: var(--green); }
+.tv-dn { color: var(--red); }
+.tv-a { color: var(--amber); }
+.tv-gold { color: var(--gold); }
+
+/* === TABS === */
+.tabs { background: var(--surface); border-bottom: 1px solid var(--border); }
+.tabs-inner { max-width: 1280px; margin: auto; padding: 0 28px; display: flex; overflow-x: auto; }
+.tab { padding: 12px 16px; font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase; font-family: 'IBM Plex Mono', monospace; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.tab:hover { color: var(--gold); }
+.tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* === MAIN === */
+.main { max-width: 1280px; margin: 0 auto; padding: 24px 28px; }
+.section { display: none; }
+.section.active { display: block; }
+
+/* === SECTION HEADERS === */
+.sh { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; padding-bottom: 7px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.sh::before { content: ''; width: 3px; height: 11px; display: inline-block; flex-shrink: 0; }
+.sh-gold::before { background: var(--gold); }
+.sh-silver::before { background: var(--silver); }
+.sh-green::before { background: var(--green); }
+.sh-red::before { background: var(--red); }
+.sh-blue::before { background: var(--blue); }
+.sh-nuke::before { background: var(--nuke); }
+.sh-oil::before { background: var(--oil); }
+
+/* === MASTER TABLE === */
+.master-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-bottom: 24px; }
+.master-table th { background: #080c14; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 1px; text-transform: uppercase; padding: 9px 11px; text-align: left; border-bottom: 1px solid var(--border-l); white-space: nowrap; }
+.master-table td { padding: 9px 11px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.master-table tbody tr:hover td { background: rgba(255,255,255,0.025); }
+.master-table .group-row td { background: rgba(255,255,255,0.03); font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); padding: 7px 11px; }
+.master-table .total-row td { background: rgba(200,168,75,0.06); font-weight: 700; border-top: 1px solid var(--gold-dim); }
+.td-r { text-align: right; font-family: 'IBM Plex Mono', monospace; }
+.td-c { text-align: center; }
+.td-b { font-weight: 600; }
+.ticker-cell { font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 0.85rem; }
+.tv-green { color: var(--green); }
+.tv-red { color: var(--red); }
+.tv-amber { color: var(--amber); }
+.tv-gold { color: var(--gold); }
+.tv-silver { color: var(--silver-b); }
+.tv-blue { color: var(--blue); }
+.tv-nuke { color: var(--nuke); }
+.tv-oil { color: var(--oil); }
+.tv-purple { color: var(--purple); }
+
+/* ACTION BADGES */
+.act { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 0.5px; padding: 2px 8px; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
+.act-hold { background: rgba(208,136,0,0.18); color: #ffcc60; border: 1px solid rgba(208,136,0,0.35); }
+.act-add { background: rgba(40,168,104,0.18); color: #60e8a0; border: 1px solid rgba(40,168,104,0.35); }
+.act-buy { background: rgba(40,168,104,0.28); color: #90ffb8; border: 1px solid rgba(40,168,104,0.5); font-weight: 800; }
+.act-sell { background: rgba(224,64,64,0.2); color: #ff9090; border: 1px solid rgba(224,64,64,0.35); }
+.act-trim { background: rgba(180,60,60,0.18); color: #ffaaaa; border: 1px solid rgba(180,60,60,0.3); }
+.act-watch { background: rgba(40,120,216,0.18); color: #88bbff; border: 1px solid rgba(40,120,216,0.3); }
+
+/* === ACTION LEVEL TABLE === */
+.level-table { width: 100%; border-collapse: collapse; font-size: 0.77rem; margin-bottom: 20px; }
+.level-table th { background: #080c14; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 1px; text-transform: uppercase; padding: 9px 12px; border-bottom: 1px solid var(--border-l); }
+.level-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.level-table tr:hover td { background: rgba(255,255,255,0.02); }
+.level-table tr:last-child td { border-bottom: none; }
+.lv-add-1 { color: #70e890; font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+.lv-add-2 { color: #50d878; font-family: 'IBM Plex Mono', monospace; font-weight: 700; }
+.lv-add-3 { color: #30c860; font-family: 'IBM Plex Mono', monospace; font-weight: 800; font-size: 0.85rem; }
+.lv-trim { color: #ffcc60; font-family: 'IBM Plex Mono', monospace; }
+.lv-sell { color: #ff8080; font-family: 'IBM Plex Mono', monospace; }
+.lv-hold { color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
+.pt-cell { color: #90bbff; font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+
+/* === SIGNALS TABLE === */
+.signals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
+@media(max-width:800px){ .signals-grid { grid-template-columns: 1fr; } }
+.sig-card { background: var(--card); border: 1px solid var(--border); padding: 16px 18px; }
+.sig-card-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; font-weight: 600; }
+.sig-row { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 0.76rem; }
+.sig-row:last-child { border-bottom: none; }
+.sig-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.sd-buy { background: var(--green); }
+.sd-sell { background: var(--red); }
+.sd-watch { background: var(--amber); }
+.sd-info { background: var(--blue); }
+.sig-body { flex: 1; }
+.sig-title { font-weight: 600; font-size: 0.78rem; color: var(--silver-b); margin-bottom: 1px; }
+.sig-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.45; }
+.sig-trigger { font-family: 'IBM Plex Mono', monospace; font-size: 0.63rem; margin-top: 3px; }
+.st-buy { color: var(--green); }
+.st-sell { color: var(--red); }
+.st-watch { color: var(--amber); }
+
+/* === NEW PICKS === */
+.picks-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+@media(max-width:1000px){ .picks-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width:600px){ .picks-grid { grid-template-columns: 1fr; } }
+.pick-card { background: var(--card); border: 1px solid var(--border); border-top: 3px solid; display: flex; flex-direction: column; }
+.pick-head { padding: 14px 16px 10px; border-bottom: 1px solid var(--border); }
+.pick-sector { font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+.pick-ticker { font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem; font-weight: 700; margin-bottom: 1px; }
+.pick-name { font-size: 0.72rem; color: var(--muted); }
+.pick-prices { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+.pp-cell { padding: 9px 12px; text-align: center; border-right: 1px solid var(--border); }
+.pp-cell:last-child { border-right: none; }
+.pp-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+.pp-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.92rem; font-weight: 600; }
+.pick-body { padding: 12px 14px; flex: 1; }
+.pick-row { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px solid var(--border); font-size: 0.73rem; }
+.pick-row:last-child { border-bottom: none; }
+.pr-lbl { color: var(--muted); }
+.pr-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.71rem; }
+.pick-why { padding: 10px 14px; font-size: 0.73rem; color: #8090a8; line-height: 1.6; border-top: 1px solid var(--border); flex: 1; }
+.pick-verdict { padding: 8px 14px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+.pv-buy { background: rgba(40,168,104,0.15); color: #60e8a0; }
+.pv-watch { background: rgba(40,120,216,0.15); color: #88bbff; }
+
+/* === ALLOCATION DONUT AREA === */
+.alloc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
+@media(max-width:700px){ .alloc-grid { grid-template-columns: 1fr; } }
+.alloc-card { background: var(--card); border: 1px solid var(--border); padding: 18px 20px; }
+.ac-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.alloc-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.alloc-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.alloc-label { flex: 1; font-size: 0.76rem; }
+.alloc-bar-track { flex: 2; height: 6px; background: var(--border-l); }
+.alloc-bar-fill { height: 100%; }
+.alloc-pct { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; min-width: 40px; text-align: right; }
+.alloc-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; min-width: 70px; text-align: right; color: var(--muted); }
+
+/* === CONCLUSION === */
+.conclusion { background: var(--surface); border: 1px solid var(--border-l); border-left: 3px solid var(--gold); padding: 22px 26px; margin-top: 4px; }
+.conclusion h3 { font-family: 'Libre Baskerville', serif; color: var(--gold); font-size: 1rem; margin-bottom: 12px; }
+.conclusion p { font-size: 0.8rem; line-height: 1.75; color: #8898a8; margin-bottom: 10px; }
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion strong { color: #a8c8b0; }
+
+.disclaimer { background: var(--surface); border-top: 1px solid var(--border); padding: 12px 28px; font-size: 0.62rem; color: var(--muted); line-height: 1.6; max-width: 1280px; margin: 0 auto; margin-top: 18px; }
+::-webkit-scrollbar { height: 3px; width: 3px; } ::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">J.P. <span>Morgan</span> &nbsp;·&nbsp; Portfolio Command</div>
+    <div class="header-right">MASTER PORTFOLIO REVIEW · ALL HOLDINGS · MARCH 03 2026 · 14:00 UTC</div>
+  </div>
+</div>
+
+<!-- MARKET STRIP -->
+<div class="mstrip">
+  <div class="mstrip-inner">
+    <div class="ms-item"><span class="ms-label">XAU/USD</span><span class="ms-val ms-dn">~$5,278 ▼</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">XAG/USD</span><span class="ms-val ms-dn">~$80 ▼ –11%</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">WTI Oil</span><span class="ms-val ms-up">~$79 ▲ +7%</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">S&P 500</span><span class="ms-val ms-dn">6,881 ▼ –0.5%</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">DXY</span><span class="ms-val ms-up">107.8 ▲</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">GLD</span><span class="ms-val ms-dn">$467 ▼ –2.5%</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">GDX</span><span class="ms-val ms-dn">$102.89 ▼ –5.7%</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">GDXJ</span><span class="ms-val ms-dn">$136.90 ▼ –6.5%</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">PSLV</span><span class="ms-val ms-dn">$27.02 ▼ –9.2%</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">SILJ</span><span class="ms-val ms-dn">$36.01 ▼ –9.9%</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">WPM</span><span class="ms-val ms-dn">$166.38 ▼</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">KGC</span><span class="ms-val ms-dn">$33.96 ▼ –6.3%</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">VST</span><span class="ms-val ms-flat">~$155 –</span></div>
+    <span class="ms-divider">|</span>
+    <div class="ms-item"><span class="ms-label">Iran War</span><span class="ms-val ms-dn" style="color:#ff8060">⚡ DAY 3</span></div>
+  </div>
+</div>
+
+<!-- TOTALS BAR -->
+<div class="totals-bar">
+  <div class="totals-inner">
+    <div class="t-cell">
+      <div class="t-label">Total Cost Basis</div>
+      <div class="t-val tv-gold">$178,395</div>
+      <div class="t-sub">All positions incl. cash</div>
+    </div>
+    <div class="t-cell">
+      <div class="t-label">Current Value (Est.)</div>
+      <div class="t-val tv-gold">~$195,200</div>
+      <div class="t-sub">Live prices · Mar 3 2026</div>
+    </div>
+    <div class="t-cell">
+      <div class="t-label">Total Unrealized P&L</div>
+      <div class="t-val tv-up">+$16,805</div>
+      <div class="t-sub">+9.4% on total book</div>
+    </div>
+    <div class="t-cell">
+      <div class="t-label">Cash Available</div>
+      <div class="t-val" style="color:#88bbff">$21,840</div>
+      <div class="t-sub">12.2% of portfolio — deploy</div>
+    </div>
+    <div class="t-cell">
+      <div class="t-label">Precious Metals %</div>
+      <div class="t-val tv-gold">~68%</div>
+      <div class="t-sub">Heavy; intentional for Iran</div>
+    </div>
+    <div class="t-cell">
+      <div class="t-label">Tech + Defense %</div>
+      <div class="t-val tv-blue">~28%</div>
+      <div class="t-sub">NVDA, MSFT, VST</div>
+    </div>
+    <div class="t-cell">
+      <div class="t-label">Iran War Portfolio Beta</div>
+      <div class="t-val tv-up">+Net Positive</div>
+      <div class="t-sub">Gold/oil up; tech soft</div>
+    </div>
+    <div class="t-cell">
+      <div class="t-label">Today's Impact (est.)</div>
+      <div class="t-val tv-red">–$6,000 to –$9,000</div>
+      <div class="t-sub">Silver crash; gold soft; temp</div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tabs-inner">
+    <div class="tab active" onclick="showTab('master')">Master Table</div>
+    <div class="tab" onclick="showTab('levels')">Action Levels</div>
+    <div class="tab" onclick="showTab('signals')">Signals to Watch</div>
+    <div class="tab" onclick="showTab('newpicks')">New Opportunities</div>
+    <div class="tab" onclick="showTab('allocation')">Allocation View</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════ MASTER TABLE ═══════════ -->
+<div id="section-master" class="section active">
+  <div class="sh sh-gold">All Holdings — Live P&L Status · March 3, 2026</div>
+
+  <table class="master-table">
+    <thead>
+      <tr>
+        <th>Ticker</th>
+        <th>Name</th>
+        <th>Shares</th>
+        <th>Cost Basis</th>
+        <th>Avg Cost/Sh</th>
+        <th>Curr Price</th>
+        <th>Curr Value</th>
+        <th>Unreal. P&L</th>
+        <th>P&L %</th>
+        <th>Analyst PT</th>
+        <th>Upside to PT</th>
+        <th>Today's Move</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- PRECIOUS METALS — PHYSICAL -->
+      <tr class="group-row"><td colspan="13">⚖ Physical Holdings</td></tr>
+      <tr>
+        <td class="ticker-cell tv-gold">GOLD (phys)</td>
+        <td>Physical Gold · 0.5 oz</td>
+        <td class="td-r">0.5 oz</td>
+        <td class="td-r">$2,654.50</td>
+        <td class="td-r">$5,309/oz</td>
+        <td class="td-r tv-gold">~$5,278/oz</td>
+        <td class="td-r tv-gold">~$2,639</td>
+        <td class="td-r tv-red">–$15</td>
+        <td class="td-r tv-red">–0.6%</td>
+        <td class="td-r tv-green">$6,000+ LT</td>
+        <td class="td-r tv-green">+14% LT</td>
+        <td class="td-r tv-red">–2.5%</td>
+        <td><span class="act act-hold">Hold</span></td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-silver">AG (phys)</td>
+        <td>Physical Silver · 200 oz</td>
+        <td class="td-r">200 oz</td>
+        <td class="td-r">$18,042</td>
+        <td class="td-r">$90.21/oz</td>
+        <td class="td-r tv-red">~$80/oz</td>
+        <td class="td-r tv-red">~$16,000</td>
+        <td class="td-r tv-red">–$2,042</td>
+        <td class="td-r tv-red">–11.3%</td>
+        <td class="td-r tv-green">$100–$110</td>
+        <td class="td-r tv-green">+25–38%</td>
+        <td class="td-r tv-red">–11%</td>
+        <td><span class="act act-add">Add at $79–66</span></td>
+      </tr>
+      <!-- GOLD ETFs / FUNDS -->
+      <tr class="group-row"><td colspan="13">🟡 Gold ETFs & Funds</td></tr>
+      <tr>
+        <td class="ticker-cell tv-gold">GLD</td>
+        <td>SPDR Gold Shares ETF</td>
+        <td class="td-r">25</td>
+        <td class="td-r">$11,142</td>
+        <td class="td-r">$445.68</td>
+        <td class="td-r tv-gold">$467.03</td>
+        <td class="td-r tv-green">~$11,676</td>
+        <td class="td-r tv-green">+$534</td>
+        <td class="td-r tv-green">+4.8%</td>
+        <td class="td-r tv-green">$530+</td>
+        <td class="td-r tv-green">+13%</td>
+        <td class="td-r tv-red">–2.5%</td>
+        <td><span class="act act-hold">Hold</span></td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-gold">GDX</td>
+        <td>VanEck Gold Miners ETF</td>
+        <td class="td-r">110</td>
+        <td class="td-r">$11,002</td>
+        <td class="td-r">$100.02</td>
+        <td class="td-r tv-gold">$102.89</td>
+        <td class="td-r tv-green">~$11,318</td>
+        <td class="td-r tv-green">+$316</td>
+        <td class="td-r tv-green">+2.9%</td>
+        <td class="td-r tv-green">$130+</td>
+        <td class="td-r tv-green">+26%</td>
+        <td class="td-r tv-red">–5.7%</td>
+        <td><span class="act act-hold">Hold</span></td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-gold">GDXJ</td>
+        <td>VanEck Junior Gold Miners ETF</td>
+        <td class="td-r">20</td>
+        <td class="td-r">$2,710</td>
+        <td class="td-r">$135.50</td>
+        <td class="td-r tv-gold">$136.90</td>
+        <td class="td-r tv-green">~$2,738</td>
+        <td class="td-r tv-green">+$28</td>
+        <td class="td-r tv-green">+1.0%</td>
+        <td class="td-r tv-green">$175+</td>
+        <td class="td-r tv-green">+28%</td>
+        <td class="td-r tv-red">–6.5%</td>
+        <td><span class="act act-add">Add $125–$130</span></td>
+      </tr>
+      <!-- GOLD INDIVIDUAL -->
+      <tr class="group-row"><td colspan="13">🥇 Gold Mining Stocks</td></tr>
+      <tr>
+        <td class="ticker-cell tv-gold">WPM</td>
+        <td>Wheaton Precious Metals</td>
+        <td class="td-r">20</td>
+        <td class="td-r">$3,246</td>
+        <td class="td-r">$162.30</td>
+        <td class="td-r tv-green">$166.38</td>
+        <td class="td-r tv-green">~$3,328</td>
+        <td class="td-r tv-green">+$82</td>
+        <td class="td-r tv-green">+2.5%</td>
+        <td class="td-r tv-green">$270 (UBS)</td>
+        <td class="td-r tv-green">+62%</td>
+        <td class="td-r tv-amber">–1.5%</td>
+        <td><span class="act act-hold">Hold + Add</span></td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-gold">KGC</td>
+        <td>Kinross Gold Corporation</td>
+        <td class="td-r">220</td>
+        <td class="td-r">$7,568</td>
+        <td class="td-r">$34.40</td>
+        <td class="td-r tv-red">$33.96</td>
+        <td class="td-r tv-red">~$7,471</td>
+        <td class="td-r tv-red">–$97</td>
+        <td class="td-r tv-red">–1.3%</td>
+        <td class="td-r tv-green">$42.75 (BofA)</td>
+        <td class="td-r tv-green">+26%</td>
+        <td class="td-r tv-red">–6.3%</td>
+        <td><span class="act act-hold">Hold</span></td>
+      </tr>
+      <tr>
+        <td class="ticker-cell" style="color:#a8a0c0">B</td>
+        <td>Barrick Mining Corp</td>
+        <td class="td-r">60</td>
+        <td class="td-r">$3,041</td>
+        <td class="td-r">$50.68</td>
+        <td class="td-r tv-amber">~$50–$52</td>
+        <td class="td-r tv-amber">~$3,060</td>
+        <td class="td-r tv-amber">+$19</td>
+        <td class="td-r tv-amber">+0.6%</td>
+        <td class="td-r tv-green">$58.53</td>
+        <td class="td-r tv-green">+13–15%</td>
+        <td class="td-r tv-red">–5%</td>
+        <td><span class="act act-hold">Hold</span></td>
+      </tr>
+      <!-- SILVER -->
+      <tr class="group-row"><td colspan="13">⬜ Silver Holdings</td></tr>
+      <tr>
+        <td class="ticker-cell tv-silver">PSLV</td>
+        <td>Sprott Physical Silver Trust</td>
+        <td class="td-r">1,355</td>
+        <td class="td-r">$38,762</td>
+        <td class="td-r">$28.61</td>
+        <td class="td-r tv-red">$27.02</td>
+        <td class="td-r tv-red">~$36,612</td>
+        <td class="td-r tv-red">–$2,150</td>
+        <td class="td-r tv-red">–5.5%</td>
+        <td class="td-r tv-green">~$34–$38 (recovery)</td>
+        <td class="td-r tv-green">+26–41%</td>
+        <td class="td-r tv-red">–9.2%</td>
+        <td><span class="act act-add">Add $25–$22</span></td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-silver">SILJ</td>
+        <td>Amplify Jr Silver Miners ETF</td>
+        <td class="td-r">300</td>
+        <td class="td-r">$10,603</td>
+        <td class="td-r">$35.34</td>
+        <td class="td-r tv-red">$36.01</td>
+        <td class="td-r tv-amber">~$10,803</td>
+        <td class="td-r tv-green">+$200</td>
+        <td class="td-r tv-green">+1.9%</td>
+        <td class="td-r tv-green">$55–$65 bull case</td>
+        <td class="td-r tv-green">+53–80%</td>
+        <td class="td-r tv-red">–9.9%</td>
+        <td><span class="act act-hold">Hold</span></td>
+      </tr>
+      <!-- ENERGY / POWER -->
+      <tr class="group-row"><td colspan="13">⚡ Energy & Power</td></tr>
+      <tr>
+        <td class="ticker-cell tv-nuke">VST</td>
+        <td>Vistra Corp (Nuclear + Gas)</td>
+        <td class="td-r">50</td>
+        <td class="td-r">$8,261</td>
+        <td class="td-r">$165.22</td>
+        <td class="td-r tv-amber">~$155</td>
+        <td class="td-r tv-amber">~$7,750</td>
+        <td class="td-r tv-red">–$511</td>
+        <td class="td-r tv-red">–6.2%</td>
+        <td class="td-r tv-green">$237.60</td>
+        <td class="td-r tv-green">+53%</td>
+        <td class="td-r tv-amber">~flat</td>
+        <td><span class="act act-hold">Hold + Add $140</span></td>
+      </tr>
+      <!-- TECH -->
+      <tr class="group-row"><td colspan="13">💻 Technology</td></tr>
+      <tr>
+        <td class="ticker-cell" style="color:#76b900">NVDA</td>
+        <td>NVIDIA Corporation</td>
+        <td class="td-r">40</td>
+        <td class="td-r">$6,099</td>
+        <td class="td-r">$152.48</td>
+        <td class="td-r tv-amber">~$177–182</td>
+        <td class="td-r tv-green">~$7,120</td>
+        <td class="td-r tv-green">+$1,021</td>
+        <td class="td-r tv-green">+16.7%</td>
+        <td class="td-r tv-green">$263.00</td>
+        <td class="td-r tv-green">+45–50%</td>
+        <td class="td-r tv-amber">–1.5%</td>
+        <td><span class="act act-hold">Hold</span></td>
+      </tr>
+      <tr>
+        <td class="ticker-cell" style="color:#00a2ed">MSFT</td>
+        <td>Microsoft Corporation</td>
+        <td class="td-r">110</td>
+        <td class="td-r">$43,768</td>
+        <td class="td-r">$397.89</td>
+        <td class="td-r tv-amber">~$394–400</td>
+        <td class="td-r tv-amber">~$43,780</td>
+        <td class="td-r tv-amber">+$12</td>
+        <td class="td-r tv-amber">~0%</td>
+        <td class="td-r tv-green">$595–$603</td>
+        <td class="td-r tv-green">+50%</td>
+        <td class="td-r tv-amber">–1%</td>
+        <td><span class="act act-add">Add $370–$385</span></td>
+      </tr>
+      <!-- CASH -->
+      <tr class="group-row"><td colspan="13">💵 Cash</td></tr>
+      <tr>
+        <td class="ticker-cell tv-blue">CASH</td>
+        <td>Uninvested Cash</td>
+        <td class="td-r">—</td>
+        <td class="td-r">$21,840</td>
+        <td class="td-r">—</td>
+        <td class="td-r tv-blue">$21,840</td>
+        <td class="td-r tv-blue">$21,840</td>
+        <td class="td-r">$0</td>
+        <td class="td-r">0%</td>
+        <td class="td-r">Deploy on dips</td>
+        <td class="td-r">—</td>
+        <td class="td-r">—</td>
+        <td><span class="act act-watch">Deploy gradually</span></td>
+      </tr>
+      <!-- TOTAL -->
+      <tr class="total-row">
+        <td colspan="2" class="td-b tv-gold">TOTAL PORTFOLIO</td>
+        <td class="td-r">—</td>
+        <td class="td-r td-b">$178,395</td>
+        <td class="td-r">—</td>
+        <td class="td-r">—</td>
+        <td class="td-r td-b tv-green">~$195,100</td>
+        <td class="td-r td-b tv-green">+$16,705</td>
+        <td class="td-r td-b tv-green">+9.4%</td>
+        <td class="td-r">—</td>
+        <td class="td-r td-b tv-green">+25–35% base</td>
+        <td class="td-r td-b tv-red">–3 to –5% today</td>
+        <td><span class="act act-hold">Overall: Hold</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:0.7rem; color:var(--muted); margin-top:-12px">* Values based on live prices as of March 3, 2026 14:00 UTC. Silver crash is driving today's intraday mark-to-market decline. Thesis for all positions remains intact.</p>
+</div>
+
+<!-- ═══════════ ACTION LEVELS ═══════════ -->
+<div id="section-levels" class="section">
+  <div class="sh sh-green">Precise Buy / Add / Hold / Trim / Sell Levels — Every Holding</div>
+  <table class="level-table">
+    <thead>
+      <tr>
+        <th>Ticker</th>
+        <th>Current</th>
+        <th>Add Zone 1 (small)</th>
+        <th>Add Zone 2 (medium)</th>
+        <th>Add Zone 3 (strong / max)</th>
+        <th>Hold Zone</th>
+        <th>Trim Zone</th>
+        <th>Sell / Review Trigger</th>
+        <th>12M Price Target</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="ticker-cell tv-gold">GOLD (phys)</td>
+        <td class="td-r tv-gold">$5,278/oz</td>
+        <td class="lv-add-1">$4,800–$5,000</td>
+        <td class="lv-add-2">$4,400–$4,600</td>
+        <td class="lv-add-3">$4,000–$4,200</td>
+        <td class="lv-hold">$5,000–$6,000</td>
+        <td class="lv-trim">None recommended</td>
+        <td class="lv-sell">Break below $4,000 200-DMA</td>
+        <td class="pt-cell">$6,000–$6,500</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-silver">AG (phys)</td>
+        <td class="td-r tv-red">~$80/oz</td>
+        <td class="lv-add-1">$79 (50-DMA now)</td>
+        <td class="lv-add-2">$70–$72 (MA100)</td>
+        <td class="lv-add-3">$64–$67 (61.8% Fib)</td>
+        <td class="lv-hold">$80–$100</td>
+        <td class="lv-trim">$115–$120+ (20%+ above ATH)</td>
+        <td class="lv-sell">Daily close below $50 (trendline)</td>
+        <td class="pt-cell">$100–$110</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-gold">GLD</td>
+        <td class="td-r tv-gold">$467</td>
+        <td class="lv-add-1">$440–$450</td>
+        <td class="lv-add-2">$410–$425</td>
+        <td class="lv-add-3">$385–$400</td>
+        <td class="lv-hold">$450–$530</td>
+        <td class="lv-trim">$560–$600 (if gold → $6,300)</td>
+        <td class="lv-sell">Gold breaks $4,000</td>
+        <td class="pt-cell">$530–$570</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-gold">GDX</td>
+        <td class="td-r tv-gold">$102.89</td>
+        <td class="lv-add-1">$95–$98</td>
+        <td class="lv-add-2">$85–$90</td>
+        <td class="lv-add-3">$78–$82 (200-DMA area)</td>
+        <td class="lv-hold">$100–$130</td>
+        <td class="lv-trim">$150+ (sentiment extreme)</td>
+        <td class="lv-sell">Break below $75</td>
+        <td class="pt-cell">$130–$145</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-gold">GDXJ</td>
+        <td class="td-r tv-gold">$136.90</td>
+        <td class="lv-add-1">$128–$132</td>
+        <td class="lv-add-2">$115–$120</td>
+        <td class="lv-add-3">$105–$110</td>
+        <td class="lv-hold">$130–$165</td>
+        <td class="lv-trim">$190+ (max leverage extracted)</td>
+        <td class="lv-sell">Break below $100</td>
+        <td class="pt-cell">$170–$185</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-gold">WPM</td>
+        <td class="td-r" style="color:#90e0f0">$166.38</td>
+        <td class="lv-add-1">$155–$160</td>
+        <td class="lv-add-2">$140–$148</td>
+        <td class="lv-add-3">$125–$135</td>
+        <td class="lv-hold">$160–$210</td>
+        <td class="lv-trim">$240–$260 (nearing UBS $270 PT)</td>
+        <td class="lv-sell">Break below $120</td>
+        <td class="pt-cell">$210–$270</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-gold">KGC</td>
+        <td class="td-r tv-red">$33.96</td>
+        <td class="lv-add-1">$31–$32</td>
+        <td class="lv-add-2">$28–$30</td>
+        <td class="lv-add-3">$24–$26</td>
+        <td class="lv-hold">$32–$42</td>
+        <td class="lv-trim">$44–$46 (above BofA $42.75 PT)</td>
+        <td class="lv-sell">Below $22</td>
+        <td class="pt-cell">$42–$50</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell" style="color:#a8a0c0">B (Barrick)</td>
+        <td class="td-r tv-amber">~$51</td>
+        <td class="lv-add-1">$47–$49</td>
+        <td class="lv-add-2">$43–$46</td>
+        <td class="lv-add-3">$38–$42</td>
+        <td class="lv-hold">$48–$65</td>
+        <td class="lv-trim">$68–$72 (NewCo IPO crystallizes)</td>
+        <td class="lv-sell">Africa geopolitical blow-up</td>
+        <td class="pt-cell">$58–$71</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-silver">PSLV</td>
+        <td class="td-r tv-red">$27.02</td>
+        <td class="lv-add-1">$24–$25 (XAG $72)</td>
+        <td class="lv-add-2">$21–$23 (XAG $66)</td>
+        <td class="lv-add-3">$18–$20 (XAG $55–$60)</td>
+        <td class="lv-hold">$25–$34</td>
+        <td class="lv-trim">$38–$42 (above ATH)</td>
+        <td class="lv-sell">Below $16 (thesis review)</td>
+        <td class="pt-cell">$34–$38</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-silver">SILJ</td>
+        <td class="td-r tv-red">$36.01</td>
+        <td class="lv-add-1">After silver stabilises $70–$72</td>
+        <td class="lv-add-2">$28–$30 (XAG near $66)</td>
+        <td class="lv-add-3">$24–$26 (max fear)</td>
+        <td class="lv-hold">$33–$50</td>
+        <td class="lv-trim">$55–$60 (silver recovery to $100+)</td>
+        <td class="lv-sell">Silver closes below $50 trendline</td>
+        <td class="pt-cell">$55–$65</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell tv-nuke">VST</td>
+        <td class="td-r tv-amber">~$155</td>
+        <td class="lv-add-1">$148–$152</td>
+        <td class="lv-add-2">$138–$145</td>
+        <td class="lv-add-3">$125–$135</td>
+        <td class="lv-hold">$150–$200</td>
+        <td class="lv-trim">$240–$260 (at analyst PT)</td>
+        <td class="lv-sell">FERC adverse ruling + below $120</td>
+        <td class="pt-cell">$237–$293</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell" style="color:#76b900">NVDA</td>
+        <td class="td-r tv-amber">~$178</td>
+        <td class="lv-add-1">$165–$170</td>
+        <td class="lv-add-2">$155–$160</td>
+        <td class="lv-add-3">$140–$148</td>
+        <td class="lv-hold">$170–$230</td>
+        <td class="lv-trim">$270–$290 (above analyst PT)</td>
+        <td class="lv-sell">Below $140 (well below cost $152)</td>
+        <td class="pt-cell">$263–$352</td>
+      </tr>
+      <tr>
+        <td class="ticker-cell" style="color:#00a2ed">MSFT</td>
+        <td class="td-r tv-amber">~$396</td>
+        <td class="lv-add-1">$385–$392</td>
+        <td class="lv-add-2">$370–$382</td>
+        <td class="lv-add-3">$350–$368</td>
+        <td class="lv-hold">$385–$480</td>
+        <td class="lv-trim">$590–$620 (near analyst PT)</td>
+        <td class="lv-sell">Azure decelerates below 25%; close below $320</td>
+        <td class="pt-cell">$595–$675</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:0.7rem; color:var(--muted)">Add zones represent tranched accumulation levels — deploy 20–25% at Zone 1, 30–35% at Zone 2, 35–40% at Zone 3. Never deploy all cash at one level. Keep a minimum 8–10% cash reserve at all times.</p>
+</div>
+
+<!-- ═══════════ SIGNALS TO WATCH ═══════════ -->
+<div id="section-signals" class="section">
+  <div class="sh sh-blue">Key Signals — External Triggers That Drive Buy/Sell/Hold Decisions</div>
+  <div class="signals-grid">
+
+    <div class="sig-card">
+      <div class="sig-card-title">🛢 Oil & Energy Signals</div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">Brent Crude crosses $90/bbl</div>
+          <div class="sig-desc">Strait of Hormuz closure sustains oil above $90. Adds ~$350M FCF/yr to DVN per $10 increase. Bullish VST power prices.</div>
+          <div class="sig-trigger st-buy">→ ADD: DVN, LNG, VST. Consider new position DVN.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-sell"></div>
+        <div class="sig-body">
+          <div class="sig-title">Iran ceasefire / Hormuz reopens</div>
+          <div class="sig-desc">Oil drops $15–20/bbl instantly. War premium evaporates in energy sector.</div>
+          <div class="sig-trigger st-watch">→ HOLD everything; gold/silver will still be supported by inflation. Energy stocks may dip — potential add opportunity.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-watch"></div>
+        <div class="sig-body">
+          <div class="sig-title">Oil stays $65–$78 (baseline)</div>
+          <div class="sig-desc">Normal operating range. No acute action required for existing positions.</div>
+          <div class="sig-trigger st-watch">→ HOLD VST. Wait for better entries in DVN/LNG if adding new.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-sell"></div>
+        <div class="sig-body">
+          <div class="sig-title">Oil crashes below $55 (recession signal)</div>
+          <div class="sig-desc">Only if Iran conflict ends AND global recession begins simultaneously. Extreme bear scenario.</div>
+          <div class="sig-trigger st-sell">→ Review VST thesis. Add more MSFT/NVDA (recession accelerates cloud/AI demand).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sig-card">
+      <div class="sig-card-title">🏛 Federal Reserve / Interest Rate Signals</div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">Fed cuts 25–50bps (May or June FOMC)</div>
+          <div class="sig-desc">The most powerful catalyst for your entire portfolio. Gold, silver, miners, MSFT, NVDA, VST all re-rate higher simultaneously.</div>
+          <div class="sig-trigger st-buy">→ BUY EVERYTHING. Use remaining cash aggressively. Add MSFT, GDXJ, SILJ, PSLV before the cut.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-watch"></div>
+        <div class="sig-body">
+          <div class="sig-title">Fed holds rates through Q3 2026 (Warsh hawkish)</div>
+          <div class="sig-desc">Delayed cuts due to Iran oil inflation. Keeps pressure on gold multiples and tech P/Es.</div>
+          <div class="sig-trigger st-watch">→ HOLD all. No urgency to add tech; stagger precious metals accumulation slowly.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-sell"></div>
+        <div class="sig-body">
+          <div class="sig-title">Fed HIKES rates (surprise hawkish pivot)</div>
+          <div class="sig-desc">Extremely rare but possible if Iran inflation spike is severe. USD surges; gold/silver crash; tech hammered.</div>
+          <div class="sig-trigger st-sell">→ TRIM GDX, GDXJ by 30%. Hold physical gold/silver (ultimate safe haven). Hold NVDA/MSFT — dip is temporary.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">Real yields fall below 1.5% (TIPS signal)</div>
+          <div class="sig-desc">Historical trigger for gold/silver outperformance. Negative real rates = strongest buy signal for precious metals.</div>
+          <div class="sig-trigger st-buy">→ MAXIMUM ADD on PSLV, physical silver, GLD, WPM. Scale all PM holdings to maximum allocation.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sig-card">
+      <div class="sig-card-title">📊 S&P 500 / Macro Signals</div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">S&P 500 holds 6,550 (200-DMA)</div>
+          <div class="sig-desc">Bull market intact. Rotation continues but no crash. Tech will follow broader market back up.</div>
+          <div class="sig-trigger st-buy">→ Add MSFT at $370–$385 and NVDA at $160–170 on any dip. Deploy $8–10K of cash.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-sell"></div>
+        <div class="sig-body">
+          <div class="sig-title">S&P 500 breaks 6,400 on volume</div>
+          <div class="sig-desc">200-DMA failure. Potential 10–15% correction territory. Risk-off intensifies; cash becomes king briefly.</div>
+          <div class="sig-trigger st-watch">→ HOLD all. Do NOT sell. Prepare larger add list for MSFT below $350 and NVDA below $155. Gold will surge.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">Advance/Decline Line continues new highs</div>
+          <div class="sig-desc">Breadth confirmation. Rotation not distribution. Equal-weight S&P outperforming.</div>
+          <div class="sig-trigger st-buy">→ Continue gradual deployment. Rotation will end; MAG7 will re-lead. Don't exit tech.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-watch"></div>
+        <div class="sig-body">
+          <div class="sig-title">VIX spikes above 30 (fear event)</div>
+          <div class="sig-desc">Typically a buy signal for long-term investors with holding power. Historical best entry for quality stocks.</div>
+          <div class="sig-trigger st-buy">→ DEPLOY 30–40% of remaining cash into MSFT, NVDA, GDXJ. VIX 30+ = generational buy signal historically.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sig-card">
+      <div class="sig-card-title">🥈 Silver / Gold Specific Signals</div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">Gold/Silver Ratio rises above 80×</div>
+          <div class="sig-desc">Historical signal of extreme silver undervaluation vs gold. Every time ratio exceeded 80× since 1980, silver subsequently outperformed gold by 40–100% in following 12 months.</div>
+          <div class="sig-trigger st-buy">→ MAXIMUM ADD physical silver + PSLV + SILJ. Reduce GLD slightly to fund silver additions.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-sell"></div>
+        <div class="sig-body">
+          <div class="sig-title">Silver XAG breaks $50 trendline on weekly close</div>
+          <div class="sig-desc">Long-term ascending trendline from 2020 low. A weekly close below $50 invalidates the multi-year bull thesis.</div>
+          <div class="sig-trigger st-sell">→ REVIEW entire silver position. Consider reducing SILJ by 50%. Physical silver and PSLV — hold long-term regardless.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">Silver recovers above $90 with volume</div>
+          <div class="sig-desc">Recaptures prior support / 20-DMA. Signals the USD flush is over and bulls are back.</div>
+          <div class="sig-trigger st-buy">→ ADD remaining cash allocation to SILJ. The recovery trade is confirming. Target $100–$110.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">Central bank gold purchases exceed 600t/quarter</div>
+          <div class="sig-desc">Current pace is 585t/qtr. Any acceleration above 600t signals a new wave of sovereign demand that reprices gold to $6,000+.</div>
+          <div class="sig-trigger st-buy">→ ADD GLD, WPM, KGC. Physical gold is directly repriced. WPM streams gold cost-free vs rising market.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sig-card">
+      <div class="sig-card-title">🤖 AI / Tech Signals</div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">Microsoft Azure growth re-accelerates above 40%</div>
+          <div class="sig-desc">Q3 FY26 earnings (~April 2026). Azure is the barometer for MSFT re-rating. 40%+ kills the bear case instantly.</div>
+          <div class="sig-trigger st-buy">→ ADD MSFT aggressively post-earnings. Stock likely gaps up 8–12% on Azure acceleration.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">NVDA Blackwell supply constraint resolves (Q1–Q2 guide)</div>
+          <div class="sig-desc">Supply-constrained Blackwell demand = backlog = predictable revenue. Any supply expansion confirmation is bullish.</div>
+          <div class="sig-trigger st-buy">→ ADD NVDA at $160–$170 on any pullback to this level.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-sell"></div>
+        <div class="sig-body">
+          <div class="sig-title">Hyperscaler CAPEX guidance cut (AWS/Azure/Google)</div>
+          <div class="sig-desc">Any of the big three cutting AI infrastructure spend is bearish for NVDA demand directly.</div>
+          <div class="sig-trigger st-sell">→ TRIM NVDA 25–30%. Hold MSFT (its own capex is the offset). PLTR still viable.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">VST signs additional hyperscaler PPA (nuclear/gas)</div>
+          <div class="sig-desc">A second nuclear/gas PPA after Comanche Peak is a direct catalyst for VST re-rating from 7.5× to 10× EBITDA.</div>
+          <div class="sig-trigger st-buy">→ ADD VST immediately on PPA announcement. Target $180–$200 short-term on news.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sig-card">
+      <div class="sig-card-title">⚔ Iran War Escalation / De-escalation</div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">Hormuz stays closed beyond 4 weeks</div>
+          <div class="sig-desc">Oil above $90 sustained. LNG prices surge. Inflation expectations reignite. Gold reprices $5,500+.</div>
+          <div class="sig-trigger st-buy">→ ADD physical silver (dips), LNG (Cheniere), DVN (oil E&P), VST (power prices up).</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-watch"></div>
+        <div class="sig-body">
+          <div class="sig-title">War ends within 4–5 weeks (Trump's stated timeline)</div>
+          <div class="sig-desc">Oil falls back to $70–75. USD weakens. Tech rallies. Gold holds on Fed cut narrative.</div>
+          <div class="sig-trigger st-buy">→ BUY tech dips (MSFT, NVDA). Silver recovers fast. Gold holds. Overall portfolio net positive.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-sell"></div>
+        <div class="sig-body">
+          <div class="sig-title">Conflict expands to Saudi Arabia / Russia involvement</div>
+          <div class="sig-desc">Full regional war. Oil to $120+. Market crash of 15–20%. Safe havens: gold, USD, Treasuries.</div>
+          <div class="sig-trigger st-sell">→ HOLD all gold/silver (maximum benefit). TRIM tech 20–25%. HOLD VST (nuclear = indispensable). Deploy cash into gold.</div>
+        </div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-dot sd-buy"></div>
+        <div class="sig-body">
+          <div class="sig-title">Iran regime change achieved (Trump's stated goal)</div>
+          <div class="sig-desc">Massive geopolitical relief rally. Stocks surge 3–5%. Oil drops. BUT: gold stays elevated (fiscal deficit, de-dollarisation ongoing).</div>
+          <div class="sig-trigger st-buy">→ BUY tech rally (MSFT, NVDA, PLTR). Hold all precious metals — structural bull continues regardless of war.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ NEW PICKS ═══════════ -->
+<div id="section-newpicks" class="section">
+  <div class="sh sh-nuke">One Best New Opportunity — Each Sector</div>
+  <div class="picks-grid">
+
+    <!-- METALS -->
+    <div class="pick-card" style="border-top-color: var(--gold)">
+      <div class="pick-head">
+        <div class="pick-sector">Metals — Best New Pick</div>
+        <div class="pick-ticker tv-gold">FNV</div>
+        <div class="pick-name">Franco-Nevada Corporation</div>
+      </div>
+      <div class="pick-prices">
+        <div class="pp-cell"><div class="pp-lbl">Current</div><div class="pp-val tv-gold">~$185–195</div></div>
+        <div class="pp-cell"><div class="pp-lbl">Analyst PT</div><div class="pp-val tv-green">~$250–$270</div></div>
+      </div>
+      <div class="pick-body">
+        <div class="pick-row"><span class="pr-lbl">Upside to PT</span><span class="pr-val tv-green">+35–46%</span></div>
+        <div class="pick-row"><span class="pr-lbl">Model</span><span class="pr-val tv-green">Royalty / streaming (like WPM)</span></div>
+        <div class="pick-row"><span class="pr-lbl">FCF Margin</span><span class="pr-val tv-green">~85% (highest in sector)</span></div>
+        <div class="pick-row"><span class="pr-lbl">Dividend</span><span class="pr-val tv-green">Growing; 20 consecutive hikes</span></div>
+        <div class="pick-row"><span class="pr-lbl">Gold/Silver Mix</span><span class="pr-val">65% gold, 17% silver</span></div>
+        <div class="pick-row"><span class="pr-lbl">Debt</span><span class="pr-val tv-green">Zero net debt</span></div>
+        <div class="pick-row"><span class="pr-lbl">Vs. WPM</span><span class="pr-val tv-amber">Slightly cheaper; less silver</span></div>
+        <div class="pick-row"><span class="pr-lbl">Vs. your book</span><span class="pr-val">Complements WPM; different royalty streams</span></div>
+      </div>
+      <div class="pick-why">Why it's the best metals pick not in your book: Franco-Nevada is the original royalty company with zero debt, 85% FCF margins, and 20 consecutive annual dividend increases. As a royalty holder — not an operator — it has ZERO mining risk: no labour disputes, no tailings disasters, no cost inflation. The royalty model means every $100 increase in gold price flows almost entirely to the bottom line. You already hold WPM (streaming), but FNV rounds out the royalty/streaming allocation with a more gold-heavy, geographically diverse stream that covers Cobre Panama (major copper-gold mine), Candelaria, and dozens more. At $185–195, it trades at a discount to its historical premium vs. WPM.</div>
+      <div class="pick-verdict pv-buy">✅ Buy 10–15 shares · $1,900–$2,900</div>
+    </div>
+
+    <!-- ENERGY -->
+    <div class="pick-card" style="border-top-color: var(--oil)">
+      <div class="pick-head">
+        <div class="pick-sector">Energy — Best New Pick</div>
+        <div class="pick-ticker tv-oil">DVN</div>
+        <div class="pick-name">Devon Energy Corporation</div>
+      </div>
+      <div class="pick-prices">
+        <div class="pp-cell"><div class="pp-lbl">Current</div><div class="pp-val tv-oil">~$33</div></div>
+        <div class="pp-cell"><div class="pp-lbl">Fair Value</div><div class="pp-val tv-green">~$50</div></div>
+      </div>
+      <div class="pick-body">
+        <div class="pick-row"><span class="pr-lbl">Upside</span><span class="pr-val tv-green">+42–52%</span></div>
+        <div class="pick-row"><span class="pr-lbl">Morningstar Rating</span><span class="pr-val tv-green">5-Star (most undervalued)</span></div>
+        <div class="pick-row"><span class="pr-lbl">FCF Yield</span><span class="pr-val tv-green">~10% at $75 Brent</span></div>
+        <div class="pick-row"><span class="pr-lbl">Debt</span><span class="pr-val tv-green">Net cash balance sheet</span></div>
+        <div class="pick-row"><span class="pr-lbl">Variable Dividend</span><span class="pr-val tv-green">~5–7% yield (oil-linked)</span></div>
+        <div class="pick-row"><span class="pr-lbl">$10 oil increase</span><span class="pr-val tv-green">→ +$350M FCF (+~10%)</span></div>
+        <div class="pick-row"><span class="pr-lbl">Break-even</span><span class="pr-val tv-green">~$40/bbl fully-loaded</span></div>
+        <div class="pick-row"><span class="pr-lbl">Iran direct lever</span><span class="pr-val tv-green">Every Hormuz day = $$</span></div>
+      </div>
+      <div class="pick-why">The cleanest, most undervalued Iran oil trade in the S&P 500. Morningstar's #1 most undervalued energy stock with 5-star rating. Net cash balance sheet — no distress risk at any oil price above $40. The variable dividend mechanically delivers the oil price upside directly to shareholders each quarter. At $79 Brent and rising, Devon's Q1 FCF is tracking to produce a dividend yield above 7%. A pure Permian Basin operator with 25+ years of inventory at current drilling pace. Not in your existing book — adds the direct oil upside you don't otherwise have.</div>
+      <div class="pick-verdict pv-buy">✅ Buy 90–120 shares · $3,000–$4,000</div>
+    </div>
+
+    <!-- DEFENSE -->
+    <div class="pick-card" style="border-top-color: var(--purple)">
+      <div class="pick-head">
+        <div class="pick-sector">Defense — Best New Pick</div>
+        <div class="pick-ticker tv-purple">AVAV</div>
+        <div class="pick-name">AeroVironment Inc.</div>
+      </div>
+      <div class="pick-prices">
+        <div class="pp-cell"><div class="pp-lbl">Current</div><div class="pp-val tv-purple">~$185–200</div></div>
+        <div class="pp-cell"><div class="pp-lbl">Analyst PT</div><div class="pp-val tv-green">~$275–$300</div></div>
+      </div>
+      <div class="pick-body">
+        <div class="pick-row"><span class="pr-lbl">Upside</span><span class="pr-val tv-green">+40–62%</span></div>
+        <div class="pick-row"><span class="pr-lbl">Business</span><span class="pr-val">Switchblade loitering munitions + UAS</span></div>
+        <div class="pick-row"><span class="pr-lbl">Switchblade 300/600</span><span class="pr-val tv-green">Used in Ukraine; now Gulf theatre</span></div>
+        <div class="pick-row"><span class="pr-lbl">FY2026 Rev Growth</span><span class="pr-val tv-green">+20–25% guided</span></div>
+        <div class="pick-row"><span class="pr-lbl">Revenue</span><span class="pr-val tv-green">$730M+ (growing)</span></div>
+        <div class="pick-row"><span class="pr-lbl">Backlog</span><span class="pr-val tv-green">$1.1B+ (record)</span></div>
+        <div class="pick-row"><span class="pr-lbl">Debt</span><span class="pr-val tv-green">Minimal; strong cash</span></div>
+        <div class="pick-row"><span class="pr-lbl">vs UMAC / LASR</span><span class="pr-val">Larger; more mature; proven product</span></div>
+      </div>
+      <div class="pick-why">If UMAC (micro-cap drone component) is too speculative, AVAV is the mature, proven drone/loitering munition play. AeroVironment makes the Switchblade series — precision strike loitering munitions that have demonstrated extraordinary battlefield effectiveness in Ukraine and are now directly relevant to the Iran theatre. The Switchblade 300 (anti-personnel) and 600 (anti-armor) are NDAA-compliant, US-made, and already in service with multiple allied militaries. The US Army has dramatically accelerated Switchblade procurement orders in 2026. AVAV appeared in Yahoo Finance's recommendations alongside PSLV — the market is watching this one. A $1.1B record backlog means revenue visibility for 18+ months regardless of war outcome.</div>
+      <div class="pick-verdict pv-buy">✅ Buy 10–15 shares · $1,850–$3,000</div>
+    </div>
+
+    <!-- TECH -->
+    <div class="pick-card" style="border-top-color: var(--blue)">
+      <div class="pick-head">
+        <div class="pick-sector">Technology — Best New Pick</div>
+        <div class="pick-ticker tv-blue">CRWD</div>
+        <div class="pick-name">CrowdStrike Holdings Inc.</div>
+      </div>
+      <div class="pick-prices">
+        <div class="pp-cell"><div class="pp-lbl">Current</div><div class="pp-val tv-blue">~$350–$370</div></div>
+        <div class="pp-cell"><div class="pp-lbl">Analyst PT</div><div class="pp-val tv-green">~$450–$500</div></div>
+      </div>
+      <div class="pick-body">
+        <div class="pick-row"><span class="pr-lbl">Upside</span><span class="pr-val tv-green">+24–43%</span></div>
+        <div class="pick-row"><span class="pr-lbl">Iran War Angle</span><span class="pr-val tv-green">Cyberattack wave incoming (Dimon)</span></div>
+        <div class="pick-row"><span class="pr-lbl">ARR Growth</span><span class="pr-val tv-green">+22% YoY; $4.24B ARR</span></div>
+        <div class="pick-row"><span class="pr-lbl">FCF Margin</span><span class="pr-val tv-green">~30%+ (improving rapidly)</span></div>
+        <div class="pick-row"><span class="pr-lbl">Net Revenue Retention</span><span class="pr-val tv-green">120%+ (sticky SaaS)</span></div>
+        <div class="pick-row"><span class="pr-lbl">AI Integration</span><span class="pr-val tv-green">Charlotte AI cybersecurity copilot</span></div>
+        <div class="pick-row"><span class="pr-lbl">Analyst Rating</span><span class="pr-val tv-green">Strong Buy consensus</span></div>
+        <div class="pick-row"><span class="pr-lbl">Iran-Specific</span><span class="pr-val tv-green">IRGC cyber unit now fully activated</span></div>
+      </div>
+      <div class="pick-why">JPMorgan CEO Jamie Dimon specifically warned: "Expect cyberattacks from Iran" as the war escalated. CRWD is the global #1 endpoint cybersecurity platform — the company that is called when nation-state hackers attack corporate infrastructure. The Iranian IRGC Cyber Command has historically been one of the world's most aggressive state-sponsored hacking groups; a full kinetic war activation means their cyber operations go to maximum intensity simultaneously. Every enterprise globally is urgently reviewing cybersecurity posture right now. CRWD's ARR is $4.24B and growing 22% YoY with 120%+ net revenue retention — customers who buy expand. Not in your book; provides the Iran cyber hedge that NVDA/MSFT don't explicitly cover.</div>
+      <div class="pick-verdict pv-buy">✅ Buy 5–8 shares · $1,750–$3,000</div>
+    </div>
+
+  </div>
+
+  <div class="conclusion">
+    <h3>New Picks Summary — How They Complement Your Existing Portfolio</h3>
+    <p><strong>FNV (Franco-Nevada)</strong> complements your existing WPM position by adding the other half of the gold royalty duopoly. WPM is silver-heavy (largest silver streaming company in the world), while FNV is gold-heavy with zero debt and the world's best FCF margin in the royalty sector. Together WPM + FNV form the ideal precious metals streaming pair: you earn royalties on gold AND silver without mining risk, while the $5,000+ gold price flows almost entirely to the bottom line of both companies.</p>
+    <p><strong>DVN (Devon Energy)</strong> fills the explicit gap in your portfolio: you own nuclear power (VST) and precious metals, but no direct oil exposure. At $33 with a net cash balance sheet, 10% FCF yield, and Morningstar's 5-star most undervalued energy rating, DVN is the most mechanically leveraged Iran oil trade you can make without leverage. The variable dividend means every dollar of Iran-war oil premium comes back to you as a quarterly dividend.</p>
+    <p><strong>AVAV (AeroVironment)</strong> is the mature complement to your speculative UMAC/LASR positions. If UMAC's micro-cap risk worries you, AVAV is the "grown-up" drone company — profitable, $1.1B backlog, proven Switchblade product in active use, 20–25% revenue growth guided. It de-risks the defense portion of your book by adding a company with real earnings and real contracts behind it.</p>
+    <p><strong>CRWD (CrowdStrike)</strong> is the Iran war tech play that NVDA and MSFT don't cover. Iran's IRGC cyber units are now fully activated alongside kinetic operations. Every company globally is calling their CISOs today. CRWD is the beneficiary of this fear in the exact same way that gold benefits from safe-haven demand — except CRWD also has compounding SaaS fundamentals (22% ARR growth, 120%+ NRR) that continue regardless of whether Iran's cyber war ebbs. It also provides a tech holding that is more defensive than NVDA or MSFT in a risk-off environment.</p>
+  </div>
+</div>
+
+<!-- ═══════════ ALLOCATION ═══════════ -->
+<div id="section-allocation" class="section">
+  <div class="sh sh-gold">Portfolio Allocation View — Current vs. Recommended</div>
+  <div class="alloc-grid">
+    <div class="alloc-card">
+      <div class="ac-title">Current Allocation by Sector (est. market value)</div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#c8a84b"></div><div class="alloc-label">Physical Gold + Silver</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:10%; background:#c8a84b"></div></div><div class="alloc-pct tv-gold">10%</div><div class="alloc-val tv-gold">~$18,639</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#d8d040"></div><div class="alloc-label">Gold ETFs (GLD, GDX, GDXJ)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:13%; background:#d8d040"></div></div><div class="alloc-pct tv-gold">13%</div><div class="alloc-val tv-gold">~$25,732</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#a0b8a8"></div><div class="alloc-label">Gold Mining Stocks (WPM, KGC, B)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:8%; background:#a0b8a8"></div></div><div class="alloc-pct tv-amber">8%</div><div class="alloc-val">~$13,859</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#8090a8"></div><div class="alloc-label">Silver (PSLV + SILJ)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:25%; background:#8090a8"></div></div><div class="alloc-pct tv-silver">25%</div><div class="alloc-val tv-silver">~$47,415</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#30c870"></div><div class="alloc-label">Energy — VST</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:4%; background:#30c870"></div></div><div class="alloc-pct tv-nuke">4%</div><div class="alloc-val">~$7,750</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#76b900"></div><div class="alloc-label">Tech — NVDA + MSFT</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:26%; background:#76b900"></div></div><div class="alloc-pct tv-blue">26%</div><div class="alloc-val">~$50,900</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#2878d8"></div><div class="alloc-label">Cash</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:11%; background:#2878d8"></div></div><div class="alloc-pct tv-blue">11%</div><div class="alloc-val tv-blue">$21,840</div></div>
+    </div>
+    <div class="alloc-card">
+      <div class="ac-title">Post New-Picks Recommended Target Allocation</div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#c8a84b"></div><div class="alloc-label">Physical Metals (gold + silver)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:10%; background:#c8a84b"></div></div><div class="alloc-pct tv-gold">10%</div><div class="alloc-val tv-muted">Unchanged</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#d8d040"></div><div class="alloc-label">Gold ETFs + Royalties (add FNV)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:15%; background:#d8d040"></div></div><div class="alloc-pct tv-gold">15%</div><div class="alloc-val tv-green">+FNV ~$2,700</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#a0b8a8"></div><div class="alloc-label">Gold Miners (WPM, KGC, B)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:8%; background:#a0b8a8"></div></div><div class="alloc-pct tv-amber">8%</div><div class="alloc-val">Hold</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#8090a8"></div><div class="alloc-label">Silver (PSLV + SILJ)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:24%; background:#8090a8"></div></div><div class="alloc-pct tv-silver">24%</div><div class="alloc-val tv-green">Add on dips</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#30c870"></div><div class="alloc-label">Energy (VST + add DVN)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:7%; background:#30c870"></div></div><div class="alloc-pct tv-nuke">7%</div><div class="alloc-val tv-green">+DVN ~$3,500</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#9040c0"></div><div class="alloc-label">Defense (LASR, UMAC + add AVAV)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:6%; background:#9040c0"></div></div><div class="alloc-pct" style="color:#c080f0">6%</div><div class="alloc-val tv-green">+AVAV ~$2,500</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#76b900"></div><div class="alloc-label">Tech (NVDA, MSFT + add CRWD)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:25%; background:#76b900"></div></div><div class="alloc-pct tv-blue">25%</div><div class="alloc-val tv-green">+CRWD ~$2,500</div></div>
+      <div class="alloc-row"><div class="alloc-dot" style="background:#2878d8"></div><div class="alloc-label">Cash Reserve (minimum 5%)</div><div class="alloc-bar-track"><div class="alloc-bar-fill" style="width:5%; background:#2878d8"></div></div><div class="alloc-pct tv-blue">5%</div><div class="alloc-val tv-amber">~$10K reserve</div></div>
+      <p style="margin-top:14px; font-size:0.7rem; color:var(--muted); line-height:1.6">Total new capital deployment from $21,840 cash: ~$11,200 (FNV + DVN + AVAV + CRWD). Leaves ~$10,640 as minimum cash reserve for dip-buying MSFT, PSLV, silver, and any surprise opportunity.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<div class="disclaimer">
+  IMPORTANT DISCLAIMER: This dashboard is for informational and educational purposes only. Generated by Claude (Anthropic) in the style of a J.P. Morgan portfolio management tool — NOT an actual J.P. Morgan product. All prices sourced from publicly available data as of March 3, 2026 14:00 UTC. Values are estimates; actual prices may differ. This is not financial advice. All investments involve risk of loss. Consult a qualified financial advisor before making investment decisions.
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
